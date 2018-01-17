@@ -243,7 +243,7 @@ var XLSX = {};
             t[47] = 'mmss.0';
             t[48] = '##0.0E+0';
             t[49] = '@';
-            t[56] = '"??/?? "hh"?"mm"?"ss"? "';
+	t[56]= '"上午/下午 "hh"時"mm"分"ss"秒 "';
             t[65535] = 'General';
         }
 
@@ -4145,7 +4145,7 @@ var XLSX = {};
                 twoCell += '<xdr:to><xdr:col>' + toCol + '</xdr:col><xdr:colOff>0</xdr:colOff><xdr:row>' + toRow + '</xdr:row><xdr:rowOff>0</xdr:rowOff></xdr:to>';
                 twoCell += '<xdr:pic><xdr:nvPicPr><xdr:cNvPr id="' + rId + '" name="' + image.name + '">';
                 twoCell += '</xdr:cNvPr><xdr:cNvPicPr><a:picLocks noChangeAspect="1"/></xdr:cNvPicPr></xdr:nvPicPr>';
-                twoCell += '<xdr:blipFill><a:blip xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" r:embed="rId' + rId + '"/>';
+                twoCell += '<xdr:blipFill><a:blip xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" r:embed="rId' + (i+1) + '"/>';
                 twoCell += '<a:stretch><a:fillRect/></a:stretch></xdr:blipFill><xdr:spPr><a:prstGeom prst="rect"><a:avLst/></a:prstGeom></xdr:spPr></xdr:pic><xdr:clientData/>';
                 o[o.length] = (writextag('xdr:twoCellAnchor', twoCell, images[i].attrs));
             }
@@ -12821,6 +12821,18 @@ var XLSX = {};
         if (margins.footer == null) margins.footer = defs[5];
     }
 
+    function default_pageSetup(pageSetup) {
+        if(!pageSetup) return;
+        var defs = ["1","1","1","100","0","portrait","downThenOver"];
+        if(pageSetup.firstPageNumber == null) pageSetup.firstPageNumber = defs[0];
+        if(pageSetup.fitToHeight == null) pageSetup.fitToHeight = defs[1];
+        if(pageSetup.fitToWidth == null) pageSetup.fitToWidth = defs[2];
+        if(pageSetup.scale == null) pageSetup.scale = defs[3];
+        if(pageSetup.useFirstPageNumber == null) pageSetup.useFirstPageNumber = defs[4];
+        if(pageSetup.orientation == null) pageSetup.orientation = defs[5];
+        if(pageSetup.pageOrder == null) pageSetup.pageOrder = defs[6];
+    }
+
     function get_cell_style(styles, cell, opts) {
         if (typeof style_builder != 'undefined') {
             if (/^\d+$/.exec(cell.s)) {
@@ -13071,6 +13083,11 @@ var XLSX = {};
     function write_ws_xml_margins(margin) {
         default_margins(margin);
         return writextag('pageMargins', null, margin);
+    }
+
+    function write_ws_xml_pageSetup(pageSetup) {
+        default_pageSetup(pageSetup);
+        return writextag('pageSetup', null, pageSetup);
     }
 
     function parse_ws_xml_cols(columns, cols) {
@@ -13471,9 +13488,10 @@ var XLSX = {};
         }
         delete ws['!links'];
 
-        /* printOptions */
-        if (ws['!margins'] != null) o[o.length] = write_ws_xml_margins(ws['!margins']);
-        /* pageSetup */
+	/* printOptions */
+	if (ws['!margins'] != null) o[o.length] =  write_ws_xml_margins(ws['!margins']);
+	if (ws['!pageSetup'] != null) o[o.length] = write_ws_xml_pageSetup(ws['!pageSetup']);
+	/* pageSetup */
 
         var hfidx = o.length;
         o[o.length] = "";
@@ -14970,6 +14988,24 @@ var XLSX = {};
         var o = [XML_HEADER];
         o[o.length] = WB_XML_ROOT;
 
+        var headers = [];
+        for (var i = 0; i < wb.SheetNames.length; i++) {
+            var shtname = wb.SheetNames[i];
+            var sht = wb.Sheets[shtname];
+            if (sht["!headers"]) {
+                for (let j = 0; j < sht["!headers"].length; j++) {
+                    var Ref = `'${shtname}'!${sht["!headers"][j]}`;
+                    headers[headers.length] = {
+                        Name: "_xlnm.Print_Titles",
+                        Ref,
+                        Sheet: i
+                    };
+                }
+            }
+        }
+        if (!wb.Workbook) {
+            wb.Workbook = {Names: headers};
+        }
         var write_names = (wb.Workbook && (wb.Workbook.Names || []).length > 0);
 
         /* fileVersion */
