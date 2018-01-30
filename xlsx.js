@@ -4151,7 +4151,7 @@ var XLSX = {};
                 twoCell += '<xdr:pic><xdr:nvPicPr><xdr:cNvPr id="' + rId + '" name="' + image.name + '">';
                 twoCell += '</xdr:cNvPr><xdr:cNvPicPr><a:picLocks noChangeAspect="1"/></xdr:cNvPicPr></xdr:nvPicPr>';
                 twoCell += '<xdr:blipFill><a:blip xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" r:embed="rId' + (i + 1) + '"/>';
-                twoCell += '<a:stretch><a:fillRect/></a:stretch></xdr:blipFill><xdr:spPr><a:xfrm><a:off x="' + fromColOffset + '" y="' + fromRowOffset + '"/>' + (extCx || extCy) ? '<a:ext cx="" cy="" />' : '' + '</a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom></xdr:spPr></xdr:pic><xdr:clientData/>';
+                twoCell += '<a:stretch><a:fillRect/></a:stretch></xdr:blipFill><xdr:spPr><a:xfrm><a:off x="' + fromColOffset + '" y="' + fromRowOffset + '"/>' + (extCx || extCy) ? '<a:ext cx="'+extCx+'" cy="'+extCy+'" />' : '' + '</a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom></xdr:spPr></xdr:pic><xdr:clientData/>';
                 o[o.length] = (writextag('xdr:twoCellAnchor', twoCell, images[i].attrs));
             }
         }
