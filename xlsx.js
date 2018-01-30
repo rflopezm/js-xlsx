@@ -243,7 +243,7 @@ var XLSX = {};
             t[47] = 'mmss.0';
             t[48] = '##0.0E+0';
             t[49] = '@';
-	t[56]= '"上午/下午 "hh"時"mm"分"ss"秒 "';
+            t[56] = '"上午/下午 "hh"時"mm"分"ss"秒 "';
             t[65535] = 'General';
         }
 
@@ -348,7 +348,7 @@ var XLSX = {};
             if (v > 2958465 || v < 0) return null;
             var date = (v | 0), time = Math.floor(86400 * (v - date)), dow = 0;
             var dout = [];
-            var out = {D: date, T: time, u: 86400 * (v - date) - time, y: 0, m: 0, d: 0, H: 0, M: 0, S: 0, q: 0};
+            var out = { D: date, T: time, u: 86400 * (v - date) - time, y: 0, m: 0, d: 0, H: 0, M: 0, S: 0, q: 0 };
             if (Math.abs(out.u) < 1e-6) out.u = 0;
             fixopts(opts != null ? opts : (opts = []));
             if (opts.date1904) date += 1462;
@@ -368,7 +368,7 @@ var XLSX = {};
                 dow = 6;
             }
             else {
-                if (date > 60) --date;
+                if (date > 60)--date;
                 /* 1 = Jan 1 1900 in Gregorian */
                 var d = new Date(1900, 0, 1);
                 d.setDate(d.getDate() + date - 1);
@@ -541,7 +541,7 @@ var XLSX = {};
 
             function write_num_cm(type, fmt, val) {
                 var idx = fmt.length - 1;
-                while (fmt.charCodeAt(idx - 1) === 44) --idx;
+                while (fmt.charCodeAt(idx - 1) === 44)--idx;
                 return write_num(type, fmt.substr(0, idx), val / Math.pow(10, 3 * (fmt.length - idx)));
             }
 
@@ -710,8 +710,8 @@ var XLSX = {};
                 if ((r = fmt.match(/^00,000\.([#0]*0)$/))) {
                     ri = dec(val, r[1].length);
                     return val < 0 ? "-" + write_num_flt(type, fmt, -val) : commaify(flr(val)).replace(/^\d,\d{3}$/, "0$&").replace(/^\d*$/, function ($$) {
-                            return "00," + ($$.length < 3 ? pad0(0, 3 - $$.length) : "") + $$;
-                        }) + "." + pad0(ri, r[1].length);
+                        return "00," + ($$.length < 3 ? pad0(0, 3 - $$.length) : "") + $$;
+                    }) + "." + pad0(ri, r[1].length);
                 }
                 switch (fmt) {
                     case "###,##0.00":
@@ -732,7 +732,7 @@ var XLSX = {};
 
             function write_num_cm2(type, fmt, val) {
                 var idx = fmt.length - 1;
-                while (fmt.charCodeAt(idx - 1) === 44) --idx;
+                while (fmt.charCodeAt(idx - 1) === 44)--idx;
                 return write_num(type, fmt.substr(0, idx), val / Math.pow(10, 3 * (fmt.length - idx)));
             }
 
@@ -845,8 +845,8 @@ var XLSX = {};
                 }
                 if ((r = fmt.match(/^00,000\.([#0]*0)$/))) {
                     return val < 0 ? "-" + write_num_int(type, fmt, -val) : commaify("" + val).replace(/^\d,\d{3}$/, "0$&").replace(/^\d*$/, function ($$) {
-                            return "00," + ($$.length < 3 ? pad0(0, 3 - $$.length) : "") + $$;
-                        }) + "." + pad0(0, r[1].length);
+                        return "00," + ($$.length < 3 ? pad0(0, 3 - $$.length) : "") + $$;
+                    }) + "." + pad0(0, r[1].length);
                 }
                 switch (fmt) {
                     case "###,###":
@@ -898,7 +898,7 @@ var XLSX = {};
                         i++;
                         break;
                     case '"':
-                        for (; (/*cc=*/fmt.charCodeAt(++i)) !== 34 && i < fmt.length;) ++i;
+                        for (; (/*cc=*/fmt.charCodeAt(++i)) !== 34 && i < fmt.length;)++i;
                         ++i;
                         break;
                     case '\\':
@@ -952,7 +952,7 @@ var XLSX = {};
                         break;
                     case '*':
                         ++i;
-                        if (fmt.charAt(i) == ' ' || fmt.charAt(i) == '*') ++i;
+                        if (fmt.charAt(i) == ' ' || fmt.charAt(i) == '*')++i;
                         break;
                     case '(':
                     case ')':
@@ -990,25 +990,25 @@ var XLSX = {};
                 switch ((c = fmt.charAt(i))) {
                     case 'G': /* General */
                         if (!isgeneral(fmt, i)) throw new Error('unrecognized character ' + c + ' in ' + fmt);
-                        out[out.length] = {t: 'G', v: 'General'};
+                        out[out.length] = { t: 'G', v: 'General' };
                         i += 7;
                         break;
                     case '"': /* Literal text */
                         for (o = ""; (cc = fmt.charCodeAt(++i)) !== 34 && i < fmt.length;) o += String.fromCharCode(cc);
-                        out[out.length] = {t: 't', v: o};
+                        out[out.length] = { t: 't', v: o };
                         ++i;
                         break;
                     case '\\':
                         var w = fmt.charAt(++i), t = (w === "(" || w === ")") ? w : 't';
-                        out[out.length] = {t: t, v: w};
+                        out[out.length] = { t: t, v: w };
                         ++i;
                         break;
                     case '_':
-                        out[out.length] = {t: 't', v: " "};
+                        out[out.length] = { t: 't', v: " " };
                         i += 2;
                         break;
                     case '@': /* Text Placeholder */
-                        out[out.length] = {t: 'T', v: v};
+                        out[out.length] = { t: 'T', v: v };
                         ++i;
                         break;
                     case 'B':
@@ -1018,7 +1018,7 @@ var XLSX = {};
                                 dt = parse_date_code(v, opts, fmt.charAt(i + 1) === "2");
                                 if (dt == null) return "";
                             }
-                            out[out.length] = {t: 'X', v: fmt.substr(i, 2)};
+                            out[out.length] = { t: 'X', v: fmt.substr(i, 2) };
                             lst = c;
                             i += 2;
                             break;
@@ -1048,11 +1048,11 @@ var XLSX = {};
                         while (++i < fmt.length && fmt.charAt(i).toLowerCase() === c) o += c;
                         if (c === 'm' && lst.toLowerCase() === 'h') c = 'M';
                         if (c === 'h') c = hr;
-                        out[out.length] = {t: c, v: o};
+                        out[out.length] = { t: c, v: o };
                         lst = c;
                         break;
                     case 'A':
-                        q = {t: c, v: "A"};
+                        q = { t: c, v: "A" };
                         if (dt == null) dt = parse_date_code(v, opts);
                         if (fmt.substr(i, 3) === "A/P") {
                             if (dt != null) q.v = dt.H >= 12 ? "P" : "A";
@@ -1083,11 +1083,11 @@ var XLSX = {};
                                 dt = parse_date_code(v, opts);
                                 if (dt == null) return "";
                             }
-                            out[out.length] = {t: 'Z', v: o.toLowerCase()};
+                            out[out.length] = { t: 'Z', v: o.toLowerCase() };
                             lst = o.charAt(1);
                         } else if (o.indexOf("$") > -1) {
                             o = (o.match(/\$([^-\[\]]*)/) || [])[1] || "$";
-                            if (!fmt_is_date(fmt)) out[out.length] = {t: 't', v: o};
+                            if (!fmt_is_date(fmt)) out[out.length] = { t: 't', v: o };
                         }
                         break;
                     /* Numbers */
@@ -1095,7 +1095,7 @@ var XLSX = {};
                         if (dt != null) {
                             o = c;
                             while ((c = fmt.charAt(++i)) === "0") o += c;
-                            out[out.length] = {t: 's', v: o};
+                            out[out.length] = { t: 's', v: o };
                             break;
                         }
                     /* falls through */
@@ -1103,22 +1103,22 @@ var XLSX = {};
                     case '#':
                         o = c;
                         while ((++i < fmt.length && "0#?.,E+-%".indexOf(c = fmt.charAt(i)) > -1) || (c == '\\' && fmt.charAt(i + 1) == "-" && i < fmt.length - 2 && "0#".indexOf(fmt.charAt(i + 2)) > -1)) o += c;
-                        out[out.length] = {t: 'n', v: o};
+                        out[out.length] = { t: 'n', v: o };
                         break;
                     case '?':
                         o = c;
                         while (fmt.charAt(++i) === c) o += c;
-                        q = {t: c, v: o};
+                        q = { t: c, v: o };
                         out[out.length] = q;
                         lst = c;
                         break;
                     case '*':
                         ++i;
-                        if (fmt.charAt(i) == ' ' || fmt.charAt(i) == '*') ++i;
+                        if (fmt.charAt(i) == ' ' || fmt.charAt(i) == '*')++i;
                         break; // **
                     case '(':
                     case ')':
-                        out[out.length] = {t: (flen === 1 ? 't' : c), v: c};
+                        out[out.length] = { t: (flen === 1 ? 't' : c), v: c };
                         ++i;
                         break;
                     case '1':
@@ -1132,15 +1132,15 @@ var XLSX = {};
                     case '9':
                         o = c;
                         while (i < fmt.length && "0123456789".indexOf(fmt.charAt(++i)) > -1) o += fmt.charAt(i);
-                        out[out.length] = {t: 'D', v: o};
+                        out[out.length] = { t: 'D', v: o };
                         break;
                     case ' ':
-                        out[out.length] = {t: c, v: c};
+                        out[out.length] = { t: c, v: c };
                         ++i;
                         break;
                     default:
                         if (",$-+/():!^&'~{}<>=€acfijklopqrtuvwxz".indexOf(c) === -1) throw new Error('unrecognized character ' + c + ' in ' + fmt);
-                        out[out.length] = {t: 't', v: c};
+                        out[out.length] = { t: 't', v: c };
                         ++i;
                         break;
                 }
@@ -1243,7 +1243,7 @@ var XLSX = {};
                             (c === 't' && (out[jj].v === '/' || out[jj].v === ' ' && out[jj + 1] != null && out[jj + 1].t == '?'))
                         )) {
                             out[i].v += out[jj].v;
-                            out[jj] = {v: "", t: ";"};
+                            out[jj] = { v: "", t: ";" };
                             ++jj;
                         }
                         nstr += out[i].v;
@@ -1363,7 +1363,7 @@ var XLSX = {};
         function choose_fmt(f, v) {
             var fmt = split_fmt(f);
             var l = fmt.length, lat = fmt[l - 1].indexOf("@");
-            if (l < 4 && lat > -1) --l;
+            if (l < 4 && lat > -1)--l;
             if (fmt.length > 4) throw new Error("cannot find right format for |" + fmt.join("|") + "|");
             if (typeof v !== "number") return [4, fmt.length === 4 || lat > -1 ? fmt[fmt.length - 1] : "@"];
             switch (fmt.length) {
@@ -1492,36 +1492,36 @@ var XLSX = {};
 
             check_shifts(blob, mver);
 
-// Number of Directory Sectors
+            // Number of Directory Sectors
             var nds = blob.read_shift(4, 'i');
             if (mver === 3 && nds !== 0) throw new Error('# Directory Sectors: Expected 0 saw ' + nds);
 
-// Number of FAT Sectors
-//var nfs = blob.read_shift(4, 'i');
+            // Number of FAT Sectors
+            //var nfs = blob.read_shift(4, 'i');
             blob.l += 4;
 
-// First Directory Sector Location
+            // First Directory Sector Location
             dir_start = blob.read_shift(4, 'i');
 
-// Transaction Signature
+            // Transaction Signature
             blob.l += 4;
 
-// Mini Stream Cutoff Size
+            // Mini Stream Cutoff Size
             blob.chk('00100000', 'Mini Stream Cutoff Size: ');
 
-// First Mini FAT Sector Location
+            // First Mini FAT Sector Location
             minifat_start = blob.read_shift(4, 'i');
 
-// Number of Mini FAT Sectors
+            // Number of Mini FAT Sectors
             nmfs = blob.read_shift(4, 'i');
 
-// First DIFAT sector location
+            // First DIFAT sector location
             difat_start = blob.read_shift(4, 'i');
 
-// Number of DIFAT Sectors
+            // Number of DIFAT Sectors
             ndfs = blob.read_shift(4, 'i');
 
-// Grab FAT Sector Locations
+            // Grab FAT Sector Locations
             for (var q, j = 0; j < 109; ++j) { /* 109 = (512 - blob.l)>>>2; */
                 q = blob.read_shift(4, 'i');
                 if (q < 0) break;
@@ -1555,7 +1555,7 @@ var XLSX = {};
             var find_path = make_find_path(FullPaths, Paths, FileIndex, files, root_name);
 
             return {
-                raw: {header: header, sectors: sectors},
+                raw: { header: header, sectors: sectors },
                 FileIndex: FileIndex,
                 FullPaths: FullPaths,
                 FullPathDir: FullPathDir,
@@ -1719,7 +1719,7 @@ var XLSX = {};
                 if (!sectors[addr]) break;
                 j = __readInt32LE(sectors[addr], jj);
             }
-            return {nodes: buf, data: __toBuffer([buf_chain])};
+            return { nodes: buf, data: __toBuffer([buf_chain]) };
         }
 
         /** Chase down the sector linked lists */
@@ -1743,7 +1743,7 @@ var XLSX = {};
                     if (!sectors[addr]) break;
                     j = __readInt32LE(sectors[addr], jj);
                 }
-                sector_list[k] = {nodes: buf, data: __toBuffer([buf_chain])};
+                sector_list[k] = { nodes: buf, data: __toBuffer([buf_chain]) };
             }
             return sector_list;
         }
@@ -1806,7 +1806,7 @@ var XLSX = {};
         }
 
         function read_date(blob, offset) {
-            return new Date(( ( (__readUInt32LE(blob, offset + 4) / 1e7) * Math.pow(2, 32) + __readUInt32LE(blob, offset) / 1e7 ) - 11644473600) * 1000);
+            return new Date((((__readUInt32LE(blob, offset + 4) / 1e7) * Math.pow(2, 32) + __readUInt32LE(blob, offset) / 1e7) - 11644473600) * 1000);
         }
 
         var fs;
@@ -1831,7 +1831,7 @@ var XLSX = {};
         /** CFB Constants */
         var MSSZ = 64;
         /* Mini Sector Size = 1<<6 */
-//var MSCSZ = 4096; /* Mini Stream Cutoff Size */
+        //var MSCSZ = 4096; /* Mini Stream Cutoff Size */
         /* 2.1 Compound File Sector Numbers and Types */
         var ENDOFCHAIN = -2;
         /* 2.2 Compound File Header */
@@ -2138,9 +2138,9 @@ var XLSX = {};
         '&amp;': '&'
     };
     var rencoding = evert(encodings);
-//var rencstr = "&<>'\"".split("");
+    //var rencstr = "&<>'\"".split("");
 
-// TODO: CP remap (need to read file version to determine OS)
+    // TODO: CP remap (need to read file version to determine OS)
     var unescapexml = (function () {
         /* 22.4.2.4 bstr (Basic String) */
         var encregex = /&(?:quot|apos|gt|lt|amp|#x?([\da-fA-F]+));/g, coderegex = /_x([\da-fA-F]{4})_/g;
@@ -2277,7 +2277,7 @@ var XLSX = {};
         if (utf8read(corpus) == utf8readc(corpus)) utf8read = utf8readc;
     }
 
-// matches <foo>...</foo> extracts content
+    // matches <foo>...</foo> extracts content
     var matchtag = (function () {
         var mtcache = ({});
         return function matchtag(f, g) {
@@ -2291,7 +2291,7 @@ var XLSX = {};
         var vt_cache = {};
         return function vt_regex(bt) {
             if (vt_cache[bt] !== undefined) return vt_cache[bt];
-            return (vt_cache[bt] = new RegExp("<(?:vt:)?" + bt + ">(.*?)</(?:vt:)?" + bt + ">", 'g') );
+            return (vt_cache[bt] = new RegExp("<(?:vt:)?" + bt + ">(.*?)</(?:vt:)?" + bt + ">", 'g'));
         };
     })();
     var vtvregex = /<\/?(?:vt:)?variant>/g, vtmregex = /<(?:vt:)([^>]*)>(.*)</;
@@ -2304,7 +2304,7 @@ var XLSX = {};
         var res = [];
         matches.forEach(function (x) {
             var v = x.replace(vtvregex, "").match(vtmregex);
-            res.push({v: utf8read(v[2]), t: v[1]});
+            res.push({ v: utf8read(v[2]), t: v[1] });
         });
         return res;
     }
@@ -2730,18 +2730,18 @@ var XLSX = {};
         } else if (f === 'sbcs') {
             for (i = 0; i != val.length; ++i) this[this.l + i] = val.charCodeAt(i) & 0xFF;
             size = val.length;
-        } else  switch (t) {
-            case  1:
+        } else switch (t) {
+            case 1:
                 size = 1;
                 this[this.l] = val & 0xFF;
                 break;
-            case  2:
+            case 2:
                 size = 2;
                 this[this.l] = val & 0xFF;
                 val >>>= 8;
                 this[this.l + 1] = val & 0xFF;
                 break;
-            case  3:
+            case 3:
                 size = 3;
                 this[this.l] = val & 0xFF;
                 val >>>= 8;
@@ -2749,11 +2749,11 @@ var XLSX = {};
                 val >>>= 8;
                 this[this.l + 2] = val & 0xFF;
                 break;
-            case  4:
+            case 4:
                 size = 4;
                 __writeUInt32LE(this, val, this.l);
                 break;
-            case  8:
+            case 8:
                 size = 8;
                 if (f === 'f') {
                     write_double_le(this, val, this.l);
@@ -2858,7 +2858,7 @@ var XLSX = {};
             next(blksz);
         };
 
-        return ({next: next, push: push, end: end, _bufs: bufs});
+        return ({ next: next, push: push, end: end, _bufs: bufs });
     }
 
     function write_record(ba, type, payload, length) {
@@ -2866,9 +2866,9 @@ var XLSX = {};
         if (isNaN(t)) return; // TODO: throw something here?
         if (!length) length = XLSBRecordEnum[t].p || (payload || []).length || 0;
         l = 1 + (t >= 0x80 ? 1 : 0) + 1 + length;
-        if (length >= 0x80) ++l;
-        if (length >= 0x4000) ++l;
-        if (length >= 0x200000) ++l;
+        if (length >= 0x80)++l;
+        if (length >= 0x4000)++l;
+        if (length >= 0x200000)++l;
         var o = ba.next(l);
         if (t <= 0x7F) o.write_shift(1, t);
         else {
@@ -3021,7 +3021,7 @@ var XLSX = {};
 
     function decode_cell(cstr) {
         var splt = split_cell(cstr);
-        return {c: decode_col(splt[0]), r: decode_row(splt[1])};
+        return { c: decode_col(splt[0]), r: decode_row(splt[1]) };
     }
 
     function encode_cell(cell) {
@@ -3038,7 +3038,7 @@ var XLSX = {};
 
     function decode_range(range) {
         var x = range.split(":").map(decode_cell);
-        return {s: x[0], e: x[x.length - 1]};
+        return { s: x[0], e: x[x.length - 1] };
     }
 
     function encode_range(cs, ce) {
@@ -3051,7 +3051,7 @@ var XLSX = {};
     }
 
     function safe_decode_range(range) {
-        var o = {s: {c: 0, r: 0}, e: {c: 0, r: 0}};
+        var o = { s: { c: 0, r: 0 }, e: { c: 0, r: 0 } };
         var idx = 0, i = 0, cc = 0;
         var len = range.length;
         for (idx = 0; i < len; ++i) {
@@ -3111,18 +3111,18 @@ var XLSX = {};
         var n = opts && opts.sheet ? opts.sheet : "Sheet1";
         var sheets = {};
         sheets[n] = sheet;
-        return {SheetNames: [n], Sheets: sheets};
+        return { SheetNames: [n], Sheets: sheets };
     }
 
     function aoa_to_sheet(data, opts) {
         var o = opts || {};
         if (DENSE != null && o.dense == null) o.dense = DENSE;
         var ws = o.dense ? ([]) : ({});
-        var range = ({s: {c: 10000000, r: 10000000}, e: {c: 0, r: 0}});
+        var range = ({ s: { c: 10000000, r: 10000000 }, e: { c: 0, r: 0 } });
         for (var R = 0; R != data.length; ++R) {
             for (var C = 0; C != data[R].length; ++C) {
                 if (typeof data[R][C] === 'undefined') continue;
-                var cell = ({v: data[R][C]});
+                var cell = ({ v: data[R][C] });
                 if (Array.isArray(cell.v)) {
                     cell.f = data[R][C][1];
                     cell.v = cell.v[0];
@@ -3153,7 +3153,7 @@ var XLSX = {};
                     if (!ws[R]) ws[R] = [];
                     ws[R][C] = cell;
                 } else {
-                    var cell_ref = encode_cell(({c: C, r: R}));
+                    var cell_ref = encode_cell(({ c: C, r: R }));
                     ws[cell_ref] = cell;
                 }
             }
@@ -3187,7 +3187,7 @@ var XLSX = {};
 
     /* [MS-XLSB] 2.5.143 */
     function parse_StrRun(data, length) {
-        return {ich: data.read_shift(2), ifnt: data.read_shift(2)};
+        return { ich: data.read_shift(2), ifnt: data.read_shift(2) };
     }
 
     function write_StrRun(run, o) {
@@ -3203,14 +3203,14 @@ var XLSX = {};
         var flags = data.read_shift(1);
         var str = parse_XLWideString(data);
         var rgsStrRun = [];
-        var z = ({t: str, h: str});
+        var z = ({ t: str, h: str });
         if ((flags & 1) !== 0) { /* fRichStr */
             /* TODO: formatted string */
             var dwSizeStrRun = data.read_shift(4);
             for (var i = 0; i != dwSizeStrRun; ++i) rgsStrRun.push(parse_StrRun(data));
             z.r = rgsStrRun;
         }
-        else z.r = [{ich: 0, ifnt: 0}];
+        else z.r = [{ ich: 0, ifnt: 0 }];
         //if((flags & 2) !== 0) { /* fExtStr */
         //	/* TODO: phonetic string */
         //}
@@ -3243,7 +3243,7 @@ var XLSX = {};
         o.write_shift(1, 1);
         write_XLWideString(str.t, o);
         o.write_shift(4, 1);
-        write_StrRun({ich: 0, ifnt: 0}, o);
+        write_StrRun({ ich: 0, ifnt: 0 }, o);
         return _null ? o.slice(0, o.l) : o;
     }
 
@@ -3253,7 +3253,7 @@ var XLSX = {};
         var iStyleRef = data.read_shift(2);
         iStyleRef += data.read_shift(1) << 16;
         var fPhShow = data.read_shift(1);
-        return {c: col, iStyleRef: iStyleRef};
+        return { c: col, iStyleRef: iStyleRef };
     }
 
     function write_XLSBCell(cell, o) {
@@ -3324,7 +3324,7 @@ var XLSX = {};
 
     /* [MS-XLSB] 2.5.117 RfX */
     function parse_RfX(data) {
-        var cell = ({s: {}, e: {}});
+        var cell = ({ s: {}, e: {} });
         cell.s.r = data.read_shift(4);
         cell.e.r = data.read_shift(4);
         cell.s.c = data.read_shift(4);
@@ -3519,61 +3519,61 @@ var XLSX = {};
 
     /* [MS-OSHARED] 2.3.3.2.2.1 Document Summary Information PIDDSI */
     var DocSummaryPIDDSI = {
-        0x01: {n: 'CodePage', t: VT_I2},
-        0x02: {n: 'Category', t: VT_STRING},
-        0x03: {n: 'PresentationFormat', t: VT_STRING},
-        0x04: {n: 'ByteCount', t: VT_I4},
-        0x05: {n: 'LineCount', t: VT_I4},
-        0x06: {n: 'ParagraphCount', t: VT_I4},
-        0x07: {n: 'SlideCount', t: VT_I4},
-        0x08: {n: 'NoteCount', t: VT_I4},
-        0x09: {n: 'HiddenCount', t: VT_I4},
-        0x0a: {n: 'MultimediaClipCount', t: VT_I4},
-        0x0b: {n: 'Scale', t: VT_BOOL},
-        0x0c: {n: 'HeadingPair', t: VT_VECTOR | VT_VARIANT},
-        0x0d: {n: 'DocParts', t: VT_VECTOR | VT_LPSTR},
-        0x0e: {n: 'Manager', t: VT_STRING},
-        0x0f: {n: 'Company', t: VT_STRING},
-        0x10: {n: 'LinksDirty', t: VT_BOOL},
-        0x11: {n: 'CharacterCount', t: VT_I4},
-        0x13: {n: 'SharedDoc', t: VT_BOOL},
-        0x16: {n: 'HLinksChanged', t: VT_BOOL},
-        0x17: {n: 'AppVersion', t: VT_I4, p: 'version'},
-        0x1A: {n: 'ContentType', t: VT_STRING},
-        0x1B: {n: 'ContentStatus', t: VT_STRING},
-        0x1C: {n: 'Language', t: VT_STRING},
-        0x1D: {n: 'Version', t: VT_STRING},
+        0x01: { n: 'CodePage', t: VT_I2 },
+        0x02: { n: 'Category', t: VT_STRING },
+        0x03: { n: 'PresentationFormat', t: VT_STRING },
+        0x04: { n: 'ByteCount', t: VT_I4 },
+        0x05: { n: 'LineCount', t: VT_I4 },
+        0x06: { n: 'ParagraphCount', t: VT_I4 },
+        0x07: { n: 'SlideCount', t: VT_I4 },
+        0x08: { n: 'NoteCount', t: VT_I4 },
+        0x09: { n: 'HiddenCount', t: VT_I4 },
+        0x0a: { n: 'MultimediaClipCount', t: VT_I4 },
+        0x0b: { n: 'Scale', t: VT_BOOL },
+        0x0c: { n: 'HeadingPair', t: VT_VECTOR | VT_VARIANT },
+        0x0d: { n: 'DocParts', t: VT_VECTOR | VT_LPSTR },
+        0x0e: { n: 'Manager', t: VT_STRING },
+        0x0f: { n: 'Company', t: VT_STRING },
+        0x10: { n: 'LinksDirty', t: VT_BOOL },
+        0x11: { n: 'CharacterCount', t: VT_I4 },
+        0x13: { n: 'SharedDoc', t: VT_BOOL },
+        0x16: { n: 'HLinksChanged', t: VT_BOOL },
+        0x17: { n: 'AppVersion', t: VT_I4, p: 'version' },
+        0x1A: { n: 'ContentType', t: VT_STRING },
+        0x1B: { n: 'ContentStatus', t: VT_STRING },
+        0x1C: { n: 'Language', t: VT_STRING },
+        0x1D: { n: 'Version', t: VT_STRING },
         0xFF: {}
     };
 
     /* [MS-OSHARED] 2.3.3.2.1.1 Summary Information Property Set PIDSI */
     var SummaryPIDSI = {
-        0x01: {n: 'CodePage', t: VT_I2},
-        0x02: {n: 'Title', t: VT_STRING},
-        0x03: {n: 'Subject', t: VT_STRING},
-        0x04: {n: 'Author', t: VT_STRING},
-        0x05: {n: 'Keywords', t: VT_STRING},
-        0x06: {n: 'Comments', t: VT_STRING},
-        0x07: {n: 'Template', t: VT_STRING},
-        0x08: {n: 'LastAuthor', t: VT_STRING},
-        0x09: {n: 'RevNumber', t: VT_STRING},
-        0x0A: {n: 'EditTime', t: VT_FILETIME},
-        0x0B: {n: 'LastPrinted', t: VT_FILETIME},
-        0x0C: {n: 'CreatedDate', t: VT_FILETIME},
-        0x0D: {n: 'ModifiedDate', t: VT_FILETIME},
-        0x0E: {n: 'PageCount', t: VT_I4},
-        0x0F: {n: 'WordCount', t: VT_I4},
-        0x10: {n: 'CharCount', t: VT_I4},
-        0x11: {n: 'Thumbnail', t: VT_CF},
-        0x12: {n: 'ApplicationName', t: VT_LPSTR},
-        0x13: {n: 'DocumentSecurity', t: VT_I4},
+        0x01: { n: 'CodePage', t: VT_I2 },
+        0x02: { n: 'Title', t: VT_STRING },
+        0x03: { n: 'Subject', t: VT_STRING },
+        0x04: { n: 'Author', t: VT_STRING },
+        0x05: { n: 'Keywords', t: VT_STRING },
+        0x06: { n: 'Comments', t: VT_STRING },
+        0x07: { n: 'Template', t: VT_STRING },
+        0x08: { n: 'LastAuthor', t: VT_STRING },
+        0x09: { n: 'RevNumber', t: VT_STRING },
+        0x0A: { n: 'EditTime', t: VT_FILETIME },
+        0x0B: { n: 'LastPrinted', t: VT_FILETIME },
+        0x0C: { n: 'CreatedDate', t: VT_FILETIME },
+        0x0D: { n: 'ModifiedDate', t: VT_FILETIME },
+        0x0E: { n: 'PageCount', t: VT_I4 },
+        0x0F: { n: 'WordCount', t: VT_I4 },
+        0x10: { n: 'CharCount', t: VT_I4 },
+        0x11: { n: 'Thumbnail', t: VT_CF },
+        0x12: { n: 'ApplicationName', t: VT_LPSTR },
+        0x13: { n: 'DocumentSecurity', t: VT_I4 },
         0xFF: {}
     };
 
     /* [MS-OLEPS] 2.18 */
     var SpecialProperties = {
-        0x80000000: {n: 'Locale', t: VT_UI4},
-        0x80000003: {n: 'Behavior', t: VT_UI4},
+        0x80000000: { n: 'Locale', t: VT_UI4 },
+        0x80000003: { n: 'Behavior', t: VT_UI4 },
         0x72627262: {}
     };
 
@@ -4019,7 +4019,7 @@ var XLSX = {};
         ['pdf', 'application/pdf'],
         ['rels', type2ct.rels[0]]
     ].map(function (x) {
-        return writextag('Default', null, {'Extension': x[0], 'ContentType': x[1]});
+        return writextag('Default', null, { 'Extension': x[0], 'ContentType': x[1] });
     });
 
     function write_ct(ct, opts) {
@@ -4061,7 +4061,7 @@ var XLSX = {};
         f3('vba');
         f3('comments');
         f3('drawings');
-        ct.sheets.forEach(function(sheet, index){
+        ct.sheets.forEach(function (sheet, index) {
             o[o.length] = '<Override PartName="/xl/drawings/drawing' + (index + 1) + '.xml" ContentType="application/vnd.openxmlformats-officedocument.drawing+xml"/>';
         });
 
@@ -4139,14 +4139,19 @@ var XLSX = {};
             if (pos.type === 'twoCellAnchor') {
                 var from = pos.from || {}, to = pos.to || {},
                     fromCol = from.col || 0, toCol = to.col || 0,
-                    fromRow = from.row || 0, toRow = to.row || 0;
+                    fromRow = from.row || 0, toRow = to.row || 0,
+                    fromColOffset = from.colOffset || 0, toColOffset = to.colOffset || 0,
+                    fromRowOffset = from.rowOffset || 0, toRowOffset = to.rowOffset || 0;
 
-                var twoCell = '<xdr:from><xdr:col>' + fromCol + '</xdr:col><xdr:colOff>0</xdr:colOff><xdr:row>' + fromRow + '</xdr:row><xdr:rowOff>0</xdr:rowOff></xdr:from>';
-                twoCell += '<xdr:to><xdr:col>' + toCol + '</xdr:col><xdr:colOff>0</xdr:colOff><xdr:row>' + toRow + '</xdr:row><xdr:rowOff>0</xdr:rowOff></xdr:to>';
+                var size = image.size || {};
+                var extCx = size.width || 0, extCy = size.height || 0;
+
+                var twoCell = '<xdr:from><xdr:col>' + fromCol + '</xdr:col><xdr:colOff>' + fromColOffset + '</xdr:colOff><xdr:row>' + fromRow + '</xdr:row><xdr:rowOff>' + fromRowOffset + '</xdr:rowOff></xdr:from>';
+                twoCell += '<xdr:to><xdr:col>' + toCol + '</xdr:col><xdr:colOff>' + toColOffset + '</xdr:colOff><xdr:row>' + toRow + '</xdr:row><xdr:rowOff>' + toRowOffset + '</xdr:rowOff></xdr:to>';
                 twoCell += '<xdr:pic><xdr:nvPicPr><xdr:cNvPr id="' + rId + '" name="' + image.name + '">';
                 twoCell += '</xdr:cNvPr><xdr:cNvPicPr><a:picLocks noChangeAspect="1"/></xdr:cNvPicPr></xdr:nvPicPr>';
-                twoCell += '<xdr:blipFill><a:blip xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" r:embed="rId' + (i+1) + '"/>';
-                twoCell += '<a:stretch><a:fillRect/></a:stretch></xdr:blipFill><xdr:spPr><a:prstGeom prst="rect"><a:avLst/></a:prstGeom></xdr:spPr></xdr:pic><xdr:clientData/>';
+                twoCell += '<xdr:blipFill><a:blip xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" r:embed="rId' + (i + 1) + '"/>';
+                twoCell += '<a:stretch><a:fillRect/></a:stretch></xdr:blipFill><xdr:spPr><a:xfrm><a:off x="' + fromColOffset + '" y="' + fromRowOffset + '"/>' + (extCx || extCy) ? '<a:ext cx="" cy="" />' : '' + '</a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom></xdr:spPr></xdr:pic><xdr:clientData/>';
                 o[o.length] = (writextag('xdr:twoCellAnchor', twoCell, images[i].attrs));
             }
         }
@@ -4323,8 +4328,8 @@ var XLSX = {};
         if (!cp && !opts.Props) return o.join("");
 
         if (cp) {
-            if (cp.CreatedDate != null) cp_doit("dcterms:created", typeof cp.CreatedDate === "string" ? cp.CreatedDate : write_w3cdtf(cp.CreatedDate, opts.WTF), {"xsi:type": "dcterms:W3CDTF"}, o, p);
-            if (cp.ModifiedDate != null) cp_doit("dcterms:modified", typeof cp.ModifiedDate === "string" ? cp.ModifiedDate : write_w3cdtf(cp.ModifiedDate, opts.WTF), {"xsi:type": "dcterms:W3CDTF"}, o, p);
+            if (cp.CreatedDate != null) cp_doit("dcterms:created", typeof cp.CreatedDate === "string" ? cp.CreatedDate : write_w3cdtf(cp.CreatedDate, opts.WTF), { "xsi:type": "dcterms:W3CDTF" }, o, p);
+            if (cp.ModifiedDate != null) cp_doit("dcterms:modified", typeof cp.ModifiedDate === "string" ? cp.ModifiedDate : write_w3cdtf(cp.ModifiedDate, opts.WTF), { "xsi:type": "dcterms:W3CDTF" }, o, p);
         }
 
         for (var i = 0; i != CORE_PROPS.length; ++i) {
@@ -4457,7 +4462,7 @@ var XLSX = {};
         })));
         o[o.length] = (W('TitlesOfParts', W('vt:vector', cp.SheetNames.map(function (s) {
             return "<vt:lpstr>" + escapexml(s) + "</vt:lpstr>";
-        }).join(""), {size: cp.Worksheets, baseType: "lpstr"})));
+        }).join(""), { size: cp.Worksheets, baseType: "lpstr" })));
         if (o.length > 2) {
             o[o.length] = ('</Properties>');
             o[1] = o[1].replace("/>", ">");
@@ -4618,7 +4623,7 @@ var XLSX = {};
             else if (m instanceof Date) m = new Date(m).toISOString().replace(/\.\d*Z/, "");
             o.push(writetag(XLMLDocPropsMap[p[1]] || p[1], m));
         });
-        return writextag('DocumentProperties', o.join(""), {xmlns: XLMLNS.o});
+        return writextag('DocumentProperties', o.join(""), { xmlns: XLMLNS.o });
     }
 
     function xlml_write_custprops(Props, Custprops, opts) {
@@ -4642,7 +4647,7 @@ var XLSX = {};
                 m = m ? "1" : "0";
             }
             else m = String(m);
-            o.push(writextag(escapexmltag(k), m, {"dt:dt": t}));
+            o.push(writextag(escapexmltag(k), m, { "dt:dt": t }));
         });
         if (Custprops) keys(Custprops).forEach(function (k) {
             if (!Custprops.hasOwnProperty(k)) return;
@@ -4661,7 +4666,7 @@ var XLSX = {};
                 m = m.toISOString();
             }
             else m = String(m);
-            o.push(writextag(escapexmltag(k), m, {"dt:dt": t}));
+            o.push(writextag(escapexmltag(k), m, { "dt:dt": t }));
         });
         return '<' + T + ' xmlns="' + XLMLNS.o + '">' + o.join("") + '</' + T + '>';
     }
@@ -4789,47 +4794,47 @@ var XLSX = {};
             if (t !== type && VT_CUSTOM.indexOf(type) === -1) throw new Error('Expected type ' + type + ' saw ' + t);
         switch (type === VT_VARIANT ? t : type) {
             case 0x02 /*VT_I2*/
-            :
+                :
                 ret = blob.read_shift(2, 'i');
                 if (!opts.raw) blob.l += 2;
                 return ret;
             case 0x03 /*VT_I4*/
-            :
+                :
                 ret = blob.read_shift(4, 'i');
                 return ret;
             case 0x0B /*VT_BOOL*/
-            :
+                :
                 return blob.read_shift(4) !== 0x0;
             case 0x13 /*VT_UI4*/
-            :
+                :
                 ret = blob.read_shift(4);
                 return ret;
             case 0x1E /*VT_LPSTR*/
-            :
+                :
                 return parse_lpstr(blob, t, 4).replace(chr0, '');
             case 0x1F /*VT_LPWSTR*/
-            :
+                :
                 return parse_lpwstr(blob);
             case 0x40 /*VT_FILETIME*/
-            :
+                :
                 return parse_FILETIME(blob);
             case 0x41 /*VT_BLOB*/
-            :
+                :
                 return parse_BLOB(blob);
             case 0x47 /*VT_CF*/
-            :
+                :
                 return parse_ClipboardData(blob);
             case 0x50 /*VT_STRING*/
-            :
+                :
                 return parse_VtString(blob, t, !opts.raw && 4).replace(chr0, '');
             case 0x51 /*VT_USTR*/
-            :
+                :
                 return parse_VtUnalignedString(blob, t, 4).replace(chr0, '');
             case 0x100C /*VT_VECTOR|VT_VARIANT*/
-            :
+                :
                 return parse_VtVecHeadingPair(blob);
             case 0x101E /*VT_LPSTR*/
-            :
+                :
                 return parse_VtVecUnalignedLpstr(blob);
             default:
                 throw new Error("TypedPropertyValue unrecognized type " + type + " " + t);
@@ -4867,21 +4872,21 @@ var XLSX = {};
                 var fail = true;
                 if (i > 0 && PIDSI) switch (PIDSI[Props[i - 1][0]].t) {
                     case 0x02 /*VT_I2*/
-                    :
+                        :
                         if (blob.l + 2 === Props[i][1]) {
                             blob.l += 2;
                             fail = false;
                         }
                         break;
                     case 0x50 /*VT_STRING*/
-                    :
+                        :
                         if (blob.l <= Props[i][1]) {
                             blob.l = Props[i][1];
                             fail = false;
                         }
                         break;
                     case 0x100C /*VT_VECTOR|VT_VARIANT*/
-                    :
+                        :
                         if (blob.l <= Props[i][1]) {
                             blob.l = Props[i][1];
                             fail = false;
@@ -4896,7 +4901,7 @@ var XLSX = {};
             }
             if (PIDSI) {
                 var piddsi = PIDSI[Props[i][0]];
-                PropH[piddsi.n] = parse_TypedPropertyValue(blob, piddsi.t, {raw: true});
+                PropH[piddsi.n] = parse_TypedPropertyValue(blob, piddsi.t, { raw: true });
                 if (piddsi.p === 'version') PropH[piddsi.n] = String(PropH[piddsi.n] >> 16) + "." + String(PropH[piddsi.n] & 0xFFFF);
                 if (piddsi.n == "CodePage") switch (PropH[piddsi.n]) {
                     case 0:
@@ -4951,42 +4956,42 @@ var XLSX = {};
                     /* [MS-OSHARED] 2.3.3.2.3.1.2 + PROPVARIANT */
                     switch (blob[blob.l]) {
                         case 0x41 /*VT_BLOB*/
-                        :
+                            :
                             blob.l += 4;
                             val = parse_BLOB(blob);
                             break;
                         case 0x1E /*VT_LPSTR*/
-                        :
+                            :
                             blob.l += 4;
                             val = parse_VtString(blob, blob[blob.l - 4]);
                             break;
                         case 0x1F /*VT_LPWSTR*/
-                        :
+                            :
                             blob.l += 4;
                             val = parse_VtString(blob, blob[blob.l - 4]);
                             break;
                         case 0x03 /*VT_I4*/
-                        :
+                            :
                             blob.l += 4;
                             val = blob.read_shift(4, 'i');
                             break;
                         case 0x13 /*VT_UI4*/
-                        :
+                            :
                             blob.l += 4;
                             val = blob.read_shift(4);
                             break;
                         case 0x05 /*VT_R8*/
-                        :
+                            :
                             blob.l += 4;
                             val = blob.read_shift(8, 'f');
                             break;
                         case 0x0B /*VT_BOOL*/
-                        :
+                            :
                             blob.l += 4;
                             val = parsebool(blob, 4);
                             break;
                         case 0x40 /*VT_FILETIME*/
-                        :
+                            :
                             blob.l += 4;
                             val = parseDate(parse_FILETIME(blob));
                             break;
@@ -5025,7 +5030,7 @@ var XLSX = {};
         }
         var PSet0 = parse_PropertySet(blob, PIDSI);
 
-        var rval = ({SystemIdentifier: SystemIdentifier});
+        var rval = ({ SystemIdentifier: SystemIdentifier });
         for (var y in PSet0) rval[y] = PSet0[y];
         //rval.blob = blob;
         rval.FMTID = FMTID0;
@@ -5233,7 +5238,7 @@ var XLSX = {};
         blob.l = end;
         var target = (targetFrameName || moniker || oleMoniker);
         if (location) target += "#" + location;
-        return {Target: target};
+        return { Target: target };
     };
 
     /* 2.5.178 LongRGBA */
@@ -5257,7 +5262,7 @@ var XLSX = {};
         var rw = blob.read_shift(2); // 0-indexed
         var col = blob.read_shift(2);
         var ixfe = blob.read_shift(2);
-        return ({r: rw, c: col, ixfe: ixfe});
+        return ({ r: rw, c: col, ixfe: ixfe });
     }
 
     /* 2.5.134 */
@@ -5265,7 +5270,7 @@ var XLSX = {};
         var rt = blob.read_shift(2);
         var flags = blob.read_shift(2); // TODO: parse these flags
         blob.l += 8;
-        return {type: rt, flags: flags};
+        return { type: rt, flags: flags };
     }
 
 
@@ -5274,7 +5279,7 @@ var XLSX = {};
     }
 
     /* 2.5.158 */
-//var HIDEOBJENUM = ['SHOWALL', 'SHOWPLACEHOLDER', 'HIDEALL'];
+    //var HIDEOBJENUM = ['SHOWALL', 'SHOWPLACEHOLDER', 'HIDEALL'];
     var parse_HideObjEnum = parseuint16;
 
     /* 2.5.344 */
@@ -5309,7 +5314,7 @@ var XLSX = {};
         var rwLast = blob.read_shift(2);
         var colFirst = blob.read_shift(2);
         var colLast = blob.read_shift(2);
-        return {s: {c: colFirst, r: rwFirst}, e: {c: colLast, r: rwLast}};
+        return { s: { c: colFirst, r: rwFirst }, e: { c: colLast, r: rwLast } };
     }
 
     /* 2.5.211 */
@@ -5318,7 +5323,7 @@ var XLSX = {};
         var rwLast = blob.read_shift(2);
         var colFirst = blob.read_shift(1);
         var colLast = blob.read_shift(1);
-        return {s: {c: colFirst, r: rwFirst}, e: {c: colLast, r: rwLast}};
+        return { s: { c: colFirst, r: rwFirst }, e: { c: colLast, r: rwLast } };
     }
 
     /* 2.5.207 */
@@ -5404,7 +5409,7 @@ var XLSX = {};
 
     /* 2.4.21 */
     function parse_BOF(blob, length) {
-        var o = {BIFFVer: 0, dt: 0};
+        var o = { BIFFVer: 0, dt: 0 };
         o.BIFFVer = blob.read_shift(2);
         length -= 2;
         if (length >= 2) {
@@ -5470,7 +5475,7 @@ var XLSX = {};
         }
         var name = parse_ShortXLUnicodeString(blob, 0, opts);
         if (name.length === 0) name = "Sheet1";
-        return {pos: pos, hs: hidden, dt: dt, name: name};
+        return { pos: pos, hs: hidden, dt: dt, name: name };
     }
 
     /* 2.4.265 TODO */
@@ -5541,7 +5546,7 @@ var XLSX = {};
             f = 1 - (miyRw >> 15);
             miyRw &= 0x7fff;
         }
-        var fl = {Unsynced: f & 1, DyZero: (f & 2) >> 1, ExAsc: (f & 4) >> 2, ExDsc: (f & 8) >> 3};
+        var fl = { Unsynced: f & 1, DyZero: (f & 2) >> 1, ExAsc: (f & 4) >> 2, ExDsc: (f & 8) >> 3 };
         return [fl, miyRw];
     }
 
@@ -5611,14 +5616,14 @@ var XLSX = {};
         var r = blob.read_shift(w), R = blob.read_shift(w);
         var c = blob.read_shift(2), C = blob.read_shift(2);
         blob.l = end;
-        return {s: {r: r, c: c}, e: {r: R, c: C}};
+        return { s: { r: r, c: c }, e: { r: R, c: C } };
     }
 
     /* 2.4.220 */
     function parse_RK(blob, length) {
         var rw = blob.read_shift(2), col = blob.read_shift(2);
         var rkrec = parse_RkRec(blob);
-        return {r: rw, c: col, ixfe: rkrec[0], rknum: rkrec[1]};
+        return { r: rw, c: col, ixfe: rkrec[0], rknum: rkrec[1] };
     }
 
     /* 2.4.175 */
@@ -5630,7 +5635,7 @@ var XLSX = {};
         if (blob.l !== target) throw new Error("MulRK read error");
         var lastcol = blob.read_shift(2);
         if (rkrecs.length != lastcol - col + 1) throw new Error("MulRK length mismatch");
-        return {r: rw, c: col, C: lastcol, rkrec: rkrecs};
+        return { r: rw, c: col, C: lastcol, rkrec: rkrecs };
     }
 
     /* 2.4.174 */
@@ -5642,7 +5647,7 @@ var XLSX = {};
         if (blob.l !== target) throw new Error("MulBlank read error");
         var lastcol = blob.read_shift(2);
         if (ixfes.length != lastcol - col + 1) throw new Error("MulBlank length mismatch");
-        return {r: rw, c: col, C: lastcol, ixfe: ixfes};
+        return { r: rw, c: col, C: lastcol, ixfe: ixfes };
     }
 
     /* 2.5.20 2.5.249 TODO: interpret values here */
@@ -5720,7 +5725,7 @@ var XLSX = {};
     /* 2.4.24 */
     function parse_BoolErr(blob, length, opts) {
         var cell = parse_XLSCell(blob, 6);
-        if (opts.biff == 2) ++blob.l;
+        if (opts.biff == 2)++blob.l;
         var val = parse_Bes(blob, 2);
         cell.val = val;
         cell.t = (val === true || val === false) ? 'b' : 'e';
@@ -5784,7 +5789,7 @@ var XLSX = {};
         }
         var name = parse_XLUnicodeStringNoCch(blob, cch, opts);
         var npflen = target - blob.l;
-        if (opts && opts.biff == 2) --npflen;
+        if (opts && opts.biff == 2)--npflen;
         var rgce = target == blob.l || cce == 0 ? [] : parse_NameParsedFormula(blob, npflen, opts, cce);
         return {
             chKey: chKey,
@@ -5862,7 +5867,7 @@ var XLSX = {};
         var flags = blob.read_shift(2), idObj = blob.read_shift(2);
         var stAuthor = parse_XLUnicodeString2(blob, 0, opts);
         if (opts.biff < 8) blob.read_shift(1);
-        return [{r: row, c: col}, stAuthor, idObj, flags];
+        return [{ r: row, c: col }, stAuthor, idObj, flags];
     }
 
     /* 2.4.179 */
@@ -5884,7 +5889,7 @@ var XLSX = {};
         if (opts && opts.biff < 8) return parse_BIFF5Obj(blob, length, opts);
         var cmo = parse_FtCmo(blob, 22); // id, ot, flags
         var fts = parse_FtArray(blob, length - 22, cmo[1]);
-        return {cmo: cmo, ft: fts};
+        return { cmo: cmo, ft: fts };
     }
 
     /* from older spec */
@@ -5901,7 +5906,7 @@ var XLSX = {};
         var cchName = blob.read_shift(1);
         blob.l += cchName; // TODO: stName
         blob.l = tgt; // TODO: fmla
-        return {fmt: cf};
+        return { fmt: cf };
     };
 
     function parse_BIFF5Obj(blob, length, opts) {
@@ -5922,7 +5927,7 @@ var XLSX = {};
         length -= 36;
         var fts = [];
         fts.push((parse_BIFF5OT[ot] || parsenoop)(blob, length, opts));
-        return {cmo: [id, ot, grbit], ft: fts};
+        return { cmo: [id, ot, grbit], ft: fts };
     }
 
     /* 2.4.329 TODO: parse properly */
@@ -5931,7 +5936,7 @@ var XLSX = {};
         var texts = "";
         try {
             blob.l += 4;
-            var ot = (opts.lastobj || {cmo: [0, 0]}).cmo[1];
+            var ot = (opts.lastobj || { cmo: [0, 0] }).cmo[1];
             var controlInfo;
             if ([0, 5, 7, 11, 12, 14].indexOf(ot) == -1) blob.l += 6;
             else controlInfo = parse_ControlInfo(blob, 6, opts);
@@ -5955,16 +5960,16 @@ var XLSX = {};
 
             blob.l = s + length;
             /* 2.5.272 TxORuns */
-//	var rgTxoRuns = [];
-//	for(var j = 0; j != cbRuns/8-1; ++j) blob.l += 8;
-//	var cchText2 = blob.read_shift(2);
-//	if(cchText2 !== cchText) throw new Error("TxOLastRun mismatch: " + cchText2 + " " + cchText);
-//	blob.l += 6;
-//	if(s + length != blob.l) throw new Error("TxO " + (s + length) + ", at " + blob.l);
-            return {t: texts};
+            //	var rgTxoRuns = [];
+            //	for(var j = 0; j != cbRuns/8-1; ++j) blob.l += 8;
+            //	var cchText2 = blob.read_shift(2);
+            //	if(cchText2 !== cchText) throw new Error("TxOLastRun mismatch: " + cchText2 + " " + cchText);
+            //	blob.l += 6;
+            //	if(s + length != blob.l) throw new Error("TxO " + (s + length) + ", at " + blob.l);
+            return { t: texts };
         } catch (e) {
             blob.l = s + length;
-            return {t: texts};
+            return { t: texts };
         }
     }
 
@@ -6016,7 +6021,7 @@ var XLSX = {};
     /* 2.4.354 */
     function parse_XFCRC(blob, length) {
         blob.l += 2;
-        var o = {cxfs: 0, crc: 0};
+        var o = { cxfs: 0, crc: 0 };
         o.cxfs = blob.read_shift(2);
         o.crc = blob.read_shift(4);
         return o;
@@ -6033,7 +6038,7 @@ var XLSX = {};
         var ixfe = blob.read_shift(w);
         var flags = blob.read_shift(2);
         if (w == 2) blob.l += 2;
-        return {s: colFirst, e: colLast, w: coldx, ixfe: ixfe, flags: flags};
+        return { s: colFirst, e: colLast, w: coldx, ixfe: ixfe, flags: flags };
     }
 
     /* 2.4.257 */
@@ -6048,7 +6053,7 @@ var XLSX = {};
 
     /* 2.4.261 */
     function parse_ShtProps(blob, length, opts) {
-        var def = {area: false};
+        var def = { area: false };
         if (opts.biff != 5) {
             blob.l += length;
             return def;
@@ -6424,7 +6429,7 @@ var XLSX = {};
         var cf = blob.read_shift(2);
         var env = blob.read_shift(2);
         var lcb = blob.read_shift(4);
-        var o = {fmt: cf, env: env, len: lcb, data: blob.slice(blob.l, blob.l + lcb)};
+        var o = { fmt: cf, env: env, len: lcb, data: blob.slice(blob.l, blob.l + lcb) };
         blob.l += lcb;
         return o;
     }
@@ -6741,7 +6746,7 @@ var XLSX = {};
             catch (e) {
                 if (opts && opts.WTF) throw e;
             }
-            return ({SheetNames: [], Sheets: {}});
+            return ({ SheetNames: [], Sheets: {} });
         }
 
         return {
@@ -6817,7 +6822,7 @@ var XLSX = {};
                                 next_cell_format = null;
                                 break;
                             case 'E':
-                                var formula = rc_to_a1(record[rj].substr(1), {r: R, c: C});
+                                var formula = rc_to_a1(record[rj].substr(1), { r: R, c: C });
                                 arr[R][C] = [arr[R][C], formula];
                                 break;
                             default:
@@ -6854,7 +6859,7 @@ var XLSX = {};
                                 cw = record[rj].substr(1).split(" ");
                                 for (j = parseInt(cw[0], 10); j <= parseInt(cw[1], 10); ++j) {
                                     Mval = parseInt(cw[2], 10);
-                                    colinfo[j - 1] = Mval == 0 ? {hidden: true} : {wch: Mval};
+                                    colinfo[j - 1] = Mval == 0 ? { hidden: true } : { wch: Mval };
                                     process_col(colinfo[j - 1]);
                                 }
                                 break;
@@ -6904,7 +6909,7 @@ var XLSX = {};
             switch (cell.t) {
                 case 'n':
                     o += (cell.v || 0);
-                    if (cell.f && !cell.F) o += ";E" + a1_to_rc(cell.f, {r: R, c: C});
+                    if (cell.f && !cell.F) o += ";E" + a1_to_rc(cell.f, { r: R, c: C });
                     break;
                 case 'b':
                     o += cell.v ? "TRUE" : "FALSE";
@@ -6959,7 +6964,7 @@ var XLSX = {};
             preamble.push("B;Y" + (r.e.r - r.s.r + 1) + ";X" + (r.e.c - r.s.c + 1) + ";D" + [r.s.c, r.s.r, r.e.c, r.e.r].join(" "));
             for (var R = r.s.r; R <= r.e.r; ++R) {
                 for (var C = r.s.c; C <= r.e.c; ++C) {
-                    var coord = encode_cell({r: R, c: C});
+                    var coord = encode_cell({ r: R, c: C });
                     cell = dense ? (ws[R] || [])[C] : ws[coord];
                     if (!cell || cell.v == null && (!cell.f || cell.F)) continue;
                     o.push(write_ws_cell_sylk(cell, ws, R, C, opts));
@@ -7059,7 +7064,7 @@ var XLSX = {};
                 for (var R = r.s.r; R <= r.e.r; ++R) {
                     push_value(o, -1, 0, "BOT");
                     for (var C = r.s.c; C <= r.e.c; ++C) {
-                        var coord = encode_cell({r: R, c: C});
+                        var coord = encode_cell({ r: R, c: C });
                         cell = dense ? (ws[R] || [])[C] : ws[coord];
                         if (!cell) {
                             push_value(o, 1, 0, "");
@@ -7121,7 +7126,7 @@ var XLSX = {};
             if (!f || f.length === 0) return arr;
             var lines = f.split(/[\r\n]/);
             var L = lines.length - 1;
-            while (L >= 0 && lines[L].length === 0) --L;
+            while (L >= 0 && lines[L].length === 0)--L;
             var start = 10, idx = 0;
             var R = 0;
             for (; R <= L; ++R) {
@@ -7145,7 +7150,7 @@ var XLSX = {};
             var sep = "";
             if (DENSE != null && o.dense == null) o.dense = DENSE;
             var ws = o.dense ? ([]) : ({});
-            var range = ({s: {c: 0, r: 0}, e: {c: 0, r: 0}});
+            var range = ({ s: { c: 0, r: 0 }, e: { c: 0, r: 0 } });
 
             /* known sep */
             if (str.substr(0, 4) == "sep=" && str.charCodeAt(5) == 10) {
@@ -7196,11 +7201,11 @@ var XLSX = {};
                     if (!ws[R]) ws[R] = [];
                     ws[R][C] = cell;
                 }
-                else ws[encode_cell({c: C, r: R})] = cell;
+                else ws[encode_cell({ c: C, r: R })] = cell;
                 start = end + 1;
                 if (range.e.c < C) range.e.c = C;
                 if (range.e.r < R) range.e.r = R;
-                if (cc == sepcc) ++C; else {
+                if (cc == sepcc)++C; else {
                     C = 0;
                     ++R;
                 }
@@ -7263,7 +7268,7 @@ var XLSX = {};
             for (var R = r.s.r; R <= r.e.r; ++R) {
                 var oo = [];
                 for (var C = r.s.c; C <= r.e.c; ++C) {
-                    var coord = encode_cell({r: R, c: C});
+                    var coord = encode_cell({ r: R, c: C });
                     cell = dense ? (ws[R] || [])[C] : ws[coord];
                     if (!cell || cell.v == null) {
                         oo.push("          ");
@@ -7336,7 +7341,7 @@ var XLSX = {};
             var s = ((o.dense ? [] : {})), n = "Sheet1", sidx = 0;
             var sheets = {}, snames = [n];
 
-            var refguess = {s: {r: 0, c: 0}, e: {r: 0, c: 0}};
+            var refguess = { s: { r: 0, c: 0 }, e: { r: 0, c: 0 } };
 
             if (d[2] == 0x02) o.Enum = WK1Enum;
             else if (d[2] == 0x1a) o.Enum = WK3Enum;
@@ -7389,7 +7394,7 @@ var XLSX = {};
                             s["!ref"] = encode_range(refguess);
                             sheets[n] = s;
                             s = (o.dense ? [] : {});
-                            refguess = {s: {r: 0, c: 0}, e: {r: 0, c: 0}};
+                            refguess = { s: { r: 0, c: 0 }, e: { r: 0, c: 0 } };
                             sidx = val[3];
                             n = "Sheet" + (sidx + 1);
                             snames.push(n);
@@ -7405,11 +7410,11 @@ var XLSX = {};
 
             s["!ref"] = encode_range(refguess);
             sheets[n] = s;
-            return {SheetNames: snames, Sheets: sheets};
+            return { SheetNames: snames, Sheets: sheets };
         }
 
         function parse_RANGE(blob, length) {
-            var o = {s: {c: 0, r: 0}, e: {c: 0, r: 0}};
+            var o = { s: { c: 0, r: 0 }, e: { c: 0, r: 0 } };
             o.s.c = blob.read_shift(2);
             o.s.r = blob.read_shift(2);
             o.e.c = blob.read_shift(2);
@@ -7419,7 +7424,7 @@ var XLSX = {};
         }
 
         function parse_cell(blob, length, opts) {
-            var o = [{c: 0, r: 0}, {t: 'n', v: 0}, 0];
+            var o = [{ c: 0, r: 0 }, { t: 'n', v: 0 }, 0];
             if (opts.qpro && opts.vers != 0x5120) {
                 o[0].c = blob.read_shift(1);
                 blob.l++;
@@ -7474,7 +7479,7 @@ var XLSX = {};
         }
 
         function parse_cell_3(blob, length) {
-            var o = [{c: 0, r: 0}, {t: 'n', v: 0}, 0];
+            var o = [{ c: 0, r: 0 }, { t: 'n', v: 0 }, 0];
             o[0].r = blob.read_shift(2);
             o[3] = blob[blob.l++];
             o[0].c = blob[blob.l++];
@@ -7562,100 +7567,100 @@ var XLSX = {};
         }
 
         var WK1Enum = {
-            0x0000: {n: "BOF", f: parseuint16},
-            0x0001: {n: "EOF", f: parsenoop},
-            0x0002: {n: "CALCMODE", f: parsenoop},
-            0x0003: {n: "CALCORDER", f: parsenoop},
-            0x0004: {n: "SPLIT", f: parsenoop},
-            0x0005: {n: "SYNC", f: parsenoop},
-            0x0006: {n: "RANGE", f: parse_RANGE},
-            0x0007: {n: "WINDOW1", f: parsenoop},
-            0x0008: {n: "COLW1", f: parsenoop},
-            0x0009: {n: "WINTWO", f: parsenoop},
-            0x000A: {n: "COLW2", f: parsenoop},
-            0x000B: {n: "NAME", f: parsenoop},
-            0x000C: {n: "BLANK", f: parsenoop},
-            0x000D: {n: "INTEGER", f: parse_INTEGER},
-            0x000E: {n: "NUMBER", f: parse_NUMBER},
-            0x000F: {n: "LABEL", f: parse_LABEL},
-            0x0010: {n: "FORMULA", f: parse_FORMULA},
-            0x0018: {n: "TABLE", f: parsenoop},
-            0x0019: {n: "ORANGE", f: parsenoop},
-            0x001A: {n: "PRANGE", f: parsenoop},
-            0x001B: {n: "SRANGE", f: parsenoop},
-            0x001C: {n: "FRANGE", f: parsenoop},
-            0x001D: {n: "KRANGE1", f: parsenoop},
-            0x0020: {n: "HRANGE", f: parsenoop},
-            0x0023: {n: "KRANGE2", f: parsenoop},
-            0x0024: {n: "PROTEC", f: parsenoop},
-            0x0025: {n: "FOOTER", f: parsenoop},
-            0x0026: {n: "HEADER", f: parsenoop},
-            0x0027: {n: "SETUP", f: parsenoop},
-            0x0028: {n: "MARGINS", f: parsenoop},
-            0x0029: {n: "LABELFMT", f: parsenoop},
-            0x002A: {n: "TITLES", f: parsenoop},
-            0x002B: {n: "SHEETJS", f: parsenoop},
-            0x002D: {n: "GRAPH", f: parsenoop},
-            0x002E: {n: "NGRAPH", f: parsenoop},
-            0x002F: {n: "CALCCOUNT", f: parsenoop},
-            0x0030: {n: "UNFORMATTED", f: parsenoop},
-            0x0031: {n: "CURSORW12", f: parsenoop},
-            0x0032: {n: "WINDOW", f: parsenoop},
-            0x0033: {n: "STRING", f: parse_LABEL},
-            0x0037: {n: "PASSWORD", f: parsenoop},
-            0x0038: {n: "LOCKED", f: parsenoop},
-            0x003C: {n: "QUERY", f: parsenoop},
-            0x003D: {n: "QUERYNAME", f: parsenoop},
-            0x003E: {n: "PRINT", f: parsenoop},
-            0x003F: {n: "PRINTNAME", f: parsenoop},
-            0x0040: {n: "GRAPH2", f: parsenoop},
-            0x0041: {n: "GRAPHNAME", f: parsenoop},
-            0x0042: {n: "ZOOM", f: parsenoop},
-            0x0043: {n: "SYMSPLIT", f: parsenoop},
-            0x0044: {n: "NSROWS", f: parsenoop},
-            0x0045: {n: "NSCOLS", f: parsenoop},
-            0x0046: {n: "RULER", f: parsenoop},
-            0x0047: {n: "NNAME", f: parsenoop},
-            0x0048: {n: "ACOMM", f: parsenoop},
-            0x0049: {n: "AMACRO", f: parsenoop},
-            0x004A: {n: "PARSE", f: parsenoop},
-            0x00FF: {n: "", f: parsenoop}
+            0x0000: { n: "BOF", f: parseuint16 },
+            0x0001: { n: "EOF", f: parsenoop },
+            0x0002: { n: "CALCMODE", f: parsenoop },
+            0x0003: { n: "CALCORDER", f: parsenoop },
+            0x0004: { n: "SPLIT", f: parsenoop },
+            0x0005: { n: "SYNC", f: parsenoop },
+            0x0006: { n: "RANGE", f: parse_RANGE },
+            0x0007: { n: "WINDOW1", f: parsenoop },
+            0x0008: { n: "COLW1", f: parsenoop },
+            0x0009: { n: "WINTWO", f: parsenoop },
+            0x000A: { n: "COLW2", f: parsenoop },
+            0x000B: { n: "NAME", f: parsenoop },
+            0x000C: { n: "BLANK", f: parsenoop },
+            0x000D: { n: "INTEGER", f: parse_INTEGER },
+            0x000E: { n: "NUMBER", f: parse_NUMBER },
+            0x000F: { n: "LABEL", f: parse_LABEL },
+            0x0010: { n: "FORMULA", f: parse_FORMULA },
+            0x0018: { n: "TABLE", f: parsenoop },
+            0x0019: { n: "ORANGE", f: parsenoop },
+            0x001A: { n: "PRANGE", f: parsenoop },
+            0x001B: { n: "SRANGE", f: parsenoop },
+            0x001C: { n: "FRANGE", f: parsenoop },
+            0x001D: { n: "KRANGE1", f: parsenoop },
+            0x0020: { n: "HRANGE", f: parsenoop },
+            0x0023: { n: "KRANGE2", f: parsenoop },
+            0x0024: { n: "PROTEC", f: parsenoop },
+            0x0025: { n: "FOOTER", f: parsenoop },
+            0x0026: { n: "HEADER", f: parsenoop },
+            0x0027: { n: "SETUP", f: parsenoop },
+            0x0028: { n: "MARGINS", f: parsenoop },
+            0x0029: { n: "LABELFMT", f: parsenoop },
+            0x002A: { n: "TITLES", f: parsenoop },
+            0x002B: { n: "SHEETJS", f: parsenoop },
+            0x002D: { n: "GRAPH", f: parsenoop },
+            0x002E: { n: "NGRAPH", f: parsenoop },
+            0x002F: { n: "CALCCOUNT", f: parsenoop },
+            0x0030: { n: "UNFORMATTED", f: parsenoop },
+            0x0031: { n: "CURSORW12", f: parsenoop },
+            0x0032: { n: "WINDOW", f: parsenoop },
+            0x0033: { n: "STRING", f: parse_LABEL },
+            0x0037: { n: "PASSWORD", f: parsenoop },
+            0x0038: { n: "LOCKED", f: parsenoop },
+            0x003C: { n: "QUERY", f: parsenoop },
+            0x003D: { n: "QUERYNAME", f: parsenoop },
+            0x003E: { n: "PRINT", f: parsenoop },
+            0x003F: { n: "PRINTNAME", f: parsenoop },
+            0x0040: { n: "GRAPH2", f: parsenoop },
+            0x0041: { n: "GRAPHNAME", f: parsenoop },
+            0x0042: { n: "ZOOM", f: parsenoop },
+            0x0043: { n: "SYMSPLIT", f: parsenoop },
+            0x0044: { n: "NSROWS", f: parsenoop },
+            0x0045: { n: "NSCOLS", f: parsenoop },
+            0x0046: { n: "RULER", f: parsenoop },
+            0x0047: { n: "NNAME", f: parsenoop },
+            0x0048: { n: "ACOMM", f: parsenoop },
+            0x0049: { n: "AMACRO", f: parsenoop },
+            0x004A: { n: "PARSE", f: parsenoop },
+            0x00FF: { n: "", f: parsenoop }
         };
 
         var WK3Enum = {
-            0x0000: {n: "BOF", f: parsenoop},
-            0x0001: {n: "EOF", f: parsenoop},
-            0x0003: {n: "??", f: parsenoop},
-            0x0004: {n: "??", f: parsenoop},
-            0x0005: {n: "??", f: parsenoop},
-            0x0006: {n: "??", f: parsenoop},
-            0x0007: {n: "??", f: parsenoop},
-            0x0009: {n: "??", f: parsenoop},
-            0x000a: {n: "??", f: parsenoop},
-            0x000b: {n: "??", f: parsenoop},
-            0x000c: {n: "??", f: parsenoop},
-            0x000e: {n: "??", f: parsenoop},
-            0x000f: {n: "??", f: parsenoop},
-            0x0010: {n: "??", f: parsenoop},
-            0x0011: {n: "??", f: parsenoop},
-            0x0012: {n: "??", f: parsenoop},
-            0x0013: {n: "??", f: parsenoop},
-            0x0015: {n: "??", f: parsenoop},
-            0x0016: {n: "LABEL16", f: parse_LABEL_16},
-            0x0017: {n: "NUMBER17", f: parse_NUMBER_17},
-            0x0018: {n: "NUMBER18", f: parse_NUMBER_18},
-            0x0019: {n: "FORMULA19", f: parse_FORMULA_19},
-            0x001a: {n: "??", f: parsenoop},
-            0x001b: {n: "??", f: parsenoop},
-            0x001c: {n: "??", f: parsenoop},
-            0x001d: {n: "??", f: parsenoop},
-            0x001e: {n: "??", f: parsenoop},
-            0x001f: {n: "??", f: parsenoop},
-            0x0021: {n: "??", f: parsenoop},
-            0x0025: {n: "NUMBER25", f: parse_NUMBER_25},
-            0x0027: {n: "NUMBER27", f: parse_NUMBER_27},
-            0x0028: {n: "FORMULA28", f: parse_FORMULA_28},
-            0x00FF: {n: "", f: parsenoop}
+            0x0000: { n: "BOF", f: parsenoop },
+            0x0001: { n: "EOF", f: parsenoop },
+            0x0003: { n: "??", f: parsenoop },
+            0x0004: { n: "??", f: parsenoop },
+            0x0005: { n: "??", f: parsenoop },
+            0x0006: { n: "??", f: parsenoop },
+            0x0007: { n: "??", f: parsenoop },
+            0x0009: { n: "??", f: parsenoop },
+            0x000a: { n: "??", f: parsenoop },
+            0x000b: { n: "??", f: parsenoop },
+            0x000c: { n: "??", f: parsenoop },
+            0x000e: { n: "??", f: parsenoop },
+            0x000f: { n: "??", f: parsenoop },
+            0x0010: { n: "??", f: parsenoop },
+            0x0011: { n: "??", f: parsenoop },
+            0x0012: { n: "??", f: parsenoop },
+            0x0013: { n: "??", f: parsenoop },
+            0x0015: { n: "??", f: parsenoop },
+            0x0016: { n: "LABEL16", f: parse_LABEL_16 },
+            0x0017: { n: "NUMBER17", f: parse_NUMBER_17 },
+            0x0018: { n: "NUMBER18", f: parse_NUMBER_18 },
+            0x0019: { n: "FORMULA19", f: parse_FORMULA_19 },
+            0x001a: { n: "??", f: parsenoop },
+            0x001b: { n: "??", f: parsenoop },
+            0x001c: { n: "??", f: parsenoop },
+            0x001d: { n: "??", f: parsenoop },
+            0x001e: { n: "??", f: parsenoop },
+            0x001f: { n: "??", f: parsenoop },
+            0x0021: { n: "??", f: parsenoop },
+            0x0025: { n: "NUMBER25", f: parse_NUMBER_25 },
+            0x0027: { n: "NUMBER27", f: parse_NUMBER_27 },
+            0x0028: { n: "FORMULA28", f: parse_FORMULA_28 },
+            0x00FF: { n: "", f: parsenoop }
         };
         return {
             to_workbook: lotus_to_workbook
@@ -8170,7 +8175,7 @@ var XLSX = {};
         var tgt = blob.l + sz;
         var hdr = parse_EncryptionHeader(blob, sz);
         var verifier = parse_EncryptionVerifier(blob, blob.length - blob.l);
-        return {t: "Std", h: hdr, v: verifier};
+        return { t: "Std", h: hdr, v: verifier };
     }
 
     /* [MS-OFFCRYPTO] 2.3.4.6  EncryptionInfo Stream (Extensible Encryption) */
@@ -8322,7 +8327,7 @@ var XLSX = {};
 
     /* 2.5.343 */
     function parse_XORObfuscation(blob, length, opts, out) {
-        var o = ({key: parseuint16(blob), verificationBytes: parseuint16(blob)});
+        var o = ({ key: parseuint16(blob), verificationBytes: parseuint16(blob) });
         if (opts.password) o.verifier = crypto_CreatePasswordVerifier_Method1(opts.password);
         out.valid = o.verificationBytes === o.verifier;
         if (out.valid) out.insitu_decrypt = crypto_MakeXorDecryptor(opts.password);
@@ -8340,7 +8345,7 @@ var XLSX = {};
     }
 
     function parse_FilePass(blob, length, opts) {
-        var o = {Type: blob.read_shift(2)};
+        var o = { Type: blob.read_shift(2) };
         /* wEncryptionType */
         if (o.Type) parse_FilePassHeader(blob, length - 2, o);
         else parse_XORObfuscation(blob, length - 2, opts, o);
@@ -8436,7 +8441,7 @@ var XLSX = {};
     var DEF_MDW = 6, MAX_MDW = 15, MIN_MDW = 1, MDW = DEF_MDW;
 
     function width2px(width) {
-        return Math.floor(( width + (Math.round(128 / MDW)) / 256 ) * MDW);
+        return Math.floor((width + (Math.round(128 / MDW)) / 256) * MDW);
     }
 
     function px2char(px) {
@@ -8936,7 +8941,7 @@ var XLSX = {};
         });
         if (o.length === 1) return "";
         o[o.length] = ("</numFmts>");
-        o[0] = writextag('numFmts', null, {count: o.length - 2}).replace("/>", ">");
+        o[0] = writextag('numFmts', null, { count: o.length - 2 }).replace("/>", ">");
         return o.join("");
     }
 
@@ -9004,7 +9009,7 @@ var XLSX = {};
         });
         o[o.length] = ("</cellXfs>");
         if (o.length === 2) return "";
-        o[0] = writextag('cellXfs', null, {count: o.length - 2}).replace("/>", ">");
+        o[0] = writextag('cellXfs', null, { count: o.length - 2 }).replace("/>", ">");
         return o.join("");
     }
 
@@ -9201,9 +9206,9 @@ var XLSX = {};
         var j = 0;
         if (fls != 0x28) {
             /* TODO: custom FG Color */
-            write_BrtColor({auto: 1}, o);
+            write_BrtColor({ auto: 1 }, o);
             /* TODO: custom BG Color */
-            write_BrtColor({auto: 1}, o);
+            write_BrtColor({ auto: 1 }, o);
 
             for (; j < 12; ++j) o.write_shift(4, 0);
         } else {
@@ -9228,7 +9233,7 @@ var XLSX = {};
         var ixfeParent = data.read_shift(2);
         var ifmt = data.read_shift(2);
         parsenoop(data, length - 4);
-        return {ixfe: ixfeParent, ifmt: ifmt};
+        return { ixfe: ixfeParent, ifmt: ifmt };
     }
 
     function write_BrtXF(data, ixfeP, o) {
@@ -9380,7 +9385,7 @@ var XLSX = {};
         if (!NF) return;
         var cnt = 0;
         [[5, 8], [23, 26], [41, 44], [/*63*/57, /*66],[164,*/392]].forEach(function (r) {
-            for (var i = r[0]; i <= r[1]; ++i) if (NF[i] != null) ++cnt;
+            for (var i = r[0]; i <= r[1]; ++i) if (NF[i] != null)++cnt;
         });
 
         if (cnt == 0) return;
@@ -9398,7 +9403,7 @@ var XLSX = {};
         write_record(ba, "BrtBeginFonts", write_UInt32LE(cnt));
         write_record(ba, "BrtFont", write_BrtFont({
             sz: 12,
-            color: {theme: 1},
+            color: { theme: 1 },
             name: "Calibri",
             family: 2,
             scheme: "minor"
@@ -9412,8 +9417,8 @@ var XLSX = {};
 
         if (cnt == 0) return;
         write_record(ba, "BrtBeginFills", write_UInt32LE(cnt));
-        write_record(ba, "BrtFill", write_BrtFill({patternType: "none"}));
-        write_record(ba, "BrtFill", write_BrtFill({patternType: "gray125"}));
+        write_record(ba, "BrtFill", write_BrtFill({ patternType: "none" }));
+        write_record(ba, "BrtFill", write_BrtFill({ patternType: "gray125" }));
         /* 1*65431BrtFill */
         write_record(ba, "BrtEndFills");
     }
@@ -9882,7 +9887,7 @@ var XLSX = {};
         var cexts = blob.read_shift(2);
         var ext = [];
         while (cexts-- > 0) ext.push(parse_ExtProp(blob, end - blob.l));
-        return {ixfe: ixfe, ext: ext};
+        return { ixfe: ixfe, ext: ext };
     }
 
     /* xf is an XF, see parse_XFExt for xfext */
@@ -10020,11 +10025,11 @@ var XLSX = {};
             writextag("o:shapelayout", writextag("o:idmap", null, {
                 'v:ext': "edit",
                 'data': rId
-            }), {'v:ext': "edit"}),
+            }), { 'v:ext': "edit" }),
             writextag("v:shapetype", [
-                writextag("v:stroke", null, {joinstyle: "miter"}),
-                writextag("v:path", null, {gradientshapeok: "t", 'o:connecttype': "rect"})
-            ].join(""), {id: "_x0000_t202", 'o:spt': 202, coordsize: csize.join(","), path: bbox})
+                writextag("v:stroke", null, { joinstyle: "miter" }),
+                writextag("v:path", null, { gradientshapeok: "t", 'o:connecttype': "rect" })
+            ].join(""), { id: "_x0000_t202", 'o:spt': 202, coordsize: csize.join(","), path: bbox })
         ];
         while (_shapeid < rId * 1000) _shapeid += 1000;
 
@@ -10042,9 +10047,9 @@ var XLSX = {};
                 writextag('v:fill', writextag("o:fill", null, {
                     type: "gradientUnscaled",
                     'v:ext': "view"
-                }), {'color2': "#BEFF82", 'angle': "-180", 'type': "gradient"}),
-                writextag("v:shadow", null, {on: "t", 'obscured': "t"}),
-                writextag("v:path", null, {'o:connecttype': "none"}),
+                }), { 'color2': "#BEFF82", 'angle': "-180", 'type': "gradient" }),
+                writextag("v:shadow", null, { on: "t", 'obscured': "t" }),
+                writextag("v:path", null, { 'o:connecttype': "none" }),
                 '<v:textbox><div style="text-align:left"></div></v:textbox>',
                 '<x:ClientData ObjectType="Note">',
                 '<x:MoveWithCells/>',
@@ -10107,7 +10112,7 @@ var XLSX = {};
             }
 
             if (!cell.c) cell.c = [];
-            var o = ({a: comment.author, t: comment.t, r: comment.r});
+            var o = ({ a: comment.author, t: comment.t, r: comment.r });
             if (comment.h) o.h = comment.h;
             cell.c.push(o);
         });
@@ -10139,7 +10144,7 @@ var XLSX = {};
             var cell = decode_cell(y.ref);
             if (opts.sheetRows && opts.sheetRows <= cell.r) return;
             var textMatch = x.match(/<(?:\w+:)?text>([^\u2603]*)<\/(?:\w+:)?text>/);
-            var rt = !!textMatch && !!textMatch[1] && parse_si(textMatch[1]) || {r: "", t: "", h: ""};
+            var rt = !!textMatch && !!textMatch[1] && parse_si(textMatch[1]) || { r: "", t: "", h: "" };
             comment.r = rt.r;
             if (rt.r == "<t></t>") rt.t = rt.h = "";
             comment.t = rt.t.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
@@ -10149,7 +10154,7 @@ var XLSX = {};
         return commentList;
     }
 
-    var CMNT_XML_ROOT = writextag('comments', null, {'xmlns': XMLNS.main[0]});
+    var CMNT_XML_ROOT = writextag('comments', null, { 'xmlns': XMLNS.main[0] });
 
     function write_comments_xml(data, opts) {
         var o = [XML_HEADER, CMNT_XML_ROOT];
@@ -10284,7 +10289,7 @@ var XLSX = {};
             data.forEach(function (comment) {
                 comment[1].forEach(function (c) {
                     c.iauthor = iauthor.indexOf(c.a);
-                    var range = {s: decode_cell(comment[0]), e: decode_cell(comment[0])};
+                    var range = { s: decode_cell(comment[0]), e: decode_cell(comment[0]) };
                     write_record(ba, "BrtBeginComment", write_BrtBeginComment([range, c]));
                     if (c.t && c.t.length > 0) write_record(ba, "BrtCommentText", write_BrtCommentText(c));
                     write_record(ba, "BrtEndComment");
@@ -10302,25 +10307,25 @@ var XLSX = {};
 
     /* macro and dialog sheet stubs */
     function parse_ds_bin() {
-        return {'!type': 'dialog'};
+        return { '!type': 'dialog' };
     }
 
     function parse_ds_xml() {
-        return {'!type': 'dialog'};
+        return { '!type': 'dialog' };
     }
 
     function parse_ms_bin() {
-        return {'!type': 'macro'};
+        return { '!type': 'macro' };
     }
 
     function parse_ms_xml() {
-        return {'!type': 'macro'};
+        return { '!type': 'macro' };
     }
 
     /* TODO: it will be useful to parse the function str */
     var rc_to_a1 = (function () {
         var rcregex = /(^|[^A-Za-z])R(\[?)(-?\d+|)\]?C(\[?)(-?\d+|)\]?/g;
-        var rcbase = ({r: 0, c: 0});
+        var rcbase = ({ r: 0, c: 0 });
 
         function rcfunc($$, $1, $2, $3, $4, $5) {
             var R = $3.length > 0 ? parseInt($3, 10) | 0 : 0, C = $5.length > 0 ? parseInt($5, 10) | 0 : 0;
@@ -10360,7 +10365,7 @@ var XLSX = {};
 
     function shift_formula_xlsx(f, range, cell) {
         var r = decode_range(range), s = r.s, c = decode_cell(cell);
-        var delta = {r: c.r - s.r, c: c.c - s.c};
+        var delta = { r: c.r - s.r, c: c.c - s.c };
         return shift_formula_str(f, delta);
     }
 
@@ -10397,7 +10402,7 @@ var XLSX = {};
         var r = blob.read_shift(w), R = blob.read_shift(w);
         var c = parse_ColRelU(blob, 2);
         var C = parse_ColRelU(blob, 2);
-        return {s: {r: r, c: c[0], cRel: c[1], rRel: c[2]}, e: {r: R, c: C[0], cRel: C[1], rRel: C[2]}};
+        return { s: { r: r, c: c[0], cRel: c[1], rRel: c[2] }, e: { r: R, c: C[0], cRel: C[1], rRel: C[2] } };
     }
 
     /* BIFF 2-5 encodes flags in the row field */
@@ -10405,7 +10410,7 @@ var XLSX = {};
         var r = parse_ColRelU(blob, 2), R = parse_ColRelU(blob, 2);
         var c = blob.read_shift(1);
         var C = blob.read_shift(1);
-        return {s: {r: r[0], c: c, cRel: r[1], rRel: r[2]}, e: {r: R[0], c: C, cRel: R[1], rRel: R[2]}};
+        return { s: { r: r[0], c: c, cRel: r[1], rRel: r[2] }, e: { r: R[0], c: C, cRel: R[1], rRel: R[2] } };
     }
 
     /* 2.5.198.105 TODO */
@@ -10413,7 +10418,7 @@ var XLSX = {};
         var r = blob.read_shift(length == 12 ? 4 : 2), R = blob.read_shift(length == 12 ? 4 : 2);
         var c = parse_ColRelU(blob, 2);
         var C = parse_ColRelU(blob, 2);
-        return {s: {r: r, c: c[0], cRel: c[1], rRel: c[2]}, e: {r: R, c: C[0], cRel: C[1], rRel: C[2]}};
+        return { s: { r: r, c: c[0], cRel: c[1], rRel: c[2] }, e: { r: R, c: C[0], cRel: C[1], rRel: C[2] } };
     }
 
     /* 2.5.198.109 */
@@ -10421,13 +10426,13 @@ var XLSX = {};
         if (opts && opts.biff >= 2 && opts.biff <= 5) return parse_RgceLoc_BIFF2(blob, length, opts);
         var r = blob.read_shift(opts && opts.biff == 12 ? 4 : 2);
         var c = parse_ColRelU(blob, 2);
-        return {r: r, c: c[0], cRel: c[1], rRel: c[2]};
+        return { r: r, c: c[0], cRel: c[1], rRel: c[2] };
     }
 
     function parse_RgceLoc_BIFF2(blob, length, opts) {
         var r = parse_ColRelU(blob, 2);
         var c = blob.read_shift(1);
-        return {r: r[0], c: c, cRel: r[1], rRel: r[2]};
+        return { r: r[0], c: c, cRel: r[1], rRel: r[2] };
     }
 
     /* [MS-XLS] 2.5.198.111 TODO */
@@ -10441,7 +10446,7 @@ var XLSX = {};
         cl &= 0x3FFF;
         if (rRel == 1) while (r > 0x7FFFF) r -= 0x100000;
         if (cRel == 1) while (cl > 0x1FFF) cl = cl - 0x4000;
-        return {r: r, c: cl, cRel: cRel, rRel: rRel};
+        return { r: r, c: cl, cRel: cRel, rRel: rRel };
     }
 
     function parse_RgceLocRel_BIFF2(blob, length) {
@@ -10451,7 +10456,7 @@ var XLSX = {};
         rl &= 0x3FFF;
         if (rRel == 1 && rl >= 0x2000) rl = rl - 0x4000;
         if (cRel == 1 && c >= 0x80) c = c - 0x100;
-        return {r: rl, c: c, cRel: cRel, rRel: rRel};
+        return { r: rl, c: c, cRel: cRel, rRel: rRel };
     }
 
     /* Ptg Tokens */
@@ -10721,7 +10726,7 @@ var XLSX = {};
                 break;
             /* 2.5.192.117 */
             case 0x02: /* SerStr -- XLUnicodeString (<256 chars) */
-                val[1] = parse_XLUnicodeString2(blob, 0, {biff: biff > 0 && biff < 8 ? 2 : biff});
+                val[1] = parse_XLUnicodeString2(blob, 0, { biff: biff > 0 && biff < 8 ? 2 : biff });
                 break;
             // default: throw "Bad SerAr: " + val[0]; /* Unreachable */
         }
@@ -10882,52 +10887,52 @@ var XLSX = {};
 
     /* 2.5.198.25 */
     var PtgTypes = {
-        0x01: {n: 'PtgExp', f: parse_PtgExp},
-        0x02: {n: 'PtgTbl', f: parse_PtgTbl},
-        0x03: {n: 'PtgAdd', f: parse_PtgAdd},
-        0x04: {n: 'PtgSub', f: parse_PtgSub},
-        0x05: {n: 'PtgMul', f: parse_PtgMul},
-        0x06: {n: 'PtgDiv', f: parse_PtgDiv},
-        0x07: {n: 'PtgPower', f: parse_PtgPower},
-        0x08: {n: 'PtgConcat', f: parse_PtgConcat},
-        0x09: {n: 'PtgLt', f: parse_PtgLt},
-        0x0A: {n: 'PtgLe', f: parse_PtgLe},
-        0x0B: {n: 'PtgEq', f: parse_PtgEq},
-        0x0C: {n: 'PtgGe', f: parse_PtgGe},
-        0x0D: {n: 'PtgGt', f: parse_PtgGt},
-        0x0E: {n: 'PtgNe', f: parse_PtgNe},
-        0x0F: {n: 'PtgIsect', f: parse_PtgIsect},
-        0x10: {n: 'PtgUnion', f: parse_PtgUnion},
-        0x11: {n: 'PtgRange', f: parse_PtgRange},
-        0x12: {n: 'PtgUplus', f: parse_PtgUplus},
-        0x13: {n: 'PtgUminus', f: parse_PtgUminus},
-        0x14: {n: 'PtgPercent', f: parse_PtgPercent},
-        0x15: {n: 'PtgParen', f: parse_PtgParen},
-        0x16: {n: 'PtgMissArg', f: parse_PtgMissArg},
-        0x17: {n: 'PtgStr', f: parse_PtgStr},
-        0x1C: {n: 'PtgErr', f: parse_PtgErr},
-        0x1D: {n: 'PtgBool', f: parse_PtgBool},
-        0x1E: {n: 'PtgInt', f: parse_PtgInt},
-        0x1F: {n: 'PtgNum', f: parse_PtgNum},
-        0x20: {n: 'PtgArray', f: parse_PtgArray},
-        0x21: {n: 'PtgFunc', f: parse_PtgFunc},
-        0x22: {n: 'PtgFuncVar', f: parse_PtgFuncVar},
-        0x23: {n: 'PtgName', f: parse_PtgName},
-        0x24: {n: 'PtgRef', f: parse_PtgRef},
-        0x25: {n: 'PtgArea', f: parse_PtgArea},
-        0x26: {n: 'PtgMemArea', f: parse_PtgMemArea},
-        0x27: {n: 'PtgMemErr', f: parse_PtgMemErr},
-        0x28: {n: 'PtgMemNoMem', f: parse_PtgMemNoMem},
-        0x29: {n: 'PtgMemFunc', f: parse_PtgMemFunc},
-        0x2A: {n: 'PtgRefErr', f: parse_PtgRefErr},
-        0x2B: {n: 'PtgAreaErr', f: parse_PtgAreaErr},
-        0x2C: {n: 'PtgRefN', f: parse_PtgRefN},
-        0x2D: {n: 'PtgAreaN', f: parse_PtgAreaN},
-        0x39: {n: 'PtgNameX', f: parse_PtgNameX},
-        0x3A: {n: 'PtgRef3d', f: parse_PtgRef3d},
-        0x3B: {n: 'PtgArea3d', f: parse_PtgArea3d},
-        0x3C: {n: 'PtgRefErr3d', f: parse_PtgRefErr3d},
-        0x3D: {n: 'PtgAreaErr3d', f: parse_PtgAreaErr3d},
+        0x01: { n: 'PtgExp', f: parse_PtgExp },
+        0x02: { n: 'PtgTbl', f: parse_PtgTbl },
+        0x03: { n: 'PtgAdd', f: parse_PtgAdd },
+        0x04: { n: 'PtgSub', f: parse_PtgSub },
+        0x05: { n: 'PtgMul', f: parse_PtgMul },
+        0x06: { n: 'PtgDiv', f: parse_PtgDiv },
+        0x07: { n: 'PtgPower', f: parse_PtgPower },
+        0x08: { n: 'PtgConcat', f: parse_PtgConcat },
+        0x09: { n: 'PtgLt', f: parse_PtgLt },
+        0x0A: { n: 'PtgLe', f: parse_PtgLe },
+        0x0B: { n: 'PtgEq', f: parse_PtgEq },
+        0x0C: { n: 'PtgGe', f: parse_PtgGe },
+        0x0D: { n: 'PtgGt', f: parse_PtgGt },
+        0x0E: { n: 'PtgNe', f: parse_PtgNe },
+        0x0F: { n: 'PtgIsect', f: parse_PtgIsect },
+        0x10: { n: 'PtgUnion', f: parse_PtgUnion },
+        0x11: { n: 'PtgRange', f: parse_PtgRange },
+        0x12: { n: 'PtgUplus', f: parse_PtgUplus },
+        0x13: { n: 'PtgUminus', f: parse_PtgUminus },
+        0x14: { n: 'PtgPercent', f: parse_PtgPercent },
+        0x15: { n: 'PtgParen', f: parse_PtgParen },
+        0x16: { n: 'PtgMissArg', f: parse_PtgMissArg },
+        0x17: { n: 'PtgStr', f: parse_PtgStr },
+        0x1C: { n: 'PtgErr', f: parse_PtgErr },
+        0x1D: { n: 'PtgBool', f: parse_PtgBool },
+        0x1E: { n: 'PtgInt', f: parse_PtgInt },
+        0x1F: { n: 'PtgNum', f: parse_PtgNum },
+        0x20: { n: 'PtgArray', f: parse_PtgArray },
+        0x21: { n: 'PtgFunc', f: parse_PtgFunc },
+        0x22: { n: 'PtgFuncVar', f: parse_PtgFuncVar },
+        0x23: { n: 'PtgName', f: parse_PtgName },
+        0x24: { n: 'PtgRef', f: parse_PtgRef },
+        0x25: { n: 'PtgArea', f: parse_PtgArea },
+        0x26: { n: 'PtgMemArea', f: parse_PtgMemArea },
+        0x27: { n: 'PtgMemErr', f: parse_PtgMemErr },
+        0x28: { n: 'PtgMemNoMem', f: parse_PtgMemNoMem },
+        0x29: { n: 'PtgMemFunc', f: parse_PtgMemFunc },
+        0x2A: { n: 'PtgRefErr', f: parse_PtgRefErr },
+        0x2B: { n: 'PtgAreaErr', f: parse_PtgAreaErr },
+        0x2C: { n: 'PtgRefN', f: parse_PtgRefN },
+        0x2D: { n: 'PtgAreaN', f: parse_PtgAreaN },
+        0x39: { n: 'PtgNameX', f: parse_PtgNameX },
+        0x3A: { n: 'PtgRef3d', f: parse_PtgRef3d },
+        0x3B: { n: 'PtgArea3d', f: parse_PtgArea3d },
+        0x3C: { n: 'PtgRefErr3d', f: parse_PtgRefErr3d },
+        0x3D: { n: 'PtgAreaErr3d', f: parse_PtgAreaErr3d },
         0xFF: {}
     };
     /* These are duplicated in the PtgTypes table */
@@ -10957,19 +10962,19 @@ var XLSX = {};
     })();
 
     var Ptg18 = {
-//	0x19: { n:'PtgList', f:parse_PtgList }, // TODO
-//	0x1D: { n:'PtgSxName', f:parse_PtgSxName }, // TODO
+        //	0x19: { n:'PtgList', f:parse_PtgList }, // TODO
+        //	0x1D: { n:'PtgSxName', f:parse_PtgSxName }, // TODO
     };
     var Ptg19 = {
-        0x01: {n: 'PtgAttrSemi', f: parse_PtgAttrSemi},
-        0x02: {n: 'PtgAttrIf', f: parse_PtgAttrIf},
-        0x04: {n: 'PtgAttrChoose', f: parse_PtgAttrChoose},
-        0x08: {n: 'PtgAttrGoto', f: parse_PtgAttrGoto},
-        0x10: {n: 'PtgAttrSum', f: parse_PtgAttrSum},
-        0x20: {n: 'PtgAttrBaxcel', f: parse_PtgAttrBaxcel},
-        0x40: {n: 'PtgAttrSpace', f: parse_PtgAttrSpace},
-        0x41: {n: 'PtgAttrSpaceSemi', f: parse_PtgAttrSpaceSemi},
-        0x80: {n: 'PtgAttrIfError', f: parse_PtgAttrIfError},
+        0x01: { n: 'PtgAttrSemi', f: parse_PtgAttrSemi },
+        0x02: { n: 'PtgAttrIf', f: parse_PtgAttrIf },
+        0x04: { n: 'PtgAttrChoose', f: parse_PtgAttrChoose },
+        0x08: { n: 'PtgAttrGoto', f: parse_PtgAttrGoto },
+        0x10: { n: 'PtgAttrSum', f: parse_PtgAttrSum },
+        0x20: { n: 'PtgAttrBaxcel', f: parse_PtgAttrBaxcel },
+        0x40: { n: 'PtgAttrSpace', f: parse_PtgAttrSpace },
+        0x41: { n: 'PtgAttrSpaceSemi', f: parse_PtgAttrSpaceSemi },
+        0x80: { n: 'PtgAttrIfError', f: parse_PtgAttrIfError },
         0xFF: {}
     };
 
@@ -10977,7 +10982,7 @@ var XLSX = {};
     function parse_Formula(blob, length, opts) {
         var end = blob.l + length;
         var cell = parse_XLSCell(blob, 6);
-        if (opts.biff == 2) ++blob.l;
+        if (opts.biff == 2)++blob.l;
         var val = parse_FormulaValue(blob, 8);
         var flags = blob.read_shift(1);
         if (opts.biff != 2) {
@@ -10987,7 +10992,7 @@ var XLSX = {};
             }
         }
         var cbf = parse_XLSCellParsedFormula(blob, end - blob.l, opts);
-        return {cell: cell, val: val[0], formula: cbf, shared: (flags >> 3) & 1, tt: val[1]};
+        return { cell: cell, val: val[0], formula: cbf, shared: (flags >> 3) & 1, tt: val[1] };
     }
 
     /* 2.5.133 TODO: how to emit empty strings? */
@@ -11146,7 +11151,7 @@ var XLSX = {};
 
     function stringify_formula(formula/*Array<any>*/, range, cell, supbooks, opts) {
         //console.log(formula);
-        var _range = /*range != null ? range :*/ {s: {c: 0, r: 0}, e: {c: 0, r: 0}};
+        var _range = /*range != null ? range :*/ { s: { c: 0, r: 0 }, e: { c: 0, r: 0 } };
         var stack = [], e1, e2, type, c, ixti = 0, nameidx = 0, r, sname = "";
         if (!formula[0] || !formula[0][0]) return "";
         var last_sp = -1, sp = "";
@@ -11334,7 +11339,7 @@ var XLSX = {};
                         stack.push(o);
                         break;
                     }
-                    if (!externbook) externbook = {Name: "??NAMEX??"};
+                    if (!externbook) externbook = { Name: "??NAMEX??" };
                     stack.push(externbook.Name);
                     break;
 
@@ -11377,8 +11382,8 @@ var XLSX = {};
                     break;
 
                 case 'PtgExp': /* 2.5.198.58 TODO */
-                    c = {c: f[1][1], r: f[1][0]};
-                    var q = ({c: cell.c, r: cell.r});
+                    c = { c: f[1][1], r: f[1][0] };
+                    var q = ({ c: cell.c, r: cell.r });
                     if (supbooks.sharedf[encode_cell(c)]) {
                         var parsedf = (supbooks.sharedf[encode_cell(c)]);
                         stack.push(stringify_formula(parsedf, _range, q, supbooks, opts));
@@ -12786,14 +12791,14 @@ var XLSX = {};
             sst.Count++;
             return i;
         }
-        sst[len] = {t: str};
+        sst[len] = { t: str };
         sst.Count++;
         sst.Unique++;
         return len;
     }
 
     function col_obj_w(C, col) {
-        var p = ({min: C + 1, max: C + 1});
+        var p = ({ min: C + 1, max: C + 1 });
         /* wch (chars), wpx (pixels) */
         var wch = -1;
         if (col.MDW) MDW = col.MDW;
@@ -12822,15 +12827,15 @@ var XLSX = {};
     }
 
     function default_pageSetup(pageSetup) {
-        if(!pageSetup) return;
-        var defs = ["1","1","1","100","0","portrait","downThenOver"];
-        if(pageSetup.firstPageNumber == null) pageSetup.firstPageNumber = defs[0];
-        if(pageSetup.fitToHeight == null) pageSetup.fitToHeight = defs[1];
-        if(pageSetup.fitToWidth == null) pageSetup.fitToWidth = defs[2];
-        if(pageSetup.scale == null) pageSetup.scale = defs[3];
-        if(pageSetup.useFirstPageNumber == null) pageSetup.useFirstPageNumber = defs[4];
-        if(pageSetup.orientation == null) pageSetup.orientation = defs[5];
-        if(pageSetup.pageOrder == null) pageSetup.pageOrder = defs[6];
+        if (!pageSetup) return;
+        var defs = ["1", "1", "1", "100", "0", "portrait", "downThenOver"];
+        if (pageSetup.firstPageNumber == null) pageSetup.firstPageNumber = defs[0];
+        if (pageSetup.fitToHeight == null) pageSetup.fitToHeight = defs[1];
+        if (pageSetup.fitToWidth == null) pageSetup.fitToWidth = defs[2];
+        if (pageSetup.scale == null) pageSetup.scale = defs[3];
+        if (pageSetup.useFirstPageNumber == null) pageSetup.useFirstPageNumber = defs[4];
+        if (pageSetup.orientation == null) pageSetup.orientation = defs[5];
+        if (pageSetup.pageOrder == null) pageSetup.pageOrder = defs[6];
     }
 
     function get_cell_style(styles, cell, opts) {
@@ -12931,7 +12936,7 @@ var XLSX = {};
 
         /* 18.3.1.99 worksheet CT_Worksheet */
         var s = opts.dense ? ([]) : ({});
-        var refguess = ({s: {r: 2000000, c: 2000000}, e: {r: 0, c: 0}});
+        var refguess = ({ s: { r: 2000000, c: 2000000 }, e: { r: 0, c: 0 } });
 
         var data1 = "", data2 = "";
         var mtch = data.match(sheetdataregex);
@@ -12942,7 +12947,7 @@ var XLSX = {};
 
         /* 18.3.1.35 dimension CT_SheetDimension ? */
         // $FlowIgnore
-        var ridx = (data1.match(/<(?:\w*:)?dimension/) || {index: -1}).index;
+        var ridx = (data1.match(/<(?:\w*:)?dimension/) || { index: -1 }).index;
         if (ridx > 0) {
             var ref = data1.substr(ridx, 50).match(dimregex);
             if (ref) parse_ws_xml_dim(s, ref[1]);
@@ -12996,12 +13001,12 @@ var XLSX = {};
     }
 
     function write_ws_xml_sheetpr(sheetpr) {
-        if(sheetpr.length == 0) return "";
+        if (sheetpr.length == 0) return "";
         var o = '<sheetPr>';
-        for(var i in sheetpr) {
-            for(var j in sheetpr[i]){
+        for (var i in sheetpr) {
+            for (var j in sheetpr[i]) {
                 o += '<' + j;
-                for(var k in sheetpr[i][j])
+                for (var k in sheetpr[i][j])
                     o += ' ' + k + '="' + sheetpr[i][j][k] + '"';
                 o += '/>'
             }
@@ -13019,7 +13024,7 @@ var XLSX = {};
     /* 18.3.1.85 sheetPr CT_SheetProtection */
     function write_ws_xml_protection(sp) {
         // algorithmName, hashValue, saltValue, spinCountpassword
-        var o = ({sheet: 1});
+        var o = ({ sheet: 1 });
         var deffalse = ["objects", "scenarios", "selectLockedCells", "selectUnlockedCells"];
         var deftrue = [
             "formatColumns", "formatRows", "formatCells",
@@ -13050,7 +13055,7 @@ var XLSX = {};
                 val.Rel = rel;
             } else {
                 val.Target = val.location;
-                rel = {Target: val.location, TargetMode: 'Internal'};
+                rel = { Target: val.location, TargetMode: 'Internal' };
                 val.Rel = rel;
             }
             if (val.tooltip) {
@@ -13059,13 +13064,13 @@ var XLSX = {};
             }
             var rng = safe_decode_range(val.ref);
             for (var R = rng.s.r; R <= rng.e.r; ++R) for (var C = rng.s.c; C <= rng.e.c; ++C) {
-                var addr = encode_cell({c: C, r: R});
+                var addr = encode_cell({ c: C, r: R });
                 if (dense) {
                     if (!s[R]) s[R] = [];
-                    if (!s[R][C]) s[R][C] = {t: "z", v: undefined};
+                    if (!s[R][C]) s[R][C] = { t: "z", v: undefined };
                     s[R][C].l = val;
                 } else {
-                    if (!s[addr]) s[addr] = {t: "z", v: undefined};
+                    if (!s[addr]) s[addr] = { t: "z", v: undefined };
                     s[addr].l = val;
                 }
             }
@@ -13119,12 +13124,12 @@ var XLSX = {};
     }
 
     function parse_ws_xml_autofilter(data) {
-        var o = {ref: (data.match(/ref="([^"]*)"/) || [])[1]};
+        var o = { ref: (data.match(/ref="([^"]*)"/) || [])[1] };
         return o;
     }
 
     function write_ws_xml_autofilter(data) {
-        return writextag("autoFilter", null, {ref: data.ref});
+        return writextag("autoFilter", null, { ref: data.ref });
     }
 
     /* 18.3.1.88 sheetViews CT_SheetViews */
@@ -13132,7 +13137,7 @@ var XLSX = {};
     function write_ws_xml_sheetviews(ws, opts, idx, wb) {
         var sheetViewPane = ws['!viewPane'] !== undefined ? write_ws_xml_view_pane(ws['!viewPane']) : null;
 
-        return writextag("sheetViews", writextag("sheetView", sheetViewPane, {workbookViewId: "0"}), {});
+        return writextag("sheetViews", writextag("sheetView", sheetViewPane, { workbookViewId: "0" }), {});
     }
 
     function write_ws_xml_cell(cell, ref, ws, opts, idx, wb) {
@@ -13161,7 +13166,7 @@ var XLSX = {};
                 vv = cell.v;
                 break;
         }
-        var v = writetag('v', escapexml(vv)), o = ({r: ref});
+        var v = writetag('v', escapexml(vv)), o = ({ r: ref });
         /* TODO: cell style */
         var os = get_cell_style(opts.cellXfs, cell, opts);
         if (os !== 0) o.s = os;
@@ -13195,7 +13200,7 @@ var XLSX = {};
             cell.v = oldv;
         }
         if (cell.f) {
-            var ff = cell.F && cell.F.substr(0, ref.length) == ref ? {t: "array", ref: cell.F} : null;
+            var ff = cell.F && cell.F.substr(0, ref.length) == ref ? { t: "array", ref: cell.F } : null;
             v = writextag('f', escapexml(cell.f), ff) + (cell.v != null ? v : "");
         }
         if (cell.l) ws['!links'].push([ref, cell.l]);
@@ -13271,9 +13276,9 @@ var XLSX = {};
                     for (i = 0; i != x.length; ++i) if (x.charCodeAt(i) === 62) break;
                     ++i;
                     tag = parsexmltag(x.substr(0, i), true);
-                    if (!tag.r) tag.r = encode_cell({r: tagr - 1, c: tagc});
+                    if (!tag.r) tag.r = encode_cell({ r: tagr - 1, c: tagc });
                     d = x.substr(i);
-                    p = ({t: ""});
+                    p = ({ t: "" });
 
                     if ((cref = d.match(match_v)) != null && cref[1] !== '') p.v = unescapexml(cref[1]);
                     if (opts.cellFormula) {
@@ -13393,7 +13398,7 @@ var XLSX = {};
                 if ((cell = write_ws_xml_cell(_cell, ref, ws, opts, idx, wb)) != null) r.push(cell);
             }
             if (r.length > 0) {
-                var params = ({r: rr});
+                var params = ({ r: rr });
                 if (rows && rows[R]) {
                     var row = rows[R];
                     if (row.hidden) params.hidden = 1;
@@ -13421,16 +13426,16 @@ var XLSX = {};
         var s = wb.SheetNames[idx], sidx = 0, rdata = "";
         var ws = wb.Sheets[s];
         if (ws == null) ws = {};
-        if(ws['!sheetPr'] !== undefined && ws['!sheetPr'].length > 0) o[o.length] = (write_ws_xml_sheetpr(ws['!sheetPr']));
+        if (ws['!sheetPr'] !== undefined && ws['!sheetPr'].length > 0) o[o.length] = (write_ws_xml_sheetpr(ws['!sheetPr']));
         var ref = ws['!ref'];
         if (ref == null) ref = 'A1';
         if (!rels) rels = {};
         ws['!comments'] = [];
         ws['!drawing'] = [];
 
-        o[o.length] = (writextag('sheetPr', null, {'codeName': escapexml(wb.SheetNames[idx])}));
+        o[o.length] = (writextag('sheetPr', null, { 'codeName': escapexml(wb.SheetNames[idx]) }));
 
-        o[o.length] = (writextag('dimension', null, {'ref': ref}));
+        o[o.length] = (writextag('dimension', null, { 'ref': ref }));
 
         o[o.length] = write_ws_xml_sheetviews(ws, opts, idx, wb);
 
@@ -13479,7 +13484,7 @@ var XLSX = {};
             ws['!links'].forEach(function (l) {
                 if (!l[1].Target) return;
                 rId = add_rels(rels, -1, escapexml(l[1].Target).replace(/#.*$/, ""), RELS.HLINK);
-                rel = ({"ref": l[0], "r:id": "rId" + rId});
+                rel = ({ "ref": l[0], "r:id": "rId" + rId });
                 if ((relc = l[1].Target.indexOf("#")) > -1) rel.location = escapexml(l[1].Target.substr(relc + 1));
                 if (l[1].Tooltip) rel.tooltip = escapexml(l[1].Tooltip);
                 o[o.length] = writextag("hyperlink", null, rel);
@@ -13488,10 +13493,10 @@ var XLSX = {};
         }
         delete ws['!links'];
 
-	/* printOptions */
-	if (ws['!margins'] != null) o[o.length] =  write_ws_xml_margins(ws['!margins']);
-	if (ws['!pageSetup'] != null) o[o.length] = write_ws_xml_pageSetup(ws['!pageSetup']);
-	/* pageSetup */
+        /* printOptions */
+        if (ws['!margins'] != null) o[o.length] = write_ws_xml_margins(ws['!margins']);
+        if (ws['!pageSetup'] != null) o[o.length] = write_ws_xml_pageSetup(ws['!pageSetup']);
+        /* pageSetup */
 
         var hfidx = o.length;
         o[o.length] = "";
@@ -13505,13 +13510,13 @@ var XLSX = {};
 
         if (ws['!drawing'].length > 0) {
             rId = add_rels(rels, -1, "../drawings/drawing" + (idx + 1) + ".xml", RELS.DRAW);
-            o[o.length] = writextag("drawing", null, {"r:id": "rId" + rId});
+            o[o.length] = writextag("drawing", null, { "r:id": "rId" + rId });
         }
         else delete ws['!drawing'];
 
         if (ws['!comments'].length > 0) {
             rId = add_rels(rels, -1, "../drawings/vmlDrawing" + (idx + 1) + ".vml", RELS.VML);
-            o[o.length] = writextag("legacyDrawing", null, {"r:id": "rId" + rId});
+            o[o.length] = writextag("legacyDrawing", null, { "r:id": "rId" + rId });
             ws['!legacy'] = rId;
         }
 
@@ -13542,7 +13547,7 @@ var XLSX = {};
 
         // If frozen pane, defaults to the cell in first unfrozen column and first unfrozen row
         if (p.state !== 'split') {
-            p.topLeftCell = pane.topLeftCell || encode_cell({c: p.xSplit, r: p.ySplit});
+            p.topLeftCell = pane.topLeftCell || encode_cell({ c: p.xSplit, r: p.ySplit });
         }
         else if (pane.topLeftCell !== undefined) {
             p.topLeftCell = pane.topLeftCell;
@@ -13596,7 +13601,7 @@ var XLSX = {};
         var ncolspan = 0, lcs = o.l;
         o.l += 4;
 
-        var caddr = {r: R, c: 0};
+        var caddr = { r: R, c: 0 };
         for (var i = 0; i < 16; ++i) {
             if (range.s.c > ((i + 1) << 10) || range.e.c < (i << 10)) continue;
             var first = -1, last = -1;
@@ -13632,7 +13637,7 @@ var XLSX = {};
     var write_BrtWsDim = write_UncheckedRfX;
 
     /* [MS-XLSB] 2.4.813 BrtWsFmtInfo */
-//function write_BrtWsFmtInfo(ws, o) { }
+    //function write_BrtWsFmtInfo(ws, o) { }
 
     /* [MS-XLSB] 2.4.815 BrtWsProp */
     function parse_BrtWsProp(data, length) {
@@ -13646,7 +13651,7 @@ var XLSX = {};
     function write_BrtWsProp(str, o) {
         if (o == null) o = new_buf(84 + 4 * str.length);
         for (var i = 0; i < 3; ++i) o.write_shift(1, 0);
-        write_BrtColor({auto: 1}, o);
+        write_BrtColor({ auto: 1 }, o);
         o.write_shift(-4, -1);
         o.write_shift(-4, -1);
         write_XLSBCodeName(str, o);
@@ -13830,12 +13835,12 @@ var XLSX = {};
         var tooltip = parse_XLWideString(data);
         var display = parse_XLWideString(data);
         data.l = end;
-        return {rfx: rfx, relId: relId, loc: loc, Tooltip: tooltip, display: display};
+        return { rfx: rfx, relId: relId, loc: loc, Tooltip: tooltip, display: display };
     }
 
     function write_BrtHLink(l, rId, o) {
         if (o == null) o = new_buf(50 + 4 * l[1].Target.length);
-        write_UncheckedRfX({s: decode_cell(l[0]), e: decode_cell(l[0])}, o);
+        write_UncheckedRfX({ s: decode_cell(l[0]), e: decode_cell(l[0]) }, o);
         write_RelID("rId" + rId, o);
         var locidx = l[1].Target.indexOf("#");
         var loc = locidx == -1 ? "" : l[1].Target.substr(locidx + 1);
@@ -13954,7 +13959,7 @@ var XLSX = {};
             ["selectUnlockedCells", false]  // fSelUnlockedCells
         ].forEach(function (n) {
             if (n[1]) o.write_shift(4, sp[n[0]] != null && !sp[n[0]] ? 1 : 0);
-            else      o.write_shift(4, sp[n[0]] != null && sp[n[0]] ? 0 : 1);
+            else o.write_shift(4, sp[n[0]] != null && sp[n[0]] ? 0 : 1);
         });
         return o;
     }
@@ -13963,12 +13968,12 @@ var XLSX = {};
     function parse_ws_bin(data, _opts, rels, wb, themes, styles) {
         if (!data) return data;
         var opts = _opts || {};
-        if (!rels) rels = {'!id': {}};
+        if (!rels) rels = { '!id': {} };
         if (DENSE != null && opts.dense == null) opts.dense = DENSE;
         var s = (opts.dense ? [] : {});
 
         var ref;
-        var refguess = {s: {r: 2000000, c: 2000000}, e: {r: 0, c: 0}};
+        var refguess = { s: { r: 2000000, c: 2000000 }, e: { r: 0, c: 0 } };
 
         var pass = false, end = false;
         var row, p, cf, R, C, addr, sstr, rr, cell;
@@ -13984,8 +13989,8 @@ var XLSX = {};
         supbooks.sharedf = shared_formulae;
         supbooks.arrayf = array_formulae;
         supbooks.SheetNames = wb.SheetNames || wb.Sheets.map(function (x) {
-                return x.name;
-            });
+            return x.name;
+        });
         opts.supbooks = supbooks;
         for (var i = 0; i < wb.Names.length; ++i) supbooks[0][i + 1] = wb.Names[i];
 
@@ -14020,7 +14025,7 @@ var XLSX = {};
                 case 0x0009: /* 'BrtFmlaNum' */
                 case 0x000A: /* 'BrtFmlaBool' */
                 case 0x000B: /* 'BrtFmlaError' */
-                    p = ({t: val[2]});
+                    p = ({ t: val[2] });
                     switch (val[2]) {
                         case 'n':
                             p.v = val[1];
@@ -14076,7 +14081,7 @@ var XLSX = {};
 
                 case 0x0001: /* 'BrtCellBlank' */
                     if (!opts.sheetStubs) break;
-                    p = ({t: 'z', v: undefined});
+                    p = ({ t: 'z', v: undefined });
                     C = val[0].c;
                     if (opts.dense) {
                         if (!s[R]) s[R] = [];
@@ -14103,11 +14108,11 @@ var XLSX = {};
                     for (R = val.rfx.s.r; R <= val.rfx.e.r; ++R) for (C = val.rfx.s.c; C <= val.rfx.e.c; ++C) {
                         if (opts.dense) {
                             if (!s[R]) s[R] = [];
-                            if (!s[R][C]) s[R][C] = {t: 'z', v: undefined};
+                            if (!s[R][C]) s[R][C] = { t: 'z', v: undefined };
                             s[R][C].l = val;
                         } else {
-                            addr = encode_cell({c: C, r: R});
-                            if (!s[addr]) s[addr] = {t: 'z', v: undefined};
+                            addr = encode_cell({ c: C, r: R });
+                            if (!s[addr]) s[addr] = { t: 'z', v: undefined };
                             s[addr].l = val;
                         }
                     }
@@ -14117,21 +14122,21 @@ var XLSX = {};
                     if (!opts.cellFormula) break;
                     array_formulae.push(val);
                     cell = ((opts.dense ? s[R][C] : s[encode_col(C) + rr]));
-                    cell.f = stringify_formula(val[1], refguess, {r: row.r, c: C}, supbooks, opts);
+                    cell.f = stringify_formula(val[1], refguess, { r: row.r, c: C }, supbooks, opts);
                     cell.F = encode_range(val[0]);
                     break;
                 case 0x01AB: /* 'BrtShrFmla' */
                     if (!opts.cellFormula) break;
                     shared_formulae[encode_cell(val[0].s)] = val[1];
                     cell = (opts.dense ? s[R][C] : s[encode_col(C) + rr]);
-                    cell.f = stringify_formula(val[1], refguess, {r: row.r, c: C}, supbooks, opts);
+                    cell.f = stringify_formula(val[1], refguess, { r: row.r, c: C }, supbooks, opts);
                     break;
 
                 /* identical to 'ColInfo' in XLS */
                 case 0x003C: /* 'BrtColInfo' */
                     if (!opts.cellStyles) break;
                     while (val.e >= val.s) {
-                        colinfo[val.e--] = {width: val.w / 256, hidden: !!(val.flags & 0x01)};
+                        colinfo[val.e--] = { width: val.w / 256, hidden: !!(val.flags & 0x01) };
                         if (!seencol) {
                             seencol = true;
                             find_mdw_colw(val.w / 256);
@@ -14141,7 +14146,7 @@ var XLSX = {};
                     break;
 
                 case 0x00A1: /* 'BrtBeginAFilter' */
-                    s['!autofilter'] = {ref: encode_range(val)};
+                    s['!autofilter'] = { ref: encode_range(val) };
                     break;
 
                 case 0x01DC: /* 'BrtMargins' */
@@ -14271,7 +14276,7 @@ var XLSX = {};
                 vv = cell.v;
                 break;
         }
-        var o = ({r: R, c: C});
+        var o = ({ r: R, c: C });
         /* TODO: cell style */
         o.s = get_cell_style(opts.cellXfs, cell, opts);
         if (cell.l) ws['!links'].push([encode_cell(o), cell.l]);
@@ -14471,12 +14476,12 @@ var XLSX = {};
 
     /* 21.2 DrawingML - Charts */
     function parse_chart(data, name, opts, rels, wb, csheet) {
-        var cs = ((csheet || {"!type": "chart"}));
+        var cs = ((csheet || { "!type": "chart" }));
         if (!data) return csheet;
         /* 21.2.2.27 chart CT_Chart */
 
         var C = 0, R = 0, col = "A";
-        var refguess = {s: {r: 2000000, c: 2000000}, e: {r: 0, c: 0}};
+        var refguess = { s: { r: 2000000, c: 2000000 }, e: { r: 0, c: 0 } };
 
         /* 21.2.2.120 numCache CT_NumData */
         (data.match(/<c:numCache>.*?<\/c:numCache>/gm) || []).forEach(function (nc) {
@@ -14485,7 +14490,7 @@ var XLSX = {};
             refguess.e.c = C;
             col = encode_col(C);
             cache[0].forEach(function (n, i) {
-                cs[col + encode_row(i)] = {t: 'n', v: n, z: cache[1]};
+                cs[col + encode_row(i)] = { t: 'n', v: n, z: cache[1] };
                 R = i;
             });
             if (refguess.e.r < R) refguess.e.r = R;
@@ -14506,8 +14511,8 @@ var XLSX = {};
     function parse_cs_xml(data, opts, rels, wb, themes, styles) {
         if (!data) return data;
         /* 18.3.1.12 chartsheet CT_ChartSheet */
-        if (!rels) rels = {'!id': {}};
-        var s = {'!type': "chart", '!chart': null, '!rel': ""};
+        if (!rels) rels = { '!id': {} };
+        var s = { '!type': "chart", '!chart': null, '!rel': "" };
         var m;
 
         /* 18.3.1.36 drawing CT_Drawing */
@@ -14519,7 +14524,7 @@ var XLSX = {};
 
     function write_cs_xml(idx, opts, wb, rels) {
         var o = [XML_HEADER, CS_XML_ROOT];
-        o[o.length] = writextag("drawing", null, {"r:id": "rId1"});
+        o[o.length] = writextag("drawing", null, { "r:id": "rId1" });
         add_rels(rels, -1, "../drawings/drawing" + (idx + 1) + ".xml", RELS.DRAW);
         if (o.length > 2) {
             o[o.length] = ('</chartsheet>');
@@ -14531,8 +14536,8 @@ var XLSX = {};
     /* [MS-XLSB] 2.1.7.7 Chart Sheet */
     function parse_cs_bin(data, opts, rels, wb, themes, styles) {
         if (!data) return data;
-        if (!rels) rels = {'!id': {}};
-        var s = {'!type': "chart", '!chart': null, '!rel': ""};
+        if (!rels) rels = { '!id': {} };
+        var s = { '!type': "chart", '!chart': null, '!rel': "" };
         var state = [];
         var pass = false;
         recordhopper(data, function cs_parse(val, R_n, RT) {
@@ -14736,7 +14741,7 @@ var XLSX = {};
 
     function parse_wb_xml(data, opts) {
         if (!data) throw new Error("Could not find file");
-        var wb = {AppVersion: {}, WBProps: {}, WBView: [], Sheets: [], CalcPr: {}, Names: [], xmlns: ""};
+        var wb = { AppVersion: {}, WBProps: {}, WBView: [], Sheets: [], CalcPr: {}, Names: [], xmlns: "" };
         var pass = false, xmlns = "xmlns";
         var dname = {}, dnstart = 0;
         /*(data.match(tagregex)||[]).forEach */
@@ -15004,14 +15009,14 @@ var XLSX = {};
             }
         }
         if (!wb.Workbook) {
-            wb.Workbook = {Names: headers};
+            wb.Workbook = { Names: headers };
         }
         var write_names = (wb.Workbook && (wb.Workbook.Names || []).length > 0);
 
         /* fileVersion */
         /* fileSharing */
 
-        o[o.length] = (writextag('workbookPr', null, {date1904: safe1904(wb), codeName: "ThisWorkbook"}));
+        o[o.length] = (writextag('workbookPr', null, { date1904: safe1904(wb), codeName: "ThisWorkbook" }));
 
         /* workbookProtection */
         /* bookViews */
@@ -15019,7 +15024,7 @@ var XLSX = {};
         o[o.length] = "<sheets>";
         var sheets = wb.Workbook && wb.Workbook.Sheets || [];
         for (var i = 0; i != wb.SheetNames.length; ++i) {
-            var sht = ({name: escapexml(wb.SheetNames[i].substr(0, 31))});
+            var sht = ({ name: escapexml(wb.SheetNames[i].substr(0, 31)) });
             sht.sheetId = "" + (i + 1);
             sht["r:id"] = "rId" + (i + 1);
             if (sheets[i]) switch (sheets[i].Hidden) {
@@ -15040,7 +15045,7 @@ var XLSX = {};
         if (write_names) {
             o[o.length] = "<definedNames>";
             if (wb.Workbook && wb.Workbook.Names) wb.Workbook.Names.forEach(function (n) {
-                var d = {name: n.Name};
+                var d = { name: n.Name };
                 if (n.Comment) d.comment = n.Comment;
                 if (n.Sheet != null) d.localSheetId = "" + n.Sheet;
                 if (!n.Ref) return;
@@ -15126,14 +15131,14 @@ var XLSX = {};
         // unusedstring2: XLNullableWideString
         //}
         data.l = end;
-        var out = ({Name: name, Ptg: formula, Comment: comment});
+        var out = ({ Name: name, Ptg: formula, Comment: comment });
         if (itab < 0xFFFFFFF) out.Sheet = itab;
         return out;
     }
 
     /* [MS-XLSB] 2.1.7.60 Workbook */
     function parse_wb_bin(data, opts) {
-        var wb = {AppVersion: {}, WBProps: {}, WBView: [], Sheets: [], CalcPr: {}, xmlns: ""};
+        var wb = { AppVersion: {}, WBProps: {}, WBView: [], Sheets: [], CalcPr: {}, xmlns: "" };
         var pass = false, z;
 
         if (!opts) opts = {};
@@ -15231,7 +15236,7 @@ var XLSX = {};
         write_record(ba, "BrtBeginBundleShs");
         for (var idx = 0; idx != wb.SheetNames.length; ++idx) {
             var viz = wb.Workbook && wb.Workbook.Sheets && wb.Workbook.Sheets[idx] && wb.Workbook.Sheets[idx].Hidden || 0;
-            var d = {Hidden: viz, iTabID: idx + 1, strRelID: 'rId' + (idx + 1), name: wb.SheetNames[idx]};
+            var d = { Hidden: viz, iTabID: idx + 1, strRelID: 'rId' + (idx + 1), name: wb.SheetNames[idx] };
             write_record(ba, "BrtBundleSh", write_BrtBundleSh(d));
         }
         write_record(ba, "BrtEndBundleShs");
@@ -15451,7 +15456,7 @@ var XLSX = {};
         return z;
     }
 
-// ----
+    // ----
 
     function xlml_format(format, value) {
         var fmt = XLMLFormatMap[format] || unescapexml(format);
@@ -15620,7 +15625,7 @@ var XLSX = {};
     /* TODO: Everything */
     /* UOS uses CJK in tags */
     var xlmlregex = /<(\/?)([^\s?>!\/:]*:|)([^\s?>]*[^\s?>\/])[^>]*>/mg;
-//var xlmlregex = /<(\/?)([a-z0-9]*:|)(\w+)[^>]*>/mg;
+    //var xlmlregex = /<(\/?)([a-z0-9]*:|)(\w+)[^>]*>/mg;
     function parse_xlml_xml(d, opts) {
         make_ssf(SSF);
         var str = debom(xlml_normalize(d));
@@ -15633,7 +15638,7 @@ var XLSX = {};
         var table = {}, cell = ({}), row = {};
         var dtag = xlml_parsexmltag('<Data ss:Type="String">'), didx = 0;
         var c = 0, r = 0;
-        var refguess = {s: {r: 2000000, c: 2000000}, e: {r: 0, c: 0}};
+        var refguess = { s: { r: 2000000, c: 2000000 }, e: { r: 0, c: 0 } };
         var styles = {}, stag = {};
         var ss = "", fidx = 0;
         var mergecells = [];
@@ -15642,7 +15647,7 @@ var XLSX = {};
         var cstys = [], csty, seencol = false;
         var arrayf = [];
         var rowinfo = [], rowobj = {};
-        var Workbook = {Sheets: []}, wsprops = {};
+        var Workbook = { Sheets: [] }, wsprops = {};
         xlmlregex.lastIndex = 0;
         str = str.replace(/<!--([^\u2603]*?)-->/mg, "");
         while ((Rn = xlmlregex.exec(str))) switch (Rn[3]) {
@@ -15668,14 +15673,14 @@ var XLSX = {};
                         } else cursheet[encode_col(c) + encode_row(r)] = cell;
                     }
                     if (cell.HRef) {
-                        cell.l = {Target: cell.HRef, Tooltip: cell.HRefScreenTip};
+                        cell.l = { Target: cell.HRef, Tooltip: cell.HRefScreenTip };
                         delete cell.HRef;
                         delete cell.HRefScreenTip;
                     }
                     if (cell.MergeAcross || cell.MergeDown) {
                         var cc = c + (parseInt(cell.MergeAcross, 10) | 0);
                         var rr = r + (parseInt(cell.MergeDown, 10) | 0);
-                        mergecells.push({s: {c: c, r: r}, e: {c: cc, r: rr}});
+                        mergecells.push({ s: { c: c, r: r }, e: { c: cc, r: rr } });
                     }
                     if (!opts.sheetStubs) {
                         if (cell.MergeAcross) c = cc + 1; else ++c;
@@ -15686,8 +15691,8 @@ var XLSX = {};
                                 if (cma > c || cmd > r) {
                                     if (opts.dense) {
                                         if (!cursheet[cmd]) cursheet[cmd] = [];
-                                        cursheet[cmd][cma] = {t: 'z'};
-                                    } else cursheet[encode_col(cma) + encode_row(cmd)] = {t: 'z'};
+                                        cursheet[cmd][cma] = { t: 'z' };
+                                    } else cursheet[encode_col(cma) + encode_row(cmd)] = { t: 'z' };
                                 }
                             }
                         }
@@ -15699,7 +15704,7 @@ var XLSX = {};
                     if (cell.Index) c = +cell.Index - 1;
                     if (c < refguess.s.c) refguess.s.c = c;
                     if (c > refguess.e.c) refguess.e.c = c;
-                    if (Rn[0].slice(-2) === "/>") ++c;
+                    if (Rn[0].slice(-2) === "/>")++c;
                     comments = [];
                 }
                 break;
@@ -15738,7 +15743,7 @@ var XLSX = {};
                     if (rowinfo.length > 0) cursheet["!rows"] = rowinfo;
                     sheets[sheetname] = cursheet;
                 } else {
-                    refguess = {s: {r: 2000000, c: 2000000}, e: {r: 0, c: 0}};
+                    refguess = { s: { r: 2000000, c: 2000000 }, e: { r: 0, c: 0 } };
                     r = c = 0;
                     state.push([Rn[3], false]);
                     tmp = xlml_parsexmltag(Rn[0]);
@@ -15747,7 +15752,7 @@ var XLSX = {};
                     mergecells = [];
                     arrayf = [];
                     rowinfo = [];
-                    wsprops = {name: sheetname, Hidden: 0};
+                    wsprops = { name: sheetname, Hidden: 0 };
                     Workbook.Sheets.push(wsprops);
                 }
                 break;
@@ -15884,7 +15889,7 @@ var XLSX = {};
                 } else {
                     state.push([Rn[3], false]);
                     tmp = xlml_parsexmltag(Rn[0]);
-                    comment = {a: tmp.Author};
+                    comment = { a: tmp.Author };
                 }
                 break;
 
@@ -15894,7 +15899,7 @@ var XLSX = {};
                 }
                 else if (Rn[0].charAt(Rn[0].length - 2) !== '/') {
                     var AutoFilter = xlml_parsexmltag(Rn[0]);
-                    cursheet['!autofilter'] = {ref: rc_to_a1(AutoFilter.Range).replace(/\$/g, "")};
+                    cursheet['!autofilter'] = { ref: rc_to_a1(AutoFilter.Range).replace(/\$/g, "") };
                     state.push([Rn[3], true]);
                 }
                 break;
@@ -16665,8 +16670,8 @@ var XLSX = {};
 
         if (ws['!margins']) {
             o.push("<PageSetup>");
-            if (ws['!margins'].header) o.push(writextag("Header", null, {'x:Margin': ws['!margins'].header}));
-            if (ws['!margins'].footer) o.push(writextag("Footer", null, {'x:Margin': ws['!margins'].footer}));
+            if (ws['!margins'].header) o.push(writextag("Header", null, { 'x:Margin': ws['!margins'].header }));
+            if (ws['!margins'].footer) o.push(writextag("Footer", null, { 'x:Margin': ws['!margins'].footer }));
             o.push(writextag("PageMargins", null, {
                 'x:Bottom': ws['!margins'].bottom || "0.75",
                 'x:Left': ws['!margins'].left || "0.7",
@@ -16750,15 +16755,15 @@ var XLSX = {};
         }
 
         if (o.length == 0) return "";
-        return writextag("WorksheetOptions", o.join(""), {xmlns: XLMLNS.x});
+        return writextag("WorksheetOptions", o.join(""), { xmlns: XLMLNS.x });
     }
 
     function write_ws_xlml_comment(comments) {
         return comments.map(function (c) {
             // TODO: formatted text
             var t = xlml_unfixstr(c.t || "");
-            var d = writextag("ss:Data", t, {"xmlns": "http://www.w3.org/TR/REC-html40"});
-            return writextag("Comment", d, {"ss:Author": c.a});
+            var d = writextag("ss:Data", t, { "xmlns": "http://www.w3.org/TR/REC-html40" });
+            return writextag("Comment", d, { "ss:Author": c.a });
         }).join("");
     }
 
@@ -16845,7 +16850,7 @@ var XLSX = {};
             process_col(n);
             var w = !!n.width;
             var p = col_obj_w(i, n);
-            var k = {"ss:Index": i + 1};
+            var k = { "ss:Index": i + 1 };
             if (w) k['ss:Width'] = width2px(p.width);
             if (n.hidden) k['ss:Hidden'] = "1";
             o.push(writextag("Column", null, k));
@@ -16864,7 +16869,7 @@ var XLSX = {};
                     break;
                 }
                 if (skip) continue;
-                var addr = {r: R, c: C};
+                var addr = { r: R, c: C };
                 var ref = encode_cell(addr), cell = dense ? (ws[R] || [])[C] : ws[ref];
                 row.push(write_ws_xlml_cell(cell, ref, ws, opts, idx, wb, addr));
             }
@@ -16895,15 +16900,15 @@ var XLSX = {};
         d.push(write_wb_xlml(wb, opts));
         d.push(write_sty_xlml(wb, opts));
         for (var i = 0; i < wb.SheetNames.length; ++i)
-            d.push(writextag("Worksheet", write_ws_xlml(i, opts, wb), {"ss:Name": escapexml(wb.SheetNames[i])}));
+            d.push(writextag("Worksheet", write_ws_xlml(i, opts, wb), { "ss:Name": escapexml(wb.SheetNames[i]) }));
         return XML_HEADER + writextag("Workbook", d.join(""), {
-                'xmlns': XLMLNS.ss,
-                'xmlns:o': XLMLNS.o,
-                'xmlns:x': XLMLNS.x,
-                'xmlns:ss': XLMLNS.ss,
-                'xmlns:dt': XLMLNS.dt,
-                'xmlns:html': XLMLNS.html
-            });
+            'xmlns': XLMLNS.ss,
+            'xmlns:o': XLMLNS.o,
+            'xmlns:x': XLMLNS.x,
+            'xmlns:ss': XLMLNS.ss,
+            'xmlns:dt': XLMLNS.dt,
+            'xmlns:html': XLMLNS.html
+        });
     }
 
     /* [MS-OLEDS] 2.3.8 CompObjStream */
@@ -16999,7 +17004,7 @@ var XLSX = {};
                 }
                 else p.w = SSF._general(p.v);
             }
-            else p.w = SSF.format(fmtid, p.v, {date1904: !!date1904});
+            else p.w = SSF.format(fmtid, p.v, { date1904: !!date1904 });
             if (opts.cellDates && fmtid && p.t == 'n' && SSF.is_date(SSF._table[fmtid])) {
                 var _d = SSF.parse_date_code(p.v);
                 if (_d) {
@@ -17013,12 +17018,12 @@ var XLSX = {};
     }
 
     function make_cell(val, ixfe, t) {
-        return ({v: val, ixfe: ixfe, t: t});
+        return ({ v: val, ixfe: ixfe, t: t });
     }
 
-// 2.3.2
+    // 2.3.2
     function parse_workbook(blob, options) {
-        var wb = ({opts: {}});
+        var wb = ({ opts: {} });
         var Sheets = {};
         if (DENSE != null && options.dense == null) options.dense = DENSE;
         var out = ((options.dense ? [] : {}));
@@ -17039,7 +17044,7 @@ var XLSX = {};
         var XFs = [];
         /* XF records */
         var palette = [];
-        var Workbook = ({Sheets: []}), wsprops = {};
+        var Workbook = ({ Sheets: [] }), wsprops = {};
         var get_rgb = function getrgb(icv) {
             if (icv < 8) return XLSIcv[icv];
             if (icv < 64) return palette[icv - 8] || XLSIcv[icv];
@@ -17052,10 +17057,10 @@ var XLSX = {};
             line.s.patternType = xfd.patternType;
             var t;
             if ((t = rgb2Hex(get_rgb(xfd.icvFore)))) {
-                line.s.fgColor = {rgb: t};
+                line.s.fgColor = { rgb: t };
             }
             if ((t = rgb2Hex(get_rgb(xfd.icvBack)))) {
-                line.s.bgColor = {rgb: t};
+                line.s.bgColor = { rgb: t };
             }
         };
         var addcell = function addcell(cell, line, options) {
@@ -17264,7 +17269,7 @@ var XLSX = {};
                         supbooks[supbooks.length - 1].push(val);
                         if (val.Name == "\r" && val.itab > 0)
                             if (val.rgce && val.rgce[0] && val.rgce[0][0] && val.rgce[0][0][0] == 'PtgArea3d')
-                                FilterDatabases[val.itab - 1] = {ref: encode_range(val.rgce[0][0][1][2])};
+                                FilterDatabases[val.itab - 1] = { ref: encode_range(val.rgce[0][0][1][2]) };
                         break;
                     case 'ExternSheet':
                         if (supbooks.length == 0) {
@@ -17331,13 +17336,13 @@ var XLSX = {};
 
                         if (opts.biff < 5) {
                             if (cur_sheet === "") cur_sheet = "Sheet1";
-                            range = {s: {r: 0, c: 0}, e: {r: 0, c: 0}};
+                            range = { s: { r: 0, c: 0 }, e: { r: 0, c: 0 } };
                             /* fake BoundSheet8 */
-                            var fakebs8 = {pos: blob.l - length, name: cur_sheet};
+                            var fakebs8 = { pos: blob.l - length, name: cur_sheet };
                             Directory[fakebs8.pos] = fakebs8;
                             opts.snames.push(cur_sheet);
                         }
-                        else cur_sheet = (Directory[s] || {name: ""}).name;
+                        else cur_sheet = (Directory[s] || { name: "" }).name;
                         if (val.dt == 0x20) out["!type"] = "chart";
                         mergecells = [];
                         objects = [];
@@ -17347,7 +17352,7 @@ var XLSX = {};
                         rowinfo = [];
                         defwidth = defheight = 0;
                         seencol = false;
-                        wsprops = {Hidden: (Directory[s] || {hs: 0}).hs, name: cur_sheet};
+                        wsprops = { Hidden: (Directory[s] || { hs: 0 }).hs, name: cur_sheet };
                     }
                         break;
 
@@ -17355,36 +17360,36 @@ var XLSX = {};
                     case 'BIFF2NUM':
                     case 'BIFF2INT': {
                         if (out["!type"] == "chart") if (options.dense ? (out[val.r] || [])[val.c] : out[encode_cell({
-                                c: val.c,
-                                r: val.r
-                            })]) ++val.c;
-                        temp_val = ({ixfe: val.ixfe, XF: XFs[val.ixfe] || {}, v: val.val, t: 'n'});
+                            c: val.c,
+                            r: val.r
+                        })])++val.c;
+                        temp_val = ({ ixfe: val.ixfe, XF: XFs[val.ixfe] || {}, v: val.val, t: 'n' });
                         if (BIFF2Fmt > 0) temp_val.z = BIFF2FmtTable[(temp_val.ixfe >> 8) & 0x1F];
                         safe_format_xf(temp_val, options, wb.opts.Date1904);
-                        addcell({c: val.c, r: val.r}, temp_val, options);
+                        addcell({ c: val.c, r: val.r }, temp_val, options);
                     }
                         break;
                     case 'BoolErr': {
-                        temp_val = ({ixfe: val.ixfe, XF: XFs[val.ixfe], v: val.val, t: val.t});
+                        temp_val = ({ ixfe: val.ixfe, XF: XFs[val.ixfe], v: val.val, t: val.t });
                         if (BIFF2Fmt > 0) temp_val.z = BIFF2FmtTable[(temp_val.ixfe >> 8) & 0x1F];
                         safe_format_xf(temp_val, options, wb.opts.Date1904);
-                        addcell({c: val.c, r: val.r}, temp_val, options);
+                        addcell({ c: val.c, r: val.r }, temp_val, options);
                     }
                         break;
                     case 'RK': {
-                        temp_val = ({ixfe: val.ixfe, XF: XFs[val.ixfe], v: val.rknum, t: 'n'});
+                        temp_val = ({ ixfe: val.ixfe, XF: XFs[val.ixfe], v: val.rknum, t: 'n' });
                         if (BIFF2Fmt > 0) temp_val.z = BIFF2FmtTable[(temp_val.ixfe >> 8) & 0x1F];
                         safe_format_xf(temp_val, options, wb.opts.Date1904);
-                        addcell({c: val.c, r: val.r}, temp_val, options);
+                        addcell({ c: val.c, r: val.r }, temp_val, options);
                     }
                         break;
                     case 'MulRk': {
                         for (var j = val.c; j <= val.C; ++j) {
                             var ixfe = val.rkrec[j - val.c][0];
-                            temp_val = ({ixfe: ixfe, XF: XFs[ixfe], v: val.rkrec[j - val.c][1], t: 'n'});
+                            temp_val = ({ ixfe: ixfe, XF: XFs[ixfe], v: val.rkrec[j - val.c][1], t: 'n' });
                             if (BIFF2Fmt > 0) temp_val.z = BIFF2FmtTable[(temp_val.ixfe >> 8) & 0x1F];
                             safe_format_xf(temp_val, options, wb.opts.Date1904);
-                            addcell({c: j, r: val.r}, temp_val, options);
+                            addcell({ c: j, r: val.r }, temp_val, options);
                         }
                     }
                         break;
@@ -17399,7 +17404,7 @@ var XLSX = {};
                             var _f = val.formula;
                             if (_f && _f[0] && _f[0][0] && _f[0][0][0] == 'PtgExp') {
                                 var _fr = _f[0][0][1][0], _fc = _f[0][0][1][1];
-                                var _fe = encode_cell({r: _fr, c: _fc});
+                                var _fe = encode_cell({ r: _fr, c: _fc });
                                 if (shared_formulae[_fe]) temp_val.f = "" + stringify_formula(val.formula, range, val.cell, supbooks, opts);
                                 else temp_val.F = ((options.dense ? (out[_fr] || [])[_fc] : out[_fe]) || {}).F;
                             } else temp_val.f = "" + stringify_formula(val.formula, range, val.cell, supbooks, opts);
@@ -17456,24 +17461,24 @@ var XLSX = {};
                         temp_val.XF = XFs[temp_val.ixfe];
                         if (BIFF2Fmt > 0) temp_val.z = BIFF2FmtTable[(temp_val.ixfe >> 8) & 0x1F];
                         safe_format_xf(temp_val, options, wb.opts.Date1904);
-                        addcell({c: val.c, r: val.r}, temp_val, options);
+                        addcell({ c: val.c, r: val.r }, temp_val, options);
                         break;
                     case 'Blank':
                         if (options.sheetStubs) {
-                            temp_val = ({ixfe: val.ixfe, XF: XFs[val.ixfe], t: 'z'});
+                            temp_val = ({ ixfe: val.ixfe, XF: XFs[val.ixfe], t: 'z' });
                             if (BIFF2Fmt > 0) temp_val.z = BIFF2FmtTable[(temp_val.ixfe >> 8) & 0x1F];
                             safe_format_xf(temp_val, options, wb.opts.Date1904);
-                            addcell({c: val.c, r: val.r}, temp_val, options);
+                            addcell({ c: val.c, r: val.r }, temp_val, options);
                         }
                         break;
                     case 'MulBlank':
                         if (options.sheetStubs) {
                             for (var _j = val.c; _j <= val.C; ++_j) {
                                 var _ixfe = val.ixfe[_j - val.c];
-                                temp_val = ({ixfe: _ixfe, XF: XFs[_ixfe], t: 'z'});
+                                temp_val = ({ ixfe: _ixfe, XF: XFs[_ixfe], t: 'z' });
                                 if (BIFF2Fmt > 0) temp_val.z = BIFF2FmtTable[(temp_val.ixfe >> 8) & 0x1F];
                                 safe_format_xf(temp_val, options, wb.opts.Date1904);
-                                addcell({c: _j, r: val.r}, temp_val, options);
+                                addcell({ c: _j, r: val.r }, temp_val, options);
                             }
                         }
                         break;
@@ -17484,7 +17489,7 @@ var XLSX = {};
                         temp_val.XF = XFs[temp_val.ixfe];
                         if (BIFF2Fmt > 0) temp_val.z = BIFF2FmtTable[(temp_val.ixfe >> 8) & 0x1F];
                         safe_format_xf(temp_val, options, wb.opts.Date1904);
-                        addcell({c: val.c, r: val.r}, temp_val, options);
+                        addcell({ c: val.c, r: val.r }, temp_val, options);
                         break;
 
                     case 'Dimensions': {
@@ -17524,7 +17529,7 @@ var XLSX = {};
                     case 'HLink': {
                         for (rngR = val[0].s.r; rngR <= val[0].e.r; ++rngR)
                             for (rngC = val[0].s.c; rngC <= val[0].e.c; ++rngC) {
-                                cc = options.dense ? (out[rngR] || [])[rngC] : out[encode_cell({c: rngC, r: rngR})];
+                                cc = options.dense ? (out[rngR] || [])[rngC] : out[encode_cell({ c: rngC, r: rngR })];
                                 if (cc) cc.l = val[1];
                             }
                     }
@@ -17532,7 +17537,7 @@ var XLSX = {};
                     case 'HLinkTooltip': {
                         for (rngR = val[0].s.r; rngR <= val[0].e.r; ++rngR)
                             for (rngC = val[0].s.c; rngC <= val[0].e.c; ++rngC) {
-                                cc = options.dense ? (out[rngR] || [])[rngC] : out[encode_cell({c: rngC, r: rngR})];
+                                cc = options.dense ? (out[rngR] || [])[rngC] : out[encode_cell({ c: rngC, r: rngR })];
                                 if (cc) cc.l.Tooltip = val[1];
                             }
                     }
@@ -17546,7 +17551,7 @@ var XLSX = {};
                         var noteobj = objects[val[2]];
                         if (!cc) break;
                         if (!cc.c) cc.c = [];
-                        cmnt = {a: val[1], t: noteobj.TxO.t};
+                        cmnt = { a: val[1], t: noteobj.TxO.t };
                         cc.c.push(cmnt);
                     }
                         break;
@@ -17569,7 +17574,7 @@ var XLSX = {};
                             case 'ColInfo': {
                                 if (!opts.cellStyles) break;
                                 while (val.e >= val.s) {
-                                    colinfo[val.e--] = {width: val.w / 256};
+                                    colinfo[val.e--] = { width: val.w / 256 };
                                     if (!seencol) {
                                         seencol = true;
                                         find_mdw_colw(val.w / 256);
@@ -18113,7 +18118,7 @@ var XLSX = {};
             Workbook = cfb.find('/Workbook');
         } else {
             prep_blob(cfb, 0);
-            Workbook = ({content: cfb});
+            Workbook = ({ content: cfb });
         }
 
         if (!Workbook) Workbook = cfb.find('/Book');
@@ -18144,1251 +18149,1251 @@ var XLSX = {};
 
     /* [MS-XLSB] 2.3 Record Enumeration */
     var XLSBRecordEnum = {
-        0x0000: {n: "BrtRowHdr", f: parse_BrtRowHdr},
-        0x0001: {n: "BrtCellBlank", f: parse_BrtCellBlank},
-        0x0002: {n: "BrtCellRk", f: parse_BrtCellRk},
-        0x0003: {n: "BrtCellError", f: parse_BrtCellError},
-        0x0004: {n: "BrtCellBool", f: parse_BrtCellBool},
-        0x0005: {n: "BrtCellReal", f: parse_BrtCellReal},
-        0x0006: {n: "BrtCellSt", f: parse_BrtCellSt},
-        0x0007: {n: "BrtCellIsst", f: parse_BrtCellIsst},
-        0x0008: {n: "BrtFmlaString", f: parse_BrtFmlaString},
-        0x0009: {n: "BrtFmlaNum", f: parse_BrtFmlaNum},
-        0x000A: {n: "BrtFmlaBool", f: parse_BrtFmlaBool},
-        0x000B: {n: "BrtFmlaError", f: parse_BrtFmlaError},
-        0x0010: {n: "BrtFRTArchID$", f: parse_BrtFRTArchID$},
-        0x0013: {n: "BrtSSTItem", f: parse_RichStr},
-        0x0014: {n: "BrtPCDIMissing", f: parsenoop},
-        0x0015: {n: "BrtPCDINumber", f: parsenoop},
-        0x0016: {n: "BrtPCDIBoolean", f: parsenoop},
-        0x0017: {n: "BrtPCDIError", f: parsenoop},
-        0x0018: {n: "BrtPCDIString", f: parsenoop},
-        0x0019: {n: "BrtPCDIDatetime", f: parsenoop},
-        0x001A: {n: "BrtPCDIIndex", f: parsenoop},
-        0x001B: {n: "BrtPCDIAMissing", f: parsenoop},
-        0x001C: {n: "BrtPCDIANumber", f: parsenoop},
-        0x001D: {n: "BrtPCDIABoolean", f: parsenoop},
-        0x001E: {n: "BrtPCDIAError", f: parsenoop},
-        0x001F: {n: "BrtPCDIAString", f: parsenoop},
-        0x0020: {n: "BrtPCDIADatetime", f: parsenoop},
-        0x0021: {n: "BrtPCRRecord", f: parsenoop},
-        0x0022: {n: "BrtPCRRecordDt", f: parsenoop},
-        0x0023: {n: "BrtFRTBegin", f: parsenoop},
-        0x0024: {n: "BrtFRTEnd", f: parsenoop},
-        0x0025: {n: "BrtACBegin", f: parsenoop},
-        0x0026: {n: "BrtACEnd", f: parsenoop},
-        0x0027: {n: "BrtName", f: parse_BrtName},
-        0x0028: {n: "BrtIndexRowBlock", f: parsenoop},
-        0x002A: {n: "BrtIndexBlock", f: parsenoop},
-        0x002B: {n: "BrtFont", f: parse_BrtFont},
-        0x002C: {n: "BrtFmt", f: parse_BrtFmt},
-        0x002D: {n: "BrtFill", f: parsenoop},
-        0x002E: {n: "BrtBorder", f: parsenoop},
-        0x002F: {n: "BrtXF", f: parse_BrtXF},
-        0x0030: {n: "BrtStyle", f: parsenoop},
-        0x0031: {n: "BrtCellMeta", f: parsenoop},
-        0x0032: {n: "BrtValueMeta", f: parsenoop},
-        0x0033: {n: "BrtMdb", f: parsenoop},
-        0x0034: {n: "BrtBeginFmd", f: parsenoop},
-        0x0035: {n: "BrtEndFmd", f: parsenoop},
-        0x0036: {n: "BrtBeginMdx", f: parsenoop},
-        0x0037: {n: "BrtEndMdx", f: parsenoop},
-        0x0038: {n: "BrtBeginMdxTuple", f: parsenoop},
-        0x0039: {n: "BrtEndMdxTuple", f: parsenoop},
-        0x003A: {n: "BrtMdxMbrIstr", f: parsenoop},
-        0x003B: {n: "BrtStr", f: parsenoop},
-        0x003C: {n: "BrtColInfo", f: parse_ColInfo},
-        0x003E: {n: "BrtCellRString", f: parsenoop},
-        0x003F: {n: "BrtCalcChainItem$", f: parse_BrtCalcChainItem$},
-        0x0040: {n: "BrtDVal", f: parsenoop},
-        0x0041: {n: "BrtSxvcellNum", f: parsenoop},
-        0x0042: {n: "BrtSxvcellStr", f: parsenoop},
-        0x0043: {n: "BrtSxvcellBool", f: parsenoop},
-        0x0044: {n: "BrtSxvcellErr", f: parsenoop},
-        0x0045: {n: "BrtSxvcellDate", f: parsenoop},
-        0x0046: {n: "BrtSxvcellNil", f: parsenoop},
-        0x0080: {n: "BrtFileVersion", f: parsenoop},
-        0x0081: {n: "BrtBeginSheet", f: parsenoop},
-        0x0082: {n: "BrtEndSheet", f: parsenoop},
-        0x0083: {n: "BrtBeginBook", f: parsenoop, p: 0},
-        0x0084: {n: "BrtEndBook", f: parsenoop},
-        0x0085: {n: "BrtBeginWsViews", f: parsenoop},
-        0x0086: {n: "BrtEndWsViews", f: parsenoop},
-        0x0087: {n: "BrtBeginBookViews", f: parsenoop},
-        0x0088: {n: "BrtEndBookViews", f: parsenoop},
-        0x0089: {n: "BrtBeginWsView", f: parsenoop},
-        0x008A: {n: "BrtEndWsView", f: parsenoop},
-        0x008B: {n: "BrtBeginCsViews", f: parsenoop},
-        0x008C: {n: "BrtEndCsViews", f: parsenoop},
-        0x008D: {n: "BrtBeginCsView", f: parsenoop},
-        0x008E: {n: "BrtEndCsView", f: parsenoop},
-        0x008F: {n: "BrtBeginBundleShs", f: parsenoop},
-        0x0090: {n: "BrtEndBundleShs", f: parsenoop},
-        0x0091: {n: "BrtBeginSheetData", f: parsenoop},
-        0x0092: {n: "BrtEndSheetData", f: parsenoop},
-        0x0093: {n: "BrtWsProp", f: parse_BrtWsProp},
-        0x0094: {n: "BrtWsDim", f: parse_BrtWsDim, p: 16},
-        0x0097: {n: "BrtPane", f: parsenoop},
-        0x0098: {n: "BrtSel", f: parsenoop},
-        0x0099: {n: "BrtWbProp", f: parse_BrtWbProp},
-        0x009A: {n: "BrtWbFactoid", f: parsenoop},
-        0x009B: {n: "BrtFileRecover", f: parsenoop},
-        0x009C: {n: "BrtBundleSh", f: parse_BrtBundleSh},
-        0x009D: {n: "BrtCalcProp", f: parsenoop},
-        0x009E: {n: "BrtBookView", f: parsenoop},
-        0x009F: {n: "BrtBeginSst", f: parse_BrtBeginSst},
-        0x00A0: {n: "BrtEndSst", f: parsenoop},
-        0x00A1: {n: "BrtBeginAFilter", f: parse_UncheckedRfX},
-        0x00A2: {n: "BrtEndAFilter", f: parsenoop},
-        0x00A3: {n: "BrtBeginFilterColumn", f: parsenoop},
-        0x00A4: {n: "BrtEndFilterColumn", f: parsenoop},
-        0x00A5: {n: "BrtBeginFilters", f: parsenoop},
-        0x00A6: {n: "BrtEndFilters", f: parsenoop},
-        0x00A7: {n: "BrtFilter", f: parsenoop},
-        0x00A8: {n: "BrtColorFilter", f: parsenoop},
-        0x00A9: {n: "BrtIconFilter", f: parsenoop},
-        0x00AA: {n: "BrtTop10Filter", f: parsenoop},
-        0x00AB: {n: "BrtDynamicFilter", f: parsenoop},
-        0x00AC: {n: "BrtBeginCustomFilters", f: parsenoop},
-        0x00AD: {n: "BrtEndCustomFilters", f: parsenoop},
-        0x00AE: {n: "BrtCustomFilter", f: parsenoop},
-        0x00AF: {n: "BrtAFilterDateGroupItem", f: parsenoop},
-        0x00B0: {n: "BrtMergeCell", f: parse_BrtMergeCell},
-        0x00B1: {n: "BrtBeginMergeCells", f: parsenoop},
-        0x00B2: {n: "BrtEndMergeCells", f: parsenoop},
-        0x00B3: {n: "BrtBeginPivotCacheDef", f: parsenoop},
-        0x00B4: {n: "BrtEndPivotCacheDef", f: parsenoop},
-        0x00B5: {n: "BrtBeginPCDFields", f: parsenoop},
-        0x00B6: {n: "BrtEndPCDFields", f: parsenoop},
-        0x00B7: {n: "BrtBeginPCDField", f: parsenoop},
-        0x00B8: {n: "BrtEndPCDField", f: parsenoop},
-        0x00B9: {n: "BrtBeginPCDSource", f: parsenoop},
-        0x00BA: {n: "BrtEndPCDSource", f: parsenoop},
-        0x00BB: {n: "BrtBeginPCDSRange", f: parsenoop},
-        0x00BC: {n: "BrtEndPCDSRange", f: parsenoop},
-        0x00BD: {n: "BrtBeginPCDFAtbl", f: parsenoop},
-        0x00BE: {n: "BrtEndPCDFAtbl", f: parsenoop},
-        0x00BF: {n: "BrtBeginPCDIRun", f: parsenoop},
-        0x00C0: {n: "BrtEndPCDIRun", f: parsenoop},
-        0x00C1: {n: "BrtBeginPivotCacheRecords", f: parsenoop},
-        0x00C2: {n: "BrtEndPivotCacheRecords", f: parsenoop},
-        0x00C3: {n: "BrtBeginPCDHierarchies", f: parsenoop},
-        0x00C4: {n: "BrtEndPCDHierarchies", f: parsenoop},
-        0x00C5: {n: "BrtBeginPCDHierarchy", f: parsenoop},
-        0x00C6: {n: "BrtEndPCDHierarchy", f: parsenoop},
-        0x00C7: {n: "BrtBeginPCDHFieldsUsage", f: parsenoop},
-        0x00C8: {n: "BrtEndPCDHFieldsUsage", f: parsenoop},
-        0x00C9: {n: "BrtBeginExtConnection", f: parsenoop},
-        0x00CA: {n: "BrtEndExtConnection", f: parsenoop},
-        0x00CB: {n: "BrtBeginECDbProps", f: parsenoop},
-        0x00CC: {n: "BrtEndECDbProps", f: parsenoop},
-        0x00CD: {n: "BrtBeginECOlapProps", f: parsenoop},
-        0x00CE: {n: "BrtEndECOlapProps", f: parsenoop},
-        0x00CF: {n: "BrtBeginPCDSConsol", f: parsenoop},
-        0x00D0: {n: "BrtEndPCDSConsol", f: parsenoop},
-        0x00D1: {n: "BrtBeginPCDSCPages", f: parsenoop},
-        0x00D2: {n: "BrtEndPCDSCPages", f: parsenoop},
-        0x00D3: {n: "BrtBeginPCDSCPage", f: parsenoop},
-        0x00D4: {n: "BrtEndPCDSCPage", f: parsenoop},
-        0x00D5: {n: "BrtBeginPCDSCPItem", f: parsenoop},
-        0x00D6: {n: "BrtEndPCDSCPItem", f: parsenoop},
-        0x00D7: {n: "BrtBeginPCDSCSets", f: parsenoop},
-        0x00D8: {n: "BrtEndPCDSCSets", f: parsenoop},
-        0x00D9: {n: "BrtBeginPCDSCSet", f: parsenoop},
-        0x00DA: {n: "BrtEndPCDSCSet", f: parsenoop},
-        0x00DB: {n: "BrtBeginPCDFGroup", f: parsenoop},
-        0x00DC: {n: "BrtEndPCDFGroup", f: parsenoop},
-        0x00DD: {n: "BrtBeginPCDFGItems", f: parsenoop},
-        0x00DE: {n: "BrtEndPCDFGItems", f: parsenoop},
-        0x00DF: {n: "BrtBeginPCDFGRange", f: parsenoop},
-        0x00E0: {n: "BrtEndPCDFGRange", f: parsenoop},
-        0x00E1: {n: "BrtBeginPCDFGDiscrete", f: parsenoop},
-        0x00E2: {n: "BrtEndPCDFGDiscrete", f: parsenoop},
-        0x00E3: {n: "BrtBeginPCDSDTupleCache", f: parsenoop},
-        0x00E4: {n: "BrtEndPCDSDTupleCache", f: parsenoop},
-        0x00E5: {n: "BrtBeginPCDSDTCEntries", f: parsenoop},
-        0x00E6: {n: "BrtEndPCDSDTCEntries", f: parsenoop},
-        0x00E7: {n: "BrtBeginPCDSDTCEMembers", f: parsenoop},
-        0x00E8: {n: "BrtEndPCDSDTCEMembers", f: parsenoop},
-        0x00E9: {n: "BrtBeginPCDSDTCEMember", f: parsenoop},
-        0x00EA: {n: "BrtEndPCDSDTCEMember", f: parsenoop},
-        0x00EB: {n: "BrtBeginPCDSDTCQueries", f: parsenoop},
-        0x00EC: {n: "BrtEndPCDSDTCQueries", f: parsenoop},
-        0x00ED: {n: "BrtBeginPCDSDTCQuery", f: parsenoop},
-        0x00EE: {n: "BrtEndPCDSDTCQuery", f: parsenoop},
-        0x00EF: {n: "BrtBeginPCDSDTCSets", f: parsenoop},
-        0x00F0: {n: "BrtEndPCDSDTCSets", f: parsenoop},
-        0x00F1: {n: "BrtBeginPCDSDTCSet", f: parsenoop},
-        0x00F2: {n: "BrtEndPCDSDTCSet", f: parsenoop},
-        0x00F3: {n: "BrtBeginPCDCalcItems", f: parsenoop},
-        0x00F4: {n: "BrtEndPCDCalcItems", f: parsenoop},
-        0x00F5: {n: "BrtBeginPCDCalcItem", f: parsenoop},
-        0x00F6: {n: "BrtEndPCDCalcItem", f: parsenoop},
-        0x00F7: {n: "BrtBeginPRule", f: parsenoop},
-        0x00F8: {n: "BrtEndPRule", f: parsenoop},
-        0x00F9: {n: "BrtBeginPRFilters", f: parsenoop},
-        0x00FA: {n: "BrtEndPRFilters", f: parsenoop},
-        0x00FB: {n: "BrtBeginPRFilter", f: parsenoop},
-        0x00FC: {n: "BrtEndPRFilter", f: parsenoop},
-        0x00FD: {n: "BrtBeginPNames", f: parsenoop},
-        0x00FE: {n: "BrtEndPNames", f: parsenoop},
-        0x00FF: {n: "BrtBeginPName", f: parsenoop},
-        0x0100: {n: "BrtEndPName", f: parsenoop},
-        0x0101: {n: "BrtBeginPNPairs", f: parsenoop},
-        0x0102: {n: "BrtEndPNPairs", f: parsenoop},
-        0x0103: {n: "BrtBeginPNPair", f: parsenoop},
-        0x0104: {n: "BrtEndPNPair", f: parsenoop},
-        0x0105: {n: "BrtBeginECWebProps", f: parsenoop},
-        0x0106: {n: "BrtEndECWebProps", f: parsenoop},
-        0x0107: {n: "BrtBeginEcWpTables", f: parsenoop},
-        0x0108: {n: "BrtEndECWPTables", f: parsenoop},
-        0x0109: {n: "BrtBeginECParams", f: parsenoop},
-        0x010A: {n: "BrtEndECParams", f: parsenoop},
-        0x010B: {n: "BrtBeginECParam", f: parsenoop},
-        0x010C: {n: "BrtEndECParam", f: parsenoop},
-        0x010D: {n: "BrtBeginPCDKPIs", f: parsenoop},
-        0x010E: {n: "BrtEndPCDKPIs", f: parsenoop},
-        0x010F: {n: "BrtBeginPCDKPI", f: parsenoop},
-        0x0110: {n: "BrtEndPCDKPI", f: parsenoop},
-        0x0111: {n: "BrtBeginDims", f: parsenoop},
-        0x0112: {n: "BrtEndDims", f: parsenoop},
-        0x0113: {n: "BrtBeginDim", f: parsenoop},
-        0x0114: {n: "BrtEndDim", f: parsenoop},
-        0x0115: {n: "BrtIndexPartEnd", f: parsenoop},
-        0x0116: {n: "BrtBeginStyleSheet", f: parsenoop},
-        0x0117: {n: "BrtEndStyleSheet", f: parsenoop},
-        0x0118: {n: "BrtBeginSXView", f: parsenoop},
-        0x0119: {n: "BrtEndSXVI", f: parsenoop},
-        0x011A: {n: "BrtBeginSXVI", f: parsenoop},
-        0x011B: {n: "BrtBeginSXVIs", f: parsenoop},
-        0x011C: {n: "BrtEndSXVIs", f: parsenoop},
-        0x011D: {n: "BrtBeginSXVD", f: parsenoop},
-        0x011E: {n: "BrtEndSXVD", f: parsenoop},
-        0x011F: {n: "BrtBeginSXVDs", f: parsenoop},
-        0x0120: {n: "BrtEndSXVDs", f: parsenoop},
-        0x0121: {n: "BrtBeginSXPI", f: parsenoop},
-        0x0122: {n: "BrtEndSXPI", f: parsenoop},
-        0x0123: {n: "BrtBeginSXPIs", f: parsenoop},
-        0x0124: {n: "BrtEndSXPIs", f: parsenoop},
-        0x0125: {n: "BrtBeginSXDI", f: parsenoop},
-        0x0126: {n: "BrtEndSXDI", f: parsenoop},
-        0x0127: {n: "BrtBeginSXDIs", f: parsenoop},
-        0x0128: {n: "BrtEndSXDIs", f: parsenoop},
-        0x0129: {n: "BrtBeginSXLI", f: parsenoop},
-        0x012A: {n: "BrtEndSXLI", f: parsenoop},
-        0x012B: {n: "BrtBeginSXLIRws", f: parsenoop},
-        0x012C: {n: "BrtEndSXLIRws", f: parsenoop},
-        0x012D: {n: "BrtBeginSXLICols", f: parsenoop},
-        0x012E: {n: "BrtEndSXLICols", f: parsenoop},
-        0x012F: {n: "BrtBeginSXFormat", f: parsenoop},
-        0x0130: {n: "BrtEndSXFormat", f: parsenoop},
-        0x0131: {n: "BrtBeginSXFormats", f: parsenoop},
-        0x0132: {n: "BrtEndSxFormats", f: parsenoop},
-        0x0133: {n: "BrtBeginSxSelect", f: parsenoop},
-        0x0134: {n: "BrtEndSxSelect", f: parsenoop},
-        0x0135: {n: "BrtBeginISXVDRws", f: parsenoop},
-        0x0136: {n: "BrtEndISXVDRws", f: parsenoop},
-        0x0137: {n: "BrtBeginISXVDCols", f: parsenoop},
-        0x0138: {n: "BrtEndISXVDCols", f: parsenoop},
-        0x0139: {n: "BrtEndSXLocation", f: parsenoop},
-        0x013A: {n: "BrtBeginSXLocation", f: parsenoop},
-        0x013B: {n: "BrtEndSXView", f: parsenoop},
-        0x013C: {n: "BrtBeginSXTHs", f: parsenoop},
-        0x013D: {n: "BrtEndSXTHs", f: parsenoop},
-        0x013E: {n: "BrtBeginSXTH", f: parsenoop},
-        0x013F: {n: "BrtEndSXTH", f: parsenoop},
-        0x0140: {n: "BrtBeginISXTHRws", f: parsenoop},
-        0x0141: {n: "BrtEndISXTHRws", f: parsenoop},
-        0x0142: {n: "BrtBeginISXTHCols", f: parsenoop},
-        0x0143: {n: "BrtEndISXTHCols", f: parsenoop},
-        0x0144: {n: "BrtBeginSXTDMPS", f: parsenoop},
-        0x0145: {n: "BrtEndSXTDMPs", f: parsenoop},
-        0x0146: {n: "BrtBeginSXTDMP", f: parsenoop},
-        0x0147: {n: "BrtEndSXTDMP", f: parsenoop},
-        0x0148: {n: "BrtBeginSXTHItems", f: parsenoop},
-        0x0149: {n: "BrtEndSXTHItems", f: parsenoop},
-        0x014A: {n: "BrtBeginSXTHItem", f: parsenoop},
-        0x014B: {n: "BrtEndSXTHItem", f: parsenoop},
-        0x014C: {n: "BrtBeginMetadata", f: parsenoop},
-        0x014D: {n: "BrtEndMetadata", f: parsenoop},
-        0x014E: {n: "BrtBeginEsmdtinfo", f: parsenoop},
-        0x014F: {n: "BrtMdtinfo", f: parsenoop},
-        0x0150: {n: "BrtEndEsmdtinfo", f: parsenoop},
-        0x0151: {n: "BrtBeginEsmdb", f: parsenoop},
-        0x0152: {n: "BrtEndEsmdb", f: parsenoop},
-        0x0153: {n: "BrtBeginEsfmd", f: parsenoop},
-        0x0154: {n: "BrtEndEsfmd", f: parsenoop},
-        0x0155: {n: "BrtBeginSingleCells", f: parsenoop},
-        0x0156: {n: "BrtEndSingleCells", f: parsenoop},
-        0x0157: {n: "BrtBeginList", f: parsenoop},
-        0x0158: {n: "BrtEndList", f: parsenoop},
-        0x0159: {n: "BrtBeginListCols", f: parsenoop},
-        0x015A: {n: "BrtEndListCols", f: parsenoop},
-        0x015B: {n: "BrtBeginListCol", f: parsenoop},
-        0x015C: {n: "BrtEndListCol", f: parsenoop},
-        0x015D: {n: "BrtBeginListXmlCPr", f: parsenoop},
-        0x015E: {n: "BrtEndListXmlCPr", f: parsenoop},
-        0x015F: {n: "BrtListCCFmla", f: parsenoop},
-        0x0160: {n: "BrtListTrFmla", f: parsenoop},
-        0x0161: {n: "BrtBeginExternals", f: parsenoop},
-        0x0162: {n: "BrtEndExternals", f: parsenoop},
-        0x0163: {n: "BrtSupBookSrc", f: parsenoop},
-        0x0165: {n: "BrtSupSelf", f: parsenoop},
-        0x0166: {n: "BrtSupSame", f: parsenoop},
-        0x0167: {n: "BrtSupTabs", f: parsenoop},
-        0x0168: {n: "BrtBeginSupBook", f: parsenoop},
-        0x0169: {n: "BrtPlaceholderName", f: parsenoop},
-        0x016A: {n: "BrtExternSheet", f: parsenoop},
-        0x016B: {n: "BrtExternTableStart", f: parsenoop},
-        0x016C: {n: "BrtExternTableEnd", f: parsenoop},
-        0x016E: {n: "BrtExternRowHdr", f: parsenoop},
-        0x016F: {n: "BrtExternCellBlank", f: parsenoop},
-        0x0170: {n: "BrtExternCellReal", f: parsenoop},
-        0x0171: {n: "BrtExternCellBool", f: parsenoop},
-        0x0172: {n: "BrtExternCellError", f: parsenoop},
-        0x0173: {n: "BrtExternCellString", f: parsenoop},
-        0x0174: {n: "BrtBeginEsmdx", f: parsenoop},
-        0x0175: {n: "BrtEndEsmdx", f: parsenoop},
-        0x0176: {n: "BrtBeginMdxSet", f: parsenoop},
-        0x0177: {n: "BrtEndMdxSet", f: parsenoop},
-        0x0178: {n: "BrtBeginMdxMbrProp", f: parsenoop},
-        0x0179: {n: "BrtEndMdxMbrProp", f: parsenoop},
-        0x017A: {n: "BrtBeginMdxKPI", f: parsenoop},
-        0x017B: {n: "BrtEndMdxKPI", f: parsenoop},
-        0x017C: {n: "BrtBeginEsstr", f: parsenoop},
-        0x017D: {n: "BrtEndEsstr", f: parsenoop},
-        0x017E: {n: "BrtBeginPRFItem", f: parsenoop},
-        0x017F: {n: "BrtEndPRFItem", f: parsenoop},
-        0x0180: {n: "BrtBeginPivotCacheIDs", f: parsenoop},
-        0x0181: {n: "BrtEndPivotCacheIDs", f: parsenoop},
-        0x0182: {n: "BrtBeginPivotCacheID", f: parsenoop},
-        0x0183: {n: "BrtEndPivotCacheID", f: parsenoop},
-        0x0184: {n: "BrtBeginISXVIs", f: parsenoop},
-        0x0185: {n: "BrtEndISXVIs", f: parsenoop},
-        0x0186: {n: "BrtBeginColInfos", f: parsenoop},
-        0x0187: {n: "BrtEndColInfos", f: parsenoop},
-        0x0188: {n: "BrtBeginRwBrk", f: parsenoop},
-        0x0189: {n: "BrtEndRwBrk", f: parsenoop},
-        0x018A: {n: "BrtBeginColBrk", f: parsenoop},
-        0x018B: {n: "BrtEndColBrk", f: parsenoop},
-        0x018C: {n: "BrtBrk", f: parsenoop},
-        0x018D: {n: "BrtUserBookView", f: parsenoop},
-        0x018E: {n: "BrtInfo", f: parsenoop},
-        0x018F: {n: "BrtCUsr", f: parsenoop},
-        0x0190: {n: "BrtUsr", f: parsenoop},
-        0x0191: {n: "BrtBeginUsers", f: parsenoop},
-        0x0193: {n: "BrtEOF", f: parsenoop},
-        0x0194: {n: "BrtUCR", f: parsenoop},
-        0x0195: {n: "BrtRRInsDel", f: parsenoop},
-        0x0196: {n: "BrtRREndInsDel", f: parsenoop},
-        0x0197: {n: "BrtRRMove", f: parsenoop},
-        0x0198: {n: "BrtRREndMove", f: parsenoop},
-        0x0199: {n: "BrtRRChgCell", f: parsenoop},
-        0x019A: {n: "BrtRREndChgCell", f: parsenoop},
-        0x019B: {n: "BrtRRHeader", f: parsenoop},
-        0x019C: {n: "BrtRRUserView", f: parsenoop},
-        0x019D: {n: "BrtRRRenSheet", f: parsenoop},
-        0x019E: {n: "BrtRRInsertSh", f: parsenoop},
-        0x019F: {n: "BrtRRDefName", f: parsenoop},
-        0x01A0: {n: "BrtRRNote", f: parsenoop},
-        0x01A1: {n: "BrtRRConflict", f: parsenoop},
-        0x01A2: {n: "BrtRRTQSIF", f: parsenoop},
-        0x01A3: {n: "BrtRRFormat", f: parsenoop},
-        0x01A4: {n: "BrtRREndFormat", f: parsenoop},
-        0x01A5: {n: "BrtRRAutoFmt", f: parsenoop},
-        0x01A6: {n: "BrtBeginUserShViews", f: parsenoop},
-        0x01A7: {n: "BrtBeginUserShView", f: parsenoop},
-        0x01A8: {n: "BrtEndUserShView", f: parsenoop},
-        0x01A9: {n: "BrtEndUserShViews", f: parsenoop},
-        0x01AA: {n: "BrtArrFmla", f: parse_BrtArrFmla},
-        0x01AB: {n: "BrtShrFmla", f: parse_BrtShrFmla},
-        0x01AC: {n: "BrtTable", f: parsenoop},
-        0x01AD: {n: "BrtBeginExtConnections", f: parsenoop},
-        0x01AE: {n: "BrtEndExtConnections", f: parsenoop},
-        0x01AF: {n: "BrtBeginPCDCalcMems", f: parsenoop},
-        0x01B0: {n: "BrtEndPCDCalcMems", f: parsenoop},
-        0x01B1: {n: "BrtBeginPCDCalcMem", f: parsenoop},
-        0x01B2: {n: "BrtEndPCDCalcMem", f: parsenoop},
-        0x01B3: {n: "BrtBeginPCDHGLevels", f: parsenoop},
-        0x01B4: {n: "BrtEndPCDHGLevels", f: parsenoop},
-        0x01B5: {n: "BrtBeginPCDHGLevel", f: parsenoop},
-        0x01B6: {n: "BrtEndPCDHGLevel", f: parsenoop},
-        0x01B7: {n: "BrtBeginPCDHGLGroups", f: parsenoop},
-        0x01B8: {n: "BrtEndPCDHGLGroups", f: parsenoop},
-        0x01B9: {n: "BrtBeginPCDHGLGroup", f: parsenoop},
-        0x01BA: {n: "BrtEndPCDHGLGroup", f: parsenoop},
-        0x01BB: {n: "BrtBeginPCDHGLGMembers", f: parsenoop},
-        0x01BC: {n: "BrtEndPCDHGLGMembers", f: parsenoop},
-        0x01BD: {n: "BrtBeginPCDHGLGMember", f: parsenoop},
-        0x01BE: {n: "BrtEndPCDHGLGMember", f: parsenoop},
-        0x01BF: {n: "BrtBeginQSI", f: parsenoop},
-        0x01C0: {n: "BrtEndQSI", f: parsenoop},
-        0x01C1: {n: "BrtBeginQSIR", f: parsenoop},
-        0x01C2: {n: "BrtEndQSIR", f: parsenoop},
-        0x01C3: {n: "BrtBeginDeletedNames", f: parsenoop},
-        0x01C4: {n: "BrtEndDeletedNames", f: parsenoop},
-        0x01C5: {n: "BrtBeginDeletedName", f: parsenoop},
-        0x01C6: {n: "BrtEndDeletedName", f: parsenoop},
-        0x01C7: {n: "BrtBeginQSIFs", f: parsenoop},
-        0x01C8: {n: "BrtEndQSIFs", f: parsenoop},
-        0x01C9: {n: "BrtBeginQSIF", f: parsenoop},
-        0x01CA: {n: "BrtEndQSIF", f: parsenoop},
-        0x01CB: {n: "BrtBeginAutoSortScope", f: parsenoop},
-        0x01CC: {n: "BrtEndAutoSortScope", f: parsenoop},
-        0x01CD: {n: "BrtBeginConditionalFormatting", f: parsenoop},
-        0x01CE: {n: "BrtEndConditionalFormatting", f: parsenoop},
-        0x01CF: {n: "BrtBeginCFRule", f: parsenoop},
-        0x01D0: {n: "BrtEndCFRule", f: parsenoop},
-        0x01D1: {n: "BrtBeginIconSet", f: parsenoop},
-        0x01D2: {n: "BrtEndIconSet", f: parsenoop},
-        0x01D3: {n: "BrtBeginDatabar", f: parsenoop},
-        0x01D4: {n: "BrtEndDatabar", f: parsenoop},
-        0x01D5: {n: "BrtBeginColorScale", f: parsenoop},
-        0x01D6: {n: "BrtEndColorScale", f: parsenoop},
-        0x01D7: {n: "BrtCFVO", f: parsenoop},
-        0x01D8: {n: "BrtExternValueMeta", f: parsenoop},
-        0x01D9: {n: "BrtBeginColorPalette", f: parsenoop},
-        0x01DA: {n: "BrtEndColorPalette", f: parsenoop},
-        0x01DB: {n: "BrtIndexedColor", f: parsenoop},
-        0x01DC: {n: "BrtMargins", f: parse_BrtMargins},
-        0x01DD: {n: "BrtPrintOptions", f: parsenoop},
-        0x01DE: {n: "BrtPageSetup", f: parsenoop},
-        0x01DF: {n: "BrtBeginHeaderFooter", f: parsenoop},
-        0x01E0: {n: "BrtEndHeaderFooter", f: parsenoop},
-        0x01E1: {n: "BrtBeginSXCrtFormat", f: parsenoop},
-        0x01E2: {n: "BrtEndSXCrtFormat", f: parsenoop},
-        0x01E3: {n: "BrtBeginSXCrtFormats", f: parsenoop},
-        0x01E4: {n: "BrtEndSXCrtFormats", f: parsenoop},
-        0x01E5: {n: "BrtWsFmtInfo", f: parsenoop},
-        0x01E6: {n: "BrtBeginMgs", f: parsenoop},
-        0x01E7: {n: "BrtEndMGs", f: parsenoop},
-        0x01E8: {n: "BrtBeginMGMaps", f: parsenoop},
-        0x01E9: {n: "BrtEndMGMaps", f: parsenoop},
-        0x01EA: {n: "BrtBeginMG", f: parsenoop},
-        0x01EB: {n: "BrtEndMG", f: parsenoop},
-        0x01EC: {n: "BrtBeginMap", f: parsenoop},
-        0x01ED: {n: "BrtEndMap", f: parsenoop},
-        0x01EE: {n: "BrtHLink", f: parse_BrtHLink},
-        0x01EF: {n: "BrtBeginDCon", f: parsenoop},
-        0x01F0: {n: "BrtEndDCon", f: parsenoop},
-        0x01F1: {n: "BrtBeginDRefs", f: parsenoop},
-        0x01F2: {n: "BrtEndDRefs", f: parsenoop},
-        0x01F3: {n: "BrtDRef", f: parsenoop},
-        0x01F4: {n: "BrtBeginScenMan", f: parsenoop},
-        0x01F5: {n: "BrtEndScenMan", f: parsenoop},
-        0x01F6: {n: "BrtBeginSct", f: parsenoop},
-        0x01F7: {n: "BrtEndSct", f: parsenoop},
-        0x01F8: {n: "BrtSlc", f: parsenoop},
-        0x01F9: {n: "BrtBeginDXFs", f: parsenoop},
-        0x01FA: {n: "BrtEndDXFs", f: parsenoop},
-        0x01FB: {n: "BrtDXF", f: parsenoop},
-        0x01FC: {n: "BrtBeginTableStyles", f: parsenoop},
-        0x01FD: {n: "BrtEndTableStyles", f: parsenoop},
-        0x01FE: {n: "BrtBeginTableStyle", f: parsenoop},
-        0x01FF: {n: "BrtEndTableStyle", f: parsenoop},
-        0x0200: {n: "BrtTableStyleElement", f: parsenoop},
-        0x0201: {n: "BrtTableStyleClient", f: parsenoop},
-        0x0202: {n: "BrtBeginVolDeps", f: parsenoop},
-        0x0203: {n: "BrtEndVolDeps", f: parsenoop},
-        0x0204: {n: "BrtBeginVolType", f: parsenoop},
-        0x0205: {n: "BrtEndVolType", f: parsenoop},
-        0x0206: {n: "BrtBeginVolMain", f: parsenoop},
-        0x0207: {n: "BrtEndVolMain", f: parsenoop},
-        0x0208: {n: "BrtBeginVolTopic", f: parsenoop},
-        0x0209: {n: "BrtEndVolTopic", f: parsenoop},
-        0x020A: {n: "BrtVolSubtopic", f: parsenoop},
-        0x020B: {n: "BrtVolRef", f: parsenoop},
-        0x020C: {n: "BrtVolNum", f: parsenoop},
-        0x020D: {n: "BrtVolErr", f: parsenoop},
-        0x020E: {n: "BrtVolStr", f: parsenoop},
-        0x020F: {n: "BrtVolBool", f: parsenoop},
-        0x0210: {n: "BrtBeginCalcChain$", f: parsenoop},
-        0x0211: {n: "BrtEndCalcChain$", f: parsenoop},
-        0x0212: {n: "BrtBeginSortState", f: parsenoop},
-        0x0213: {n: "BrtEndSortState", f: parsenoop},
-        0x0214: {n: "BrtBeginSortCond", f: parsenoop},
-        0x0215: {n: "BrtEndSortCond", f: parsenoop},
-        0x0216: {n: "BrtBookProtection", f: parsenoop},
-        0x0217: {n: "BrtSheetProtection", f: parsenoop},
-        0x0218: {n: "BrtRangeProtection", f: parsenoop},
-        0x0219: {n: "BrtPhoneticInfo", f: parsenoop},
-        0x021A: {n: "BrtBeginECTxtWiz", f: parsenoop},
-        0x021B: {n: "BrtEndECTxtWiz", f: parsenoop},
-        0x021C: {n: "BrtBeginECTWFldInfoLst", f: parsenoop},
-        0x021D: {n: "BrtEndECTWFldInfoLst", f: parsenoop},
-        0x021E: {n: "BrtBeginECTwFldInfo", f: parsenoop},
-        0x0224: {n: "BrtFileSharing", f: parsenoop},
-        0x0225: {n: "BrtOleSize", f: parsenoop},
-        0x0226: {n: "BrtDrawing", f: parse_RelID},
-        0x0227: {n: "BrtLegacyDrawing", f: parsenoop},
-        0x0228: {n: "BrtLegacyDrawingHF", f: parsenoop},
-        0x0229: {n: "BrtWebOpt", f: parsenoop},
-        0x022A: {n: "BrtBeginWebPubItems", f: parsenoop},
-        0x022B: {n: "BrtEndWebPubItems", f: parsenoop},
-        0x022C: {n: "BrtBeginWebPubItem", f: parsenoop},
-        0x022D: {n: "BrtEndWebPubItem", f: parsenoop},
-        0x022E: {n: "BrtBeginSXCondFmt", f: parsenoop},
-        0x022F: {n: "BrtEndSXCondFmt", f: parsenoop},
-        0x0230: {n: "BrtBeginSXCondFmts", f: parsenoop},
-        0x0231: {n: "BrtEndSXCondFmts", f: parsenoop},
-        0x0232: {n: "BrtBkHim", f: parsenoop},
-        0x0234: {n: "BrtColor", f: parsenoop},
-        0x0235: {n: "BrtBeginIndexedColors", f: parsenoop},
-        0x0236: {n: "BrtEndIndexedColors", f: parsenoop},
-        0x0239: {n: "BrtBeginMRUColors", f: parsenoop},
-        0x023A: {n: "BrtEndMRUColors", f: parsenoop},
-        0x023C: {n: "BrtMRUColor", f: parsenoop},
-        0x023D: {n: "BrtBeginDVals", f: parsenoop},
-        0x023E: {n: "BrtEndDVals", f: parsenoop},
-        0x0241: {n: "BrtSupNameStart", f: parsenoop},
-        0x0242: {n: "BrtSupNameValueStart", f: parsenoop},
-        0x0243: {n: "BrtSupNameValueEnd", f: parsenoop},
-        0x0244: {n: "BrtSupNameNum", f: parsenoop},
-        0x0245: {n: "BrtSupNameErr", f: parsenoop},
-        0x0246: {n: "BrtSupNameSt", f: parsenoop},
-        0x0247: {n: "BrtSupNameNil", f: parsenoop},
-        0x0248: {n: "BrtSupNameBool", f: parsenoop},
-        0x0249: {n: "BrtSupNameFmla", f: parsenoop},
-        0x024A: {n: "BrtSupNameBits", f: parsenoop},
-        0x024B: {n: "BrtSupNameEnd", f: parsenoop},
-        0x024C: {n: "BrtEndSupBook", f: parsenoop},
-        0x024D: {n: "BrtCellSmartTagProperty", f: parsenoop},
-        0x024E: {n: "BrtBeginCellSmartTag", f: parsenoop},
-        0x024F: {n: "BrtEndCellSmartTag", f: parsenoop},
-        0x0250: {n: "BrtBeginCellSmartTags", f: parsenoop},
-        0x0251: {n: "BrtEndCellSmartTags", f: parsenoop},
-        0x0252: {n: "BrtBeginSmartTags", f: parsenoop},
-        0x0253: {n: "BrtEndSmartTags", f: parsenoop},
-        0x0254: {n: "BrtSmartTagType", f: parsenoop},
-        0x0255: {n: "BrtBeginSmartTagTypes", f: parsenoop},
-        0x0256: {n: "BrtEndSmartTagTypes", f: parsenoop},
-        0x0257: {n: "BrtBeginSXFilters", f: parsenoop},
-        0x0258: {n: "BrtEndSXFilters", f: parsenoop},
-        0x0259: {n: "BrtBeginSXFILTER", f: parsenoop},
-        0x025A: {n: "BrtEndSXFilter", f: parsenoop},
-        0x025B: {n: "BrtBeginFills", f: parsenoop},
-        0x025C: {n: "BrtEndFills", f: parsenoop},
-        0x025D: {n: "BrtBeginCellWatches", f: parsenoop},
-        0x025E: {n: "BrtEndCellWatches", f: parsenoop},
-        0x025F: {n: "BrtCellWatch", f: parsenoop},
-        0x0260: {n: "BrtBeginCRErrs", f: parsenoop},
-        0x0261: {n: "BrtEndCRErrs", f: parsenoop},
-        0x0262: {n: "BrtCrashRecErr", f: parsenoop},
-        0x0263: {n: "BrtBeginFonts", f: parsenoop},
-        0x0264: {n: "BrtEndFonts", f: parsenoop},
-        0x0265: {n: "BrtBeginBorders", f: parsenoop},
-        0x0266: {n: "BrtEndBorders", f: parsenoop},
-        0x0267: {n: "BrtBeginFmts", f: parsenoop},
-        0x0268: {n: "BrtEndFmts", f: parsenoop},
-        0x0269: {n: "BrtBeginCellXFs", f: parsenoop},
-        0x026A: {n: "BrtEndCellXFs", f: parsenoop},
-        0x026B: {n: "BrtBeginStyles", f: parsenoop},
-        0x026C: {n: "BrtEndStyles", f: parsenoop},
-        0x0271: {n: "BrtBigName", f: parsenoop},
-        0x0272: {n: "BrtBeginCellStyleXFs", f: parsenoop},
-        0x0273: {n: "BrtEndCellStyleXFs", f: parsenoop},
-        0x0274: {n: "BrtBeginComments", f: parsenoop},
-        0x0275: {n: "BrtEndComments", f: parsenoop},
-        0x0276: {n: "BrtBeginCommentAuthors", f: parsenoop},
-        0x0277: {n: "BrtEndCommentAuthors", f: parsenoop},
-        0x0278: {n: "BrtCommentAuthor", f: parse_BrtCommentAuthor},
-        0x0279: {n: "BrtBeginCommentList", f: parsenoop},
-        0x027A: {n: "BrtEndCommentList", f: parsenoop},
-        0x027B: {n: "BrtBeginComment", f: parse_BrtBeginComment},
-        0x027C: {n: "BrtEndComment", f: parsenoop},
-        0x027D: {n: "BrtCommentText", f: parse_BrtCommentText},
-        0x027E: {n: "BrtBeginOleObjects", f: parsenoop},
-        0x027F: {n: "BrtOleObject", f: parsenoop},
-        0x0280: {n: "BrtEndOleObjects", f: parsenoop},
-        0x0281: {n: "BrtBeginSxrules", f: parsenoop},
-        0x0282: {n: "BrtEndSxRules", f: parsenoop},
-        0x0283: {n: "BrtBeginActiveXControls", f: parsenoop},
-        0x0284: {n: "BrtActiveX", f: parsenoop},
-        0x0285: {n: "BrtEndActiveXControls", f: parsenoop},
-        0x0286: {n: "BrtBeginPCDSDTCEMembersSortBy", f: parsenoop},
-        0x0288: {n: "BrtBeginCellIgnoreECs", f: parsenoop},
-        0x0289: {n: "BrtCellIgnoreEC", f: parsenoop},
-        0x028A: {n: "BrtEndCellIgnoreECs", f: parsenoop},
-        0x028B: {n: "BrtCsProp", f: parsenoop},
-        0x028C: {n: "BrtCsPageSetup", f: parsenoop},
-        0x028D: {n: "BrtBeginUserCsViews", f: parsenoop},
-        0x028E: {n: "BrtEndUserCsViews", f: parsenoop},
-        0x028F: {n: "BrtBeginUserCsView", f: parsenoop},
-        0x0290: {n: "BrtEndUserCsView", f: parsenoop},
-        0x0291: {n: "BrtBeginPcdSFCIEntries", f: parsenoop},
-        0x0292: {n: "BrtEndPCDSFCIEntries", f: parsenoop},
-        0x0293: {n: "BrtPCDSFCIEntry", f: parsenoop},
-        0x0294: {n: "BrtBeginListParts", f: parsenoop},
-        0x0295: {n: "BrtListPart", f: parsenoop},
-        0x0296: {n: "BrtEndListParts", f: parsenoop},
-        0x0297: {n: "BrtSheetCalcProp", f: parsenoop},
-        0x0298: {n: "BrtBeginFnGroup", f: parsenoop},
-        0x0299: {n: "BrtFnGroup", f: parsenoop},
-        0x029A: {n: "BrtEndFnGroup", f: parsenoop},
-        0x029B: {n: "BrtSupAddin", f: parsenoop},
-        0x029C: {n: "BrtSXTDMPOrder", f: parsenoop},
-        0x029D: {n: "BrtCsProtection", f: parsenoop},
-        0x029F: {n: "BrtBeginWsSortMap", f: parsenoop},
-        0x02A0: {n: "BrtEndWsSortMap", f: parsenoop},
-        0x02A1: {n: "BrtBeginRRSort", f: parsenoop},
-        0x02A2: {n: "BrtEndRRSort", f: parsenoop},
-        0x02A3: {n: "BrtRRSortItem", f: parsenoop},
-        0x02A4: {n: "BrtFileSharingIso", f: parsenoop},
-        0x02A5: {n: "BrtBookProtectionIso", f: parsenoop},
-        0x02A6: {n: "BrtSheetProtectionIso", f: parsenoop},
-        0x02A7: {n: "BrtCsProtectionIso", f: parsenoop},
-        0x02A8: {n: "BrtRangeProtectionIso", f: parsenoop},
-        0x0400: {n: "BrtRwDescent", f: parsenoop},
-        0x0401: {n: "BrtKnownFonts", f: parsenoop},
-        0x0402: {n: "BrtBeginSXTupleSet", f: parsenoop},
-        0x0403: {n: "BrtEndSXTupleSet", f: parsenoop},
-        0x0404: {n: "BrtBeginSXTupleSetHeader", f: parsenoop},
-        0x0405: {n: "BrtEndSXTupleSetHeader", f: parsenoop},
-        0x0406: {n: "BrtSXTupleSetHeaderItem", f: parsenoop},
-        0x0407: {n: "BrtBeginSXTupleSetData", f: parsenoop},
-        0x0408: {n: "BrtEndSXTupleSetData", f: parsenoop},
-        0x0409: {n: "BrtBeginSXTupleSetRow", f: parsenoop},
-        0x040A: {n: "BrtEndSXTupleSetRow", f: parsenoop},
-        0x040B: {n: "BrtSXTupleSetRowItem", f: parsenoop},
-        0x040C: {n: "BrtNameExt", f: parsenoop},
-        0x040D: {n: "BrtPCDH14", f: parsenoop},
-        0x040E: {n: "BrtBeginPCDCalcMem14", f: parsenoop},
-        0x040F: {n: "BrtEndPCDCalcMem14", f: parsenoop},
-        0x0410: {n: "BrtSXTH14", f: parsenoop},
-        0x0411: {n: "BrtBeginSparklineGroup", f: parsenoop},
-        0x0412: {n: "BrtEndSparklineGroup", f: parsenoop},
-        0x0413: {n: "BrtSparkline", f: parsenoop},
-        0x0414: {n: "BrtSXDI14", f: parsenoop},
-        0x0415: {n: "BrtWsFmtInfoEx14", f: parsenoop},
-        0x0416: {n: "BrtBeginConditionalFormatting14", f: parsenoop},
-        0x0417: {n: "BrtEndConditionalFormatting14", f: parsenoop},
-        0x0418: {n: "BrtBeginCFRule14", f: parsenoop},
-        0x0419: {n: "BrtEndCFRule14", f: parsenoop},
-        0x041A: {n: "BrtCFVO14", f: parsenoop},
-        0x041B: {n: "BrtBeginDatabar14", f: parsenoop},
-        0x041C: {n: "BrtBeginIconSet14", f: parsenoop},
-        0x041D: {n: "BrtDVal14", f: parsenoop},
-        0x041E: {n: "BrtBeginDVals14", f: parsenoop},
-        0x041F: {n: "BrtColor14", f: parsenoop},
-        0x0420: {n: "BrtBeginSparklines", f: parsenoop},
-        0x0421: {n: "BrtEndSparklines", f: parsenoop},
-        0x0422: {n: "BrtBeginSparklineGroups", f: parsenoop},
-        0x0423: {n: "BrtEndSparklineGroups", f: parsenoop},
-        0x0425: {n: "BrtSXVD14", f: parsenoop},
-        0x0426: {n: "BrtBeginSxview14", f: parsenoop},
-        0x0427: {n: "BrtEndSxview14", f: parsenoop},
-        0x042A: {n: "BrtBeginPCD14", f: parsenoop},
-        0x042B: {n: "BrtEndPCD14", f: parsenoop},
-        0x042C: {n: "BrtBeginExtConn14", f: parsenoop},
-        0x042D: {n: "BrtEndExtConn14", f: parsenoop},
-        0x042E: {n: "BrtBeginSlicerCacheIDs", f: parsenoop},
-        0x042F: {n: "BrtEndSlicerCacheIDs", f: parsenoop},
-        0x0430: {n: "BrtBeginSlicerCacheID", f: parsenoop},
-        0x0431: {n: "BrtEndSlicerCacheID", f: parsenoop},
-        0x0433: {n: "BrtBeginSlicerCache", f: parsenoop},
-        0x0434: {n: "BrtEndSlicerCache", f: parsenoop},
-        0x0435: {n: "BrtBeginSlicerCacheDef", f: parsenoop},
-        0x0436: {n: "BrtEndSlicerCacheDef", f: parsenoop},
-        0x0437: {n: "BrtBeginSlicersEx", f: parsenoop},
-        0x0438: {n: "BrtEndSlicersEx", f: parsenoop},
-        0x0439: {n: "BrtBeginSlicerEx", f: parsenoop},
-        0x043A: {n: "BrtEndSlicerEx", f: parsenoop},
-        0x043B: {n: "BrtBeginSlicer", f: parsenoop},
-        0x043C: {n: "BrtEndSlicer", f: parsenoop},
-        0x043D: {n: "BrtSlicerCachePivotTables", f: parsenoop},
-        0x043E: {n: "BrtBeginSlicerCacheOlapImpl", f: parsenoop},
-        0x043F: {n: "BrtEndSlicerCacheOlapImpl", f: parsenoop},
-        0x0440: {n: "BrtBeginSlicerCacheLevelsData", f: parsenoop},
-        0x0441: {n: "BrtEndSlicerCacheLevelsData", f: parsenoop},
-        0x0442: {n: "BrtBeginSlicerCacheLevelData", f: parsenoop},
-        0x0443: {n: "BrtEndSlicerCacheLevelData", f: parsenoop},
-        0x0444: {n: "BrtBeginSlicerCacheSiRanges", f: parsenoop},
-        0x0445: {n: "BrtEndSlicerCacheSiRanges", f: parsenoop},
-        0x0446: {n: "BrtBeginSlicerCacheSiRange", f: parsenoop},
-        0x0447: {n: "BrtEndSlicerCacheSiRange", f: parsenoop},
-        0x0448: {n: "BrtSlicerCacheOlapItem", f: parsenoop},
-        0x0449: {n: "BrtBeginSlicerCacheSelections", f: parsenoop},
-        0x044A: {n: "BrtSlicerCacheSelection", f: parsenoop},
-        0x044B: {n: "BrtEndSlicerCacheSelections", f: parsenoop},
-        0x044C: {n: "BrtBeginSlicerCacheNative", f: parsenoop},
-        0x044D: {n: "BrtEndSlicerCacheNative", f: parsenoop},
-        0x044E: {n: "BrtSlicerCacheNativeItem", f: parsenoop},
-        0x044F: {n: "BrtRangeProtection14", f: parsenoop},
-        0x0450: {n: "BrtRangeProtectionIso14", f: parsenoop},
-        0x0451: {n: "BrtCellIgnoreEC14", f: parsenoop},
-        0x0457: {n: "BrtList14", f: parsenoop},
-        0x0458: {n: "BrtCFIcon", f: parsenoop},
-        0x0459: {n: "BrtBeginSlicerCachesPivotCacheIDs", f: parsenoop},
-        0x045A: {n: "BrtEndSlicerCachesPivotCacheIDs", f: parsenoop},
-        0x045B: {n: "BrtBeginSlicers", f: parsenoop},
-        0x045C: {n: "BrtEndSlicers", f: parsenoop},
-        0x045D: {n: "BrtWbProp14", f: parsenoop},
-        0x045E: {n: "BrtBeginSXEdit", f: parsenoop},
-        0x045F: {n: "BrtEndSXEdit", f: parsenoop},
-        0x0460: {n: "BrtBeginSXEdits", f: parsenoop},
-        0x0461: {n: "BrtEndSXEdits", f: parsenoop},
-        0x0462: {n: "BrtBeginSXChange", f: parsenoop},
-        0x0463: {n: "BrtEndSXChange", f: parsenoop},
-        0x0464: {n: "BrtBeginSXChanges", f: parsenoop},
-        0x0465: {n: "BrtEndSXChanges", f: parsenoop},
-        0x0466: {n: "BrtSXTupleItems", f: parsenoop},
-        0x0468: {n: "BrtBeginSlicerStyle", f: parsenoop},
-        0x0469: {n: "BrtEndSlicerStyle", f: parsenoop},
-        0x046A: {n: "BrtSlicerStyleElement", f: parsenoop},
-        0x046B: {n: "BrtBeginStyleSheetExt14", f: parsenoop},
-        0x046C: {n: "BrtEndStyleSheetExt14", f: parsenoop},
-        0x046D: {n: "BrtBeginSlicerCachesPivotCacheID", f: parsenoop},
-        0x046E: {n: "BrtEndSlicerCachesPivotCacheID", f: parsenoop},
-        0x046F: {n: "BrtBeginConditionalFormattings", f: parsenoop},
-        0x0470: {n: "BrtEndConditionalFormattings", f: parsenoop},
-        0x0471: {n: "BrtBeginPCDCalcMemExt", f: parsenoop},
-        0x0472: {n: "BrtEndPCDCalcMemExt", f: parsenoop},
-        0x0473: {n: "BrtBeginPCDCalcMemsExt", f: parsenoop},
-        0x0474: {n: "BrtEndPCDCalcMemsExt", f: parsenoop},
-        0x0475: {n: "BrtPCDField14", f: parsenoop},
-        0x0476: {n: "BrtBeginSlicerStyles", f: parsenoop},
-        0x0477: {n: "BrtEndSlicerStyles", f: parsenoop},
-        0x0478: {n: "BrtBeginSlicerStyleElements", f: parsenoop},
-        0x0479: {n: "BrtEndSlicerStyleElements", f: parsenoop},
-        0x047A: {n: "BrtCFRuleExt", f: parsenoop},
-        0x047B: {n: "BrtBeginSXCondFmt14", f: parsenoop},
-        0x047C: {n: "BrtEndSXCondFmt14", f: parsenoop},
-        0x047D: {n: "BrtBeginSXCondFmts14", f: parsenoop},
-        0x047E: {n: "BrtEndSXCondFmts14", f: parsenoop},
-        0x0480: {n: "BrtBeginSortCond14", f: parsenoop},
-        0x0481: {n: "BrtEndSortCond14", f: parsenoop},
-        0x0482: {n: "BrtEndDVals14", f: parsenoop},
-        0x0483: {n: "BrtEndIconSet14", f: parsenoop},
-        0x0484: {n: "BrtEndDatabar14", f: parsenoop},
-        0x0485: {n: "BrtBeginColorScale14", f: parsenoop},
-        0x0486: {n: "BrtEndColorScale14", f: parsenoop},
-        0x0487: {n: "BrtBeginSxrules14", f: parsenoop},
-        0x0488: {n: "BrtEndSxrules14", f: parsenoop},
-        0x0489: {n: "BrtBeginPRule14", f: parsenoop},
-        0x048A: {n: "BrtEndPRule14", f: parsenoop},
-        0x048B: {n: "BrtBeginPRFilters14", f: parsenoop},
-        0x048C: {n: "BrtEndPRFilters14", f: parsenoop},
-        0x048D: {n: "BrtBeginPRFilter14", f: parsenoop},
-        0x048E: {n: "BrtEndPRFilter14", f: parsenoop},
-        0x048F: {n: "BrtBeginPRFItem14", f: parsenoop},
-        0x0490: {n: "BrtEndPRFItem14", f: parsenoop},
-        0x0491: {n: "BrtBeginCellIgnoreECs14", f: parsenoop},
-        0x0492: {n: "BrtEndCellIgnoreECs14", f: parsenoop},
-        0x0493: {n: "BrtDxf14", f: parsenoop},
-        0x0494: {n: "BrtBeginDxF14s", f: parsenoop},
-        0x0495: {n: "BrtEndDxf14s", f: parsenoop},
-        0x0499: {n: "BrtFilter14", f: parsenoop},
-        0x049A: {n: "BrtBeginCustomFilters14", f: parsenoop},
-        0x049C: {n: "BrtCustomFilter14", f: parsenoop},
-        0x049D: {n: "BrtIconFilter14", f: parsenoop},
-        0x049E: {n: "BrtPivotCacheConnectionName", f: parsenoop},
-        0x0800: {n: "BrtBeginDecoupledPivotCacheIDs", f: parsenoop},
-        0x0801: {n: "BrtEndDecoupledPivotCacheIDs", f: parsenoop},
-        0x0802: {n: "BrtDecoupledPivotCacheID", f: parsenoop},
-        0x0803: {n: "BrtBeginPivotTableRefs", f: parsenoop},
-        0x0804: {n: "BrtEndPivotTableRefs", f: parsenoop},
-        0x0805: {n: "BrtPivotTableRef", f: parsenoop},
-        0x0806: {n: "BrtSlicerCacheBookPivotTables", f: parsenoop},
-        0x0807: {n: "BrtBeginSxvcells", f: parsenoop},
-        0x0808: {n: "BrtEndSxvcells", f: parsenoop},
-        0x0809: {n: "BrtBeginSxRow", f: parsenoop},
-        0x080A: {n: "BrtEndSxRow", f: parsenoop},
-        0x080C: {n: "BrtPcdCalcMem15", f: parsenoop},
-        0x0813: {n: "BrtQsi15", f: parsenoop},
-        0x0814: {n: "BrtBeginWebExtensions", f: parsenoop},
-        0x0815: {n: "BrtEndWebExtensions", f: parsenoop},
-        0x0816: {n: "BrtWebExtension", f: parsenoop},
-        0x0817: {n: "BrtAbsPath15", f: parsenoop},
-        0x0818: {n: "BrtBeginPivotTableUISettings", f: parsenoop},
-        0x0819: {n: "BrtEndPivotTableUISettings", f: parsenoop},
-        0x081B: {n: "BrtTableSlicerCacheIDs", f: parsenoop},
-        0x081C: {n: "BrtTableSlicerCacheID", f: parsenoop},
-        0x081D: {n: "BrtBeginTableSlicerCache", f: parsenoop},
-        0x081E: {n: "BrtEndTableSlicerCache", f: parsenoop},
-        0x081F: {n: "BrtSxFilter15", f: parsenoop},
-        0x0820: {n: "BrtBeginTimelineCachePivotCacheIDs", f: parsenoop},
-        0x0821: {n: "BrtEndTimelineCachePivotCacheIDs", f: parsenoop},
-        0x0822: {n: "BrtTimelineCachePivotCacheID", f: parsenoop},
-        0x0823: {n: "BrtBeginTimelineCacheIDs", f: parsenoop},
-        0x0824: {n: "BrtEndTimelineCacheIDs", f: parsenoop},
-        0x0825: {n: "BrtBeginTimelineCacheID", f: parsenoop},
-        0x0826: {n: "BrtEndTimelineCacheID", f: parsenoop},
-        0x0827: {n: "BrtBeginTimelinesEx", f: parsenoop},
-        0x0828: {n: "BrtEndTimelinesEx", f: parsenoop},
-        0x0829: {n: "BrtBeginTimelineEx", f: parsenoop},
-        0x082A: {n: "BrtEndTimelineEx", f: parsenoop},
-        0x082B: {n: "BrtWorkBookPr15", f: parsenoop},
-        0x082C: {n: "BrtPCDH15", f: parsenoop},
-        0x082D: {n: "BrtBeginTimelineStyle", f: parsenoop},
-        0x082E: {n: "BrtEndTimelineStyle", f: parsenoop},
-        0x082F: {n: "BrtTimelineStyleElement", f: parsenoop},
-        0x0830: {n: "BrtBeginTimelineStylesheetExt15", f: parsenoop},
-        0x0831: {n: "BrtEndTimelineStylesheetExt15", f: parsenoop},
-        0x0832: {n: "BrtBeginTimelineStyles", f: parsenoop},
-        0x0833: {n: "BrtEndTimelineStyles", f: parsenoop},
-        0x0834: {n: "BrtBeginTimelineStyleElements", f: parsenoop},
-        0x0835: {n: "BrtEndTimelineStyleElements", f: parsenoop},
-        0x0836: {n: "BrtDxf15", f: parsenoop},
-        0x0837: {n: "BrtBeginDxfs15", f: parsenoop},
-        0x0838: {n: "brtEndDxfs15", f: parsenoop},
-        0x0839: {n: "BrtSlicerCacheHideItemsWithNoData", f: parsenoop},
-        0x083A: {n: "BrtBeginItemUniqueNames", f: parsenoop},
-        0x083B: {n: "BrtEndItemUniqueNames", f: parsenoop},
-        0x083C: {n: "BrtItemUniqueName", f: parsenoop},
-        0x083D: {n: "BrtBeginExtConn15", f: parsenoop},
-        0x083E: {n: "BrtEndExtConn15", f: parsenoop},
-        0x083F: {n: "BrtBeginOledbPr15", f: parsenoop},
-        0x0840: {n: "BrtEndOledbPr15", f: parsenoop},
-        0x0841: {n: "BrtBeginDataFeedPr15", f: parsenoop},
-        0x0842: {n: "BrtEndDataFeedPr15", f: parsenoop},
-        0x0843: {n: "BrtTextPr15", f: parsenoop},
-        0x0844: {n: "BrtRangePr15", f: parsenoop},
-        0x0845: {n: "BrtDbCommand15", f: parsenoop},
-        0x0846: {n: "BrtBeginDbTables15", f: parsenoop},
-        0x0847: {n: "BrtEndDbTables15", f: parsenoop},
-        0x0848: {n: "BrtDbTable15", f: parsenoop},
-        0x0849: {n: "BrtBeginDataModel", f: parsenoop},
-        0x084A: {n: "BrtEndDataModel", f: parsenoop},
-        0x084B: {n: "BrtBeginModelTables", f: parsenoop},
-        0x084C: {n: "BrtEndModelTables", f: parsenoop},
-        0x084D: {n: "BrtModelTable", f: parsenoop},
-        0x084E: {n: "BrtBeginModelRelationships", f: parsenoop},
-        0x084F: {n: "BrtEndModelRelationships", f: parsenoop},
-        0x0850: {n: "BrtModelRelationship", f: parsenoop},
-        0x0851: {n: "BrtBeginECTxtWiz15", f: parsenoop},
-        0x0852: {n: "BrtEndECTxtWiz15", f: parsenoop},
-        0x0853: {n: "BrtBeginECTWFldInfoLst15", f: parsenoop},
-        0x0854: {n: "BrtEndECTWFldInfoLst15", f: parsenoop},
-        0x0855: {n: "BrtBeginECTWFldInfo15", f: parsenoop},
-        0x0856: {n: "BrtFieldListActiveItem", f: parsenoop},
-        0x0857: {n: "BrtPivotCacheIdVersion", f: parsenoop},
-        0x0858: {n: "BrtSXDI15", f: parsenoop},
-        0xFFFF: {n: "", f: parsenoop}
+        0x0000: { n: "BrtRowHdr", f: parse_BrtRowHdr },
+        0x0001: { n: "BrtCellBlank", f: parse_BrtCellBlank },
+        0x0002: { n: "BrtCellRk", f: parse_BrtCellRk },
+        0x0003: { n: "BrtCellError", f: parse_BrtCellError },
+        0x0004: { n: "BrtCellBool", f: parse_BrtCellBool },
+        0x0005: { n: "BrtCellReal", f: parse_BrtCellReal },
+        0x0006: { n: "BrtCellSt", f: parse_BrtCellSt },
+        0x0007: { n: "BrtCellIsst", f: parse_BrtCellIsst },
+        0x0008: { n: "BrtFmlaString", f: parse_BrtFmlaString },
+        0x0009: { n: "BrtFmlaNum", f: parse_BrtFmlaNum },
+        0x000A: { n: "BrtFmlaBool", f: parse_BrtFmlaBool },
+        0x000B: { n: "BrtFmlaError", f: parse_BrtFmlaError },
+        0x0010: { n: "BrtFRTArchID$", f: parse_BrtFRTArchID$ },
+        0x0013: { n: "BrtSSTItem", f: parse_RichStr },
+        0x0014: { n: "BrtPCDIMissing", f: parsenoop },
+        0x0015: { n: "BrtPCDINumber", f: parsenoop },
+        0x0016: { n: "BrtPCDIBoolean", f: parsenoop },
+        0x0017: { n: "BrtPCDIError", f: parsenoop },
+        0x0018: { n: "BrtPCDIString", f: parsenoop },
+        0x0019: { n: "BrtPCDIDatetime", f: parsenoop },
+        0x001A: { n: "BrtPCDIIndex", f: parsenoop },
+        0x001B: { n: "BrtPCDIAMissing", f: parsenoop },
+        0x001C: { n: "BrtPCDIANumber", f: parsenoop },
+        0x001D: { n: "BrtPCDIABoolean", f: parsenoop },
+        0x001E: { n: "BrtPCDIAError", f: parsenoop },
+        0x001F: { n: "BrtPCDIAString", f: parsenoop },
+        0x0020: { n: "BrtPCDIADatetime", f: parsenoop },
+        0x0021: { n: "BrtPCRRecord", f: parsenoop },
+        0x0022: { n: "BrtPCRRecordDt", f: parsenoop },
+        0x0023: { n: "BrtFRTBegin", f: parsenoop },
+        0x0024: { n: "BrtFRTEnd", f: parsenoop },
+        0x0025: { n: "BrtACBegin", f: parsenoop },
+        0x0026: { n: "BrtACEnd", f: parsenoop },
+        0x0027: { n: "BrtName", f: parse_BrtName },
+        0x0028: { n: "BrtIndexRowBlock", f: parsenoop },
+        0x002A: { n: "BrtIndexBlock", f: parsenoop },
+        0x002B: { n: "BrtFont", f: parse_BrtFont },
+        0x002C: { n: "BrtFmt", f: parse_BrtFmt },
+        0x002D: { n: "BrtFill", f: parsenoop },
+        0x002E: { n: "BrtBorder", f: parsenoop },
+        0x002F: { n: "BrtXF", f: parse_BrtXF },
+        0x0030: { n: "BrtStyle", f: parsenoop },
+        0x0031: { n: "BrtCellMeta", f: parsenoop },
+        0x0032: { n: "BrtValueMeta", f: parsenoop },
+        0x0033: { n: "BrtMdb", f: parsenoop },
+        0x0034: { n: "BrtBeginFmd", f: parsenoop },
+        0x0035: { n: "BrtEndFmd", f: parsenoop },
+        0x0036: { n: "BrtBeginMdx", f: parsenoop },
+        0x0037: { n: "BrtEndMdx", f: parsenoop },
+        0x0038: { n: "BrtBeginMdxTuple", f: parsenoop },
+        0x0039: { n: "BrtEndMdxTuple", f: parsenoop },
+        0x003A: { n: "BrtMdxMbrIstr", f: parsenoop },
+        0x003B: { n: "BrtStr", f: parsenoop },
+        0x003C: { n: "BrtColInfo", f: parse_ColInfo },
+        0x003E: { n: "BrtCellRString", f: parsenoop },
+        0x003F: { n: "BrtCalcChainItem$", f: parse_BrtCalcChainItem$ },
+        0x0040: { n: "BrtDVal", f: parsenoop },
+        0x0041: { n: "BrtSxvcellNum", f: parsenoop },
+        0x0042: { n: "BrtSxvcellStr", f: parsenoop },
+        0x0043: { n: "BrtSxvcellBool", f: parsenoop },
+        0x0044: { n: "BrtSxvcellErr", f: parsenoop },
+        0x0045: { n: "BrtSxvcellDate", f: parsenoop },
+        0x0046: { n: "BrtSxvcellNil", f: parsenoop },
+        0x0080: { n: "BrtFileVersion", f: parsenoop },
+        0x0081: { n: "BrtBeginSheet", f: parsenoop },
+        0x0082: { n: "BrtEndSheet", f: parsenoop },
+        0x0083: { n: "BrtBeginBook", f: parsenoop, p: 0 },
+        0x0084: { n: "BrtEndBook", f: parsenoop },
+        0x0085: { n: "BrtBeginWsViews", f: parsenoop },
+        0x0086: { n: "BrtEndWsViews", f: parsenoop },
+        0x0087: { n: "BrtBeginBookViews", f: parsenoop },
+        0x0088: { n: "BrtEndBookViews", f: parsenoop },
+        0x0089: { n: "BrtBeginWsView", f: parsenoop },
+        0x008A: { n: "BrtEndWsView", f: parsenoop },
+        0x008B: { n: "BrtBeginCsViews", f: parsenoop },
+        0x008C: { n: "BrtEndCsViews", f: parsenoop },
+        0x008D: { n: "BrtBeginCsView", f: parsenoop },
+        0x008E: { n: "BrtEndCsView", f: parsenoop },
+        0x008F: { n: "BrtBeginBundleShs", f: parsenoop },
+        0x0090: { n: "BrtEndBundleShs", f: parsenoop },
+        0x0091: { n: "BrtBeginSheetData", f: parsenoop },
+        0x0092: { n: "BrtEndSheetData", f: parsenoop },
+        0x0093: { n: "BrtWsProp", f: parse_BrtWsProp },
+        0x0094: { n: "BrtWsDim", f: parse_BrtWsDim, p: 16 },
+        0x0097: { n: "BrtPane", f: parsenoop },
+        0x0098: { n: "BrtSel", f: parsenoop },
+        0x0099: { n: "BrtWbProp", f: parse_BrtWbProp },
+        0x009A: { n: "BrtWbFactoid", f: parsenoop },
+        0x009B: { n: "BrtFileRecover", f: parsenoop },
+        0x009C: { n: "BrtBundleSh", f: parse_BrtBundleSh },
+        0x009D: { n: "BrtCalcProp", f: parsenoop },
+        0x009E: { n: "BrtBookView", f: parsenoop },
+        0x009F: { n: "BrtBeginSst", f: parse_BrtBeginSst },
+        0x00A0: { n: "BrtEndSst", f: parsenoop },
+        0x00A1: { n: "BrtBeginAFilter", f: parse_UncheckedRfX },
+        0x00A2: { n: "BrtEndAFilter", f: parsenoop },
+        0x00A3: { n: "BrtBeginFilterColumn", f: parsenoop },
+        0x00A4: { n: "BrtEndFilterColumn", f: parsenoop },
+        0x00A5: { n: "BrtBeginFilters", f: parsenoop },
+        0x00A6: { n: "BrtEndFilters", f: parsenoop },
+        0x00A7: { n: "BrtFilter", f: parsenoop },
+        0x00A8: { n: "BrtColorFilter", f: parsenoop },
+        0x00A9: { n: "BrtIconFilter", f: parsenoop },
+        0x00AA: { n: "BrtTop10Filter", f: parsenoop },
+        0x00AB: { n: "BrtDynamicFilter", f: parsenoop },
+        0x00AC: { n: "BrtBeginCustomFilters", f: parsenoop },
+        0x00AD: { n: "BrtEndCustomFilters", f: parsenoop },
+        0x00AE: { n: "BrtCustomFilter", f: parsenoop },
+        0x00AF: { n: "BrtAFilterDateGroupItem", f: parsenoop },
+        0x00B0: { n: "BrtMergeCell", f: parse_BrtMergeCell },
+        0x00B1: { n: "BrtBeginMergeCells", f: parsenoop },
+        0x00B2: { n: "BrtEndMergeCells", f: parsenoop },
+        0x00B3: { n: "BrtBeginPivotCacheDef", f: parsenoop },
+        0x00B4: { n: "BrtEndPivotCacheDef", f: parsenoop },
+        0x00B5: { n: "BrtBeginPCDFields", f: parsenoop },
+        0x00B6: { n: "BrtEndPCDFields", f: parsenoop },
+        0x00B7: { n: "BrtBeginPCDField", f: parsenoop },
+        0x00B8: { n: "BrtEndPCDField", f: parsenoop },
+        0x00B9: { n: "BrtBeginPCDSource", f: parsenoop },
+        0x00BA: { n: "BrtEndPCDSource", f: parsenoop },
+        0x00BB: { n: "BrtBeginPCDSRange", f: parsenoop },
+        0x00BC: { n: "BrtEndPCDSRange", f: parsenoop },
+        0x00BD: { n: "BrtBeginPCDFAtbl", f: parsenoop },
+        0x00BE: { n: "BrtEndPCDFAtbl", f: parsenoop },
+        0x00BF: { n: "BrtBeginPCDIRun", f: parsenoop },
+        0x00C0: { n: "BrtEndPCDIRun", f: parsenoop },
+        0x00C1: { n: "BrtBeginPivotCacheRecords", f: parsenoop },
+        0x00C2: { n: "BrtEndPivotCacheRecords", f: parsenoop },
+        0x00C3: { n: "BrtBeginPCDHierarchies", f: parsenoop },
+        0x00C4: { n: "BrtEndPCDHierarchies", f: parsenoop },
+        0x00C5: { n: "BrtBeginPCDHierarchy", f: parsenoop },
+        0x00C6: { n: "BrtEndPCDHierarchy", f: parsenoop },
+        0x00C7: { n: "BrtBeginPCDHFieldsUsage", f: parsenoop },
+        0x00C8: { n: "BrtEndPCDHFieldsUsage", f: parsenoop },
+        0x00C9: { n: "BrtBeginExtConnection", f: parsenoop },
+        0x00CA: { n: "BrtEndExtConnection", f: parsenoop },
+        0x00CB: { n: "BrtBeginECDbProps", f: parsenoop },
+        0x00CC: { n: "BrtEndECDbProps", f: parsenoop },
+        0x00CD: { n: "BrtBeginECOlapProps", f: parsenoop },
+        0x00CE: { n: "BrtEndECOlapProps", f: parsenoop },
+        0x00CF: { n: "BrtBeginPCDSConsol", f: parsenoop },
+        0x00D0: { n: "BrtEndPCDSConsol", f: parsenoop },
+        0x00D1: { n: "BrtBeginPCDSCPages", f: parsenoop },
+        0x00D2: { n: "BrtEndPCDSCPages", f: parsenoop },
+        0x00D3: { n: "BrtBeginPCDSCPage", f: parsenoop },
+        0x00D4: { n: "BrtEndPCDSCPage", f: parsenoop },
+        0x00D5: { n: "BrtBeginPCDSCPItem", f: parsenoop },
+        0x00D6: { n: "BrtEndPCDSCPItem", f: parsenoop },
+        0x00D7: { n: "BrtBeginPCDSCSets", f: parsenoop },
+        0x00D8: { n: "BrtEndPCDSCSets", f: parsenoop },
+        0x00D9: { n: "BrtBeginPCDSCSet", f: parsenoop },
+        0x00DA: { n: "BrtEndPCDSCSet", f: parsenoop },
+        0x00DB: { n: "BrtBeginPCDFGroup", f: parsenoop },
+        0x00DC: { n: "BrtEndPCDFGroup", f: parsenoop },
+        0x00DD: { n: "BrtBeginPCDFGItems", f: parsenoop },
+        0x00DE: { n: "BrtEndPCDFGItems", f: parsenoop },
+        0x00DF: { n: "BrtBeginPCDFGRange", f: parsenoop },
+        0x00E0: { n: "BrtEndPCDFGRange", f: parsenoop },
+        0x00E1: { n: "BrtBeginPCDFGDiscrete", f: parsenoop },
+        0x00E2: { n: "BrtEndPCDFGDiscrete", f: parsenoop },
+        0x00E3: { n: "BrtBeginPCDSDTupleCache", f: parsenoop },
+        0x00E4: { n: "BrtEndPCDSDTupleCache", f: parsenoop },
+        0x00E5: { n: "BrtBeginPCDSDTCEntries", f: parsenoop },
+        0x00E6: { n: "BrtEndPCDSDTCEntries", f: parsenoop },
+        0x00E7: { n: "BrtBeginPCDSDTCEMembers", f: parsenoop },
+        0x00E8: { n: "BrtEndPCDSDTCEMembers", f: parsenoop },
+        0x00E9: { n: "BrtBeginPCDSDTCEMember", f: parsenoop },
+        0x00EA: { n: "BrtEndPCDSDTCEMember", f: parsenoop },
+        0x00EB: { n: "BrtBeginPCDSDTCQueries", f: parsenoop },
+        0x00EC: { n: "BrtEndPCDSDTCQueries", f: parsenoop },
+        0x00ED: { n: "BrtBeginPCDSDTCQuery", f: parsenoop },
+        0x00EE: { n: "BrtEndPCDSDTCQuery", f: parsenoop },
+        0x00EF: { n: "BrtBeginPCDSDTCSets", f: parsenoop },
+        0x00F0: { n: "BrtEndPCDSDTCSets", f: parsenoop },
+        0x00F1: { n: "BrtBeginPCDSDTCSet", f: parsenoop },
+        0x00F2: { n: "BrtEndPCDSDTCSet", f: parsenoop },
+        0x00F3: { n: "BrtBeginPCDCalcItems", f: parsenoop },
+        0x00F4: { n: "BrtEndPCDCalcItems", f: parsenoop },
+        0x00F5: { n: "BrtBeginPCDCalcItem", f: parsenoop },
+        0x00F6: { n: "BrtEndPCDCalcItem", f: parsenoop },
+        0x00F7: { n: "BrtBeginPRule", f: parsenoop },
+        0x00F8: { n: "BrtEndPRule", f: parsenoop },
+        0x00F9: { n: "BrtBeginPRFilters", f: parsenoop },
+        0x00FA: { n: "BrtEndPRFilters", f: parsenoop },
+        0x00FB: { n: "BrtBeginPRFilter", f: parsenoop },
+        0x00FC: { n: "BrtEndPRFilter", f: parsenoop },
+        0x00FD: { n: "BrtBeginPNames", f: parsenoop },
+        0x00FE: { n: "BrtEndPNames", f: parsenoop },
+        0x00FF: { n: "BrtBeginPName", f: parsenoop },
+        0x0100: { n: "BrtEndPName", f: parsenoop },
+        0x0101: { n: "BrtBeginPNPairs", f: parsenoop },
+        0x0102: { n: "BrtEndPNPairs", f: parsenoop },
+        0x0103: { n: "BrtBeginPNPair", f: parsenoop },
+        0x0104: { n: "BrtEndPNPair", f: parsenoop },
+        0x0105: { n: "BrtBeginECWebProps", f: parsenoop },
+        0x0106: { n: "BrtEndECWebProps", f: parsenoop },
+        0x0107: { n: "BrtBeginEcWpTables", f: parsenoop },
+        0x0108: { n: "BrtEndECWPTables", f: parsenoop },
+        0x0109: { n: "BrtBeginECParams", f: parsenoop },
+        0x010A: { n: "BrtEndECParams", f: parsenoop },
+        0x010B: { n: "BrtBeginECParam", f: parsenoop },
+        0x010C: { n: "BrtEndECParam", f: parsenoop },
+        0x010D: { n: "BrtBeginPCDKPIs", f: parsenoop },
+        0x010E: { n: "BrtEndPCDKPIs", f: parsenoop },
+        0x010F: { n: "BrtBeginPCDKPI", f: parsenoop },
+        0x0110: { n: "BrtEndPCDKPI", f: parsenoop },
+        0x0111: { n: "BrtBeginDims", f: parsenoop },
+        0x0112: { n: "BrtEndDims", f: parsenoop },
+        0x0113: { n: "BrtBeginDim", f: parsenoop },
+        0x0114: { n: "BrtEndDim", f: parsenoop },
+        0x0115: { n: "BrtIndexPartEnd", f: parsenoop },
+        0x0116: { n: "BrtBeginStyleSheet", f: parsenoop },
+        0x0117: { n: "BrtEndStyleSheet", f: parsenoop },
+        0x0118: { n: "BrtBeginSXView", f: parsenoop },
+        0x0119: { n: "BrtEndSXVI", f: parsenoop },
+        0x011A: { n: "BrtBeginSXVI", f: parsenoop },
+        0x011B: { n: "BrtBeginSXVIs", f: parsenoop },
+        0x011C: { n: "BrtEndSXVIs", f: parsenoop },
+        0x011D: { n: "BrtBeginSXVD", f: parsenoop },
+        0x011E: { n: "BrtEndSXVD", f: parsenoop },
+        0x011F: { n: "BrtBeginSXVDs", f: parsenoop },
+        0x0120: { n: "BrtEndSXVDs", f: parsenoop },
+        0x0121: { n: "BrtBeginSXPI", f: parsenoop },
+        0x0122: { n: "BrtEndSXPI", f: parsenoop },
+        0x0123: { n: "BrtBeginSXPIs", f: parsenoop },
+        0x0124: { n: "BrtEndSXPIs", f: parsenoop },
+        0x0125: { n: "BrtBeginSXDI", f: parsenoop },
+        0x0126: { n: "BrtEndSXDI", f: parsenoop },
+        0x0127: { n: "BrtBeginSXDIs", f: parsenoop },
+        0x0128: { n: "BrtEndSXDIs", f: parsenoop },
+        0x0129: { n: "BrtBeginSXLI", f: parsenoop },
+        0x012A: { n: "BrtEndSXLI", f: parsenoop },
+        0x012B: { n: "BrtBeginSXLIRws", f: parsenoop },
+        0x012C: { n: "BrtEndSXLIRws", f: parsenoop },
+        0x012D: { n: "BrtBeginSXLICols", f: parsenoop },
+        0x012E: { n: "BrtEndSXLICols", f: parsenoop },
+        0x012F: { n: "BrtBeginSXFormat", f: parsenoop },
+        0x0130: { n: "BrtEndSXFormat", f: parsenoop },
+        0x0131: { n: "BrtBeginSXFormats", f: parsenoop },
+        0x0132: { n: "BrtEndSxFormats", f: parsenoop },
+        0x0133: { n: "BrtBeginSxSelect", f: parsenoop },
+        0x0134: { n: "BrtEndSxSelect", f: parsenoop },
+        0x0135: { n: "BrtBeginISXVDRws", f: parsenoop },
+        0x0136: { n: "BrtEndISXVDRws", f: parsenoop },
+        0x0137: { n: "BrtBeginISXVDCols", f: parsenoop },
+        0x0138: { n: "BrtEndISXVDCols", f: parsenoop },
+        0x0139: { n: "BrtEndSXLocation", f: parsenoop },
+        0x013A: { n: "BrtBeginSXLocation", f: parsenoop },
+        0x013B: { n: "BrtEndSXView", f: parsenoop },
+        0x013C: { n: "BrtBeginSXTHs", f: parsenoop },
+        0x013D: { n: "BrtEndSXTHs", f: parsenoop },
+        0x013E: { n: "BrtBeginSXTH", f: parsenoop },
+        0x013F: { n: "BrtEndSXTH", f: parsenoop },
+        0x0140: { n: "BrtBeginISXTHRws", f: parsenoop },
+        0x0141: { n: "BrtEndISXTHRws", f: parsenoop },
+        0x0142: { n: "BrtBeginISXTHCols", f: parsenoop },
+        0x0143: { n: "BrtEndISXTHCols", f: parsenoop },
+        0x0144: { n: "BrtBeginSXTDMPS", f: parsenoop },
+        0x0145: { n: "BrtEndSXTDMPs", f: parsenoop },
+        0x0146: { n: "BrtBeginSXTDMP", f: parsenoop },
+        0x0147: { n: "BrtEndSXTDMP", f: parsenoop },
+        0x0148: { n: "BrtBeginSXTHItems", f: parsenoop },
+        0x0149: { n: "BrtEndSXTHItems", f: parsenoop },
+        0x014A: { n: "BrtBeginSXTHItem", f: parsenoop },
+        0x014B: { n: "BrtEndSXTHItem", f: parsenoop },
+        0x014C: { n: "BrtBeginMetadata", f: parsenoop },
+        0x014D: { n: "BrtEndMetadata", f: parsenoop },
+        0x014E: { n: "BrtBeginEsmdtinfo", f: parsenoop },
+        0x014F: { n: "BrtMdtinfo", f: parsenoop },
+        0x0150: { n: "BrtEndEsmdtinfo", f: parsenoop },
+        0x0151: { n: "BrtBeginEsmdb", f: parsenoop },
+        0x0152: { n: "BrtEndEsmdb", f: parsenoop },
+        0x0153: { n: "BrtBeginEsfmd", f: parsenoop },
+        0x0154: { n: "BrtEndEsfmd", f: parsenoop },
+        0x0155: { n: "BrtBeginSingleCells", f: parsenoop },
+        0x0156: { n: "BrtEndSingleCells", f: parsenoop },
+        0x0157: { n: "BrtBeginList", f: parsenoop },
+        0x0158: { n: "BrtEndList", f: parsenoop },
+        0x0159: { n: "BrtBeginListCols", f: parsenoop },
+        0x015A: { n: "BrtEndListCols", f: parsenoop },
+        0x015B: { n: "BrtBeginListCol", f: parsenoop },
+        0x015C: { n: "BrtEndListCol", f: parsenoop },
+        0x015D: { n: "BrtBeginListXmlCPr", f: parsenoop },
+        0x015E: { n: "BrtEndListXmlCPr", f: parsenoop },
+        0x015F: { n: "BrtListCCFmla", f: parsenoop },
+        0x0160: { n: "BrtListTrFmla", f: parsenoop },
+        0x0161: { n: "BrtBeginExternals", f: parsenoop },
+        0x0162: { n: "BrtEndExternals", f: parsenoop },
+        0x0163: { n: "BrtSupBookSrc", f: parsenoop },
+        0x0165: { n: "BrtSupSelf", f: parsenoop },
+        0x0166: { n: "BrtSupSame", f: parsenoop },
+        0x0167: { n: "BrtSupTabs", f: parsenoop },
+        0x0168: { n: "BrtBeginSupBook", f: parsenoop },
+        0x0169: { n: "BrtPlaceholderName", f: parsenoop },
+        0x016A: { n: "BrtExternSheet", f: parsenoop },
+        0x016B: { n: "BrtExternTableStart", f: parsenoop },
+        0x016C: { n: "BrtExternTableEnd", f: parsenoop },
+        0x016E: { n: "BrtExternRowHdr", f: parsenoop },
+        0x016F: { n: "BrtExternCellBlank", f: parsenoop },
+        0x0170: { n: "BrtExternCellReal", f: parsenoop },
+        0x0171: { n: "BrtExternCellBool", f: parsenoop },
+        0x0172: { n: "BrtExternCellError", f: parsenoop },
+        0x0173: { n: "BrtExternCellString", f: parsenoop },
+        0x0174: { n: "BrtBeginEsmdx", f: parsenoop },
+        0x0175: { n: "BrtEndEsmdx", f: parsenoop },
+        0x0176: { n: "BrtBeginMdxSet", f: parsenoop },
+        0x0177: { n: "BrtEndMdxSet", f: parsenoop },
+        0x0178: { n: "BrtBeginMdxMbrProp", f: parsenoop },
+        0x0179: { n: "BrtEndMdxMbrProp", f: parsenoop },
+        0x017A: { n: "BrtBeginMdxKPI", f: parsenoop },
+        0x017B: { n: "BrtEndMdxKPI", f: parsenoop },
+        0x017C: { n: "BrtBeginEsstr", f: parsenoop },
+        0x017D: { n: "BrtEndEsstr", f: parsenoop },
+        0x017E: { n: "BrtBeginPRFItem", f: parsenoop },
+        0x017F: { n: "BrtEndPRFItem", f: parsenoop },
+        0x0180: { n: "BrtBeginPivotCacheIDs", f: parsenoop },
+        0x0181: { n: "BrtEndPivotCacheIDs", f: parsenoop },
+        0x0182: { n: "BrtBeginPivotCacheID", f: parsenoop },
+        0x0183: { n: "BrtEndPivotCacheID", f: parsenoop },
+        0x0184: { n: "BrtBeginISXVIs", f: parsenoop },
+        0x0185: { n: "BrtEndISXVIs", f: parsenoop },
+        0x0186: { n: "BrtBeginColInfos", f: parsenoop },
+        0x0187: { n: "BrtEndColInfos", f: parsenoop },
+        0x0188: { n: "BrtBeginRwBrk", f: parsenoop },
+        0x0189: { n: "BrtEndRwBrk", f: parsenoop },
+        0x018A: { n: "BrtBeginColBrk", f: parsenoop },
+        0x018B: { n: "BrtEndColBrk", f: parsenoop },
+        0x018C: { n: "BrtBrk", f: parsenoop },
+        0x018D: { n: "BrtUserBookView", f: parsenoop },
+        0x018E: { n: "BrtInfo", f: parsenoop },
+        0x018F: { n: "BrtCUsr", f: parsenoop },
+        0x0190: { n: "BrtUsr", f: parsenoop },
+        0x0191: { n: "BrtBeginUsers", f: parsenoop },
+        0x0193: { n: "BrtEOF", f: parsenoop },
+        0x0194: { n: "BrtUCR", f: parsenoop },
+        0x0195: { n: "BrtRRInsDel", f: parsenoop },
+        0x0196: { n: "BrtRREndInsDel", f: parsenoop },
+        0x0197: { n: "BrtRRMove", f: parsenoop },
+        0x0198: { n: "BrtRREndMove", f: parsenoop },
+        0x0199: { n: "BrtRRChgCell", f: parsenoop },
+        0x019A: { n: "BrtRREndChgCell", f: parsenoop },
+        0x019B: { n: "BrtRRHeader", f: parsenoop },
+        0x019C: { n: "BrtRRUserView", f: parsenoop },
+        0x019D: { n: "BrtRRRenSheet", f: parsenoop },
+        0x019E: { n: "BrtRRInsertSh", f: parsenoop },
+        0x019F: { n: "BrtRRDefName", f: parsenoop },
+        0x01A0: { n: "BrtRRNote", f: parsenoop },
+        0x01A1: { n: "BrtRRConflict", f: parsenoop },
+        0x01A2: { n: "BrtRRTQSIF", f: parsenoop },
+        0x01A3: { n: "BrtRRFormat", f: parsenoop },
+        0x01A4: { n: "BrtRREndFormat", f: parsenoop },
+        0x01A5: { n: "BrtRRAutoFmt", f: parsenoop },
+        0x01A6: { n: "BrtBeginUserShViews", f: parsenoop },
+        0x01A7: { n: "BrtBeginUserShView", f: parsenoop },
+        0x01A8: { n: "BrtEndUserShView", f: parsenoop },
+        0x01A9: { n: "BrtEndUserShViews", f: parsenoop },
+        0x01AA: { n: "BrtArrFmla", f: parse_BrtArrFmla },
+        0x01AB: { n: "BrtShrFmla", f: parse_BrtShrFmla },
+        0x01AC: { n: "BrtTable", f: parsenoop },
+        0x01AD: { n: "BrtBeginExtConnections", f: parsenoop },
+        0x01AE: { n: "BrtEndExtConnections", f: parsenoop },
+        0x01AF: { n: "BrtBeginPCDCalcMems", f: parsenoop },
+        0x01B0: { n: "BrtEndPCDCalcMems", f: parsenoop },
+        0x01B1: { n: "BrtBeginPCDCalcMem", f: parsenoop },
+        0x01B2: { n: "BrtEndPCDCalcMem", f: parsenoop },
+        0x01B3: { n: "BrtBeginPCDHGLevels", f: parsenoop },
+        0x01B4: { n: "BrtEndPCDHGLevels", f: parsenoop },
+        0x01B5: { n: "BrtBeginPCDHGLevel", f: parsenoop },
+        0x01B6: { n: "BrtEndPCDHGLevel", f: parsenoop },
+        0x01B7: { n: "BrtBeginPCDHGLGroups", f: parsenoop },
+        0x01B8: { n: "BrtEndPCDHGLGroups", f: parsenoop },
+        0x01B9: { n: "BrtBeginPCDHGLGroup", f: parsenoop },
+        0x01BA: { n: "BrtEndPCDHGLGroup", f: parsenoop },
+        0x01BB: { n: "BrtBeginPCDHGLGMembers", f: parsenoop },
+        0x01BC: { n: "BrtEndPCDHGLGMembers", f: parsenoop },
+        0x01BD: { n: "BrtBeginPCDHGLGMember", f: parsenoop },
+        0x01BE: { n: "BrtEndPCDHGLGMember", f: parsenoop },
+        0x01BF: { n: "BrtBeginQSI", f: parsenoop },
+        0x01C0: { n: "BrtEndQSI", f: parsenoop },
+        0x01C1: { n: "BrtBeginQSIR", f: parsenoop },
+        0x01C2: { n: "BrtEndQSIR", f: parsenoop },
+        0x01C3: { n: "BrtBeginDeletedNames", f: parsenoop },
+        0x01C4: { n: "BrtEndDeletedNames", f: parsenoop },
+        0x01C5: { n: "BrtBeginDeletedName", f: parsenoop },
+        0x01C6: { n: "BrtEndDeletedName", f: parsenoop },
+        0x01C7: { n: "BrtBeginQSIFs", f: parsenoop },
+        0x01C8: { n: "BrtEndQSIFs", f: parsenoop },
+        0x01C9: { n: "BrtBeginQSIF", f: parsenoop },
+        0x01CA: { n: "BrtEndQSIF", f: parsenoop },
+        0x01CB: { n: "BrtBeginAutoSortScope", f: parsenoop },
+        0x01CC: { n: "BrtEndAutoSortScope", f: parsenoop },
+        0x01CD: { n: "BrtBeginConditionalFormatting", f: parsenoop },
+        0x01CE: { n: "BrtEndConditionalFormatting", f: parsenoop },
+        0x01CF: { n: "BrtBeginCFRule", f: parsenoop },
+        0x01D0: { n: "BrtEndCFRule", f: parsenoop },
+        0x01D1: { n: "BrtBeginIconSet", f: parsenoop },
+        0x01D2: { n: "BrtEndIconSet", f: parsenoop },
+        0x01D3: { n: "BrtBeginDatabar", f: parsenoop },
+        0x01D4: { n: "BrtEndDatabar", f: parsenoop },
+        0x01D5: { n: "BrtBeginColorScale", f: parsenoop },
+        0x01D6: { n: "BrtEndColorScale", f: parsenoop },
+        0x01D7: { n: "BrtCFVO", f: parsenoop },
+        0x01D8: { n: "BrtExternValueMeta", f: parsenoop },
+        0x01D9: { n: "BrtBeginColorPalette", f: parsenoop },
+        0x01DA: { n: "BrtEndColorPalette", f: parsenoop },
+        0x01DB: { n: "BrtIndexedColor", f: parsenoop },
+        0x01DC: { n: "BrtMargins", f: parse_BrtMargins },
+        0x01DD: { n: "BrtPrintOptions", f: parsenoop },
+        0x01DE: { n: "BrtPageSetup", f: parsenoop },
+        0x01DF: { n: "BrtBeginHeaderFooter", f: parsenoop },
+        0x01E0: { n: "BrtEndHeaderFooter", f: parsenoop },
+        0x01E1: { n: "BrtBeginSXCrtFormat", f: parsenoop },
+        0x01E2: { n: "BrtEndSXCrtFormat", f: parsenoop },
+        0x01E3: { n: "BrtBeginSXCrtFormats", f: parsenoop },
+        0x01E4: { n: "BrtEndSXCrtFormats", f: parsenoop },
+        0x01E5: { n: "BrtWsFmtInfo", f: parsenoop },
+        0x01E6: { n: "BrtBeginMgs", f: parsenoop },
+        0x01E7: { n: "BrtEndMGs", f: parsenoop },
+        0x01E8: { n: "BrtBeginMGMaps", f: parsenoop },
+        0x01E9: { n: "BrtEndMGMaps", f: parsenoop },
+        0x01EA: { n: "BrtBeginMG", f: parsenoop },
+        0x01EB: { n: "BrtEndMG", f: parsenoop },
+        0x01EC: { n: "BrtBeginMap", f: parsenoop },
+        0x01ED: { n: "BrtEndMap", f: parsenoop },
+        0x01EE: { n: "BrtHLink", f: parse_BrtHLink },
+        0x01EF: { n: "BrtBeginDCon", f: parsenoop },
+        0x01F0: { n: "BrtEndDCon", f: parsenoop },
+        0x01F1: { n: "BrtBeginDRefs", f: parsenoop },
+        0x01F2: { n: "BrtEndDRefs", f: parsenoop },
+        0x01F3: { n: "BrtDRef", f: parsenoop },
+        0x01F4: { n: "BrtBeginScenMan", f: parsenoop },
+        0x01F5: { n: "BrtEndScenMan", f: parsenoop },
+        0x01F6: { n: "BrtBeginSct", f: parsenoop },
+        0x01F7: { n: "BrtEndSct", f: parsenoop },
+        0x01F8: { n: "BrtSlc", f: parsenoop },
+        0x01F9: { n: "BrtBeginDXFs", f: parsenoop },
+        0x01FA: { n: "BrtEndDXFs", f: parsenoop },
+        0x01FB: { n: "BrtDXF", f: parsenoop },
+        0x01FC: { n: "BrtBeginTableStyles", f: parsenoop },
+        0x01FD: { n: "BrtEndTableStyles", f: parsenoop },
+        0x01FE: { n: "BrtBeginTableStyle", f: parsenoop },
+        0x01FF: { n: "BrtEndTableStyle", f: parsenoop },
+        0x0200: { n: "BrtTableStyleElement", f: parsenoop },
+        0x0201: { n: "BrtTableStyleClient", f: parsenoop },
+        0x0202: { n: "BrtBeginVolDeps", f: parsenoop },
+        0x0203: { n: "BrtEndVolDeps", f: parsenoop },
+        0x0204: { n: "BrtBeginVolType", f: parsenoop },
+        0x0205: { n: "BrtEndVolType", f: parsenoop },
+        0x0206: { n: "BrtBeginVolMain", f: parsenoop },
+        0x0207: { n: "BrtEndVolMain", f: parsenoop },
+        0x0208: { n: "BrtBeginVolTopic", f: parsenoop },
+        0x0209: { n: "BrtEndVolTopic", f: parsenoop },
+        0x020A: { n: "BrtVolSubtopic", f: parsenoop },
+        0x020B: { n: "BrtVolRef", f: parsenoop },
+        0x020C: { n: "BrtVolNum", f: parsenoop },
+        0x020D: { n: "BrtVolErr", f: parsenoop },
+        0x020E: { n: "BrtVolStr", f: parsenoop },
+        0x020F: { n: "BrtVolBool", f: parsenoop },
+        0x0210: { n: "BrtBeginCalcChain$", f: parsenoop },
+        0x0211: { n: "BrtEndCalcChain$", f: parsenoop },
+        0x0212: { n: "BrtBeginSortState", f: parsenoop },
+        0x0213: { n: "BrtEndSortState", f: parsenoop },
+        0x0214: { n: "BrtBeginSortCond", f: parsenoop },
+        0x0215: { n: "BrtEndSortCond", f: parsenoop },
+        0x0216: { n: "BrtBookProtection", f: parsenoop },
+        0x0217: { n: "BrtSheetProtection", f: parsenoop },
+        0x0218: { n: "BrtRangeProtection", f: parsenoop },
+        0x0219: { n: "BrtPhoneticInfo", f: parsenoop },
+        0x021A: { n: "BrtBeginECTxtWiz", f: parsenoop },
+        0x021B: { n: "BrtEndECTxtWiz", f: parsenoop },
+        0x021C: { n: "BrtBeginECTWFldInfoLst", f: parsenoop },
+        0x021D: { n: "BrtEndECTWFldInfoLst", f: parsenoop },
+        0x021E: { n: "BrtBeginECTwFldInfo", f: parsenoop },
+        0x0224: { n: "BrtFileSharing", f: parsenoop },
+        0x0225: { n: "BrtOleSize", f: parsenoop },
+        0x0226: { n: "BrtDrawing", f: parse_RelID },
+        0x0227: { n: "BrtLegacyDrawing", f: parsenoop },
+        0x0228: { n: "BrtLegacyDrawingHF", f: parsenoop },
+        0x0229: { n: "BrtWebOpt", f: parsenoop },
+        0x022A: { n: "BrtBeginWebPubItems", f: parsenoop },
+        0x022B: { n: "BrtEndWebPubItems", f: parsenoop },
+        0x022C: { n: "BrtBeginWebPubItem", f: parsenoop },
+        0x022D: { n: "BrtEndWebPubItem", f: parsenoop },
+        0x022E: { n: "BrtBeginSXCondFmt", f: parsenoop },
+        0x022F: { n: "BrtEndSXCondFmt", f: parsenoop },
+        0x0230: { n: "BrtBeginSXCondFmts", f: parsenoop },
+        0x0231: { n: "BrtEndSXCondFmts", f: parsenoop },
+        0x0232: { n: "BrtBkHim", f: parsenoop },
+        0x0234: { n: "BrtColor", f: parsenoop },
+        0x0235: { n: "BrtBeginIndexedColors", f: parsenoop },
+        0x0236: { n: "BrtEndIndexedColors", f: parsenoop },
+        0x0239: { n: "BrtBeginMRUColors", f: parsenoop },
+        0x023A: { n: "BrtEndMRUColors", f: parsenoop },
+        0x023C: { n: "BrtMRUColor", f: parsenoop },
+        0x023D: { n: "BrtBeginDVals", f: parsenoop },
+        0x023E: { n: "BrtEndDVals", f: parsenoop },
+        0x0241: { n: "BrtSupNameStart", f: parsenoop },
+        0x0242: { n: "BrtSupNameValueStart", f: parsenoop },
+        0x0243: { n: "BrtSupNameValueEnd", f: parsenoop },
+        0x0244: { n: "BrtSupNameNum", f: parsenoop },
+        0x0245: { n: "BrtSupNameErr", f: parsenoop },
+        0x0246: { n: "BrtSupNameSt", f: parsenoop },
+        0x0247: { n: "BrtSupNameNil", f: parsenoop },
+        0x0248: { n: "BrtSupNameBool", f: parsenoop },
+        0x0249: { n: "BrtSupNameFmla", f: parsenoop },
+        0x024A: { n: "BrtSupNameBits", f: parsenoop },
+        0x024B: { n: "BrtSupNameEnd", f: parsenoop },
+        0x024C: { n: "BrtEndSupBook", f: parsenoop },
+        0x024D: { n: "BrtCellSmartTagProperty", f: parsenoop },
+        0x024E: { n: "BrtBeginCellSmartTag", f: parsenoop },
+        0x024F: { n: "BrtEndCellSmartTag", f: parsenoop },
+        0x0250: { n: "BrtBeginCellSmartTags", f: parsenoop },
+        0x0251: { n: "BrtEndCellSmartTags", f: parsenoop },
+        0x0252: { n: "BrtBeginSmartTags", f: parsenoop },
+        0x0253: { n: "BrtEndSmartTags", f: parsenoop },
+        0x0254: { n: "BrtSmartTagType", f: parsenoop },
+        0x0255: { n: "BrtBeginSmartTagTypes", f: parsenoop },
+        0x0256: { n: "BrtEndSmartTagTypes", f: parsenoop },
+        0x0257: { n: "BrtBeginSXFilters", f: parsenoop },
+        0x0258: { n: "BrtEndSXFilters", f: parsenoop },
+        0x0259: { n: "BrtBeginSXFILTER", f: parsenoop },
+        0x025A: { n: "BrtEndSXFilter", f: parsenoop },
+        0x025B: { n: "BrtBeginFills", f: parsenoop },
+        0x025C: { n: "BrtEndFills", f: parsenoop },
+        0x025D: { n: "BrtBeginCellWatches", f: parsenoop },
+        0x025E: { n: "BrtEndCellWatches", f: parsenoop },
+        0x025F: { n: "BrtCellWatch", f: parsenoop },
+        0x0260: { n: "BrtBeginCRErrs", f: parsenoop },
+        0x0261: { n: "BrtEndCRErrs", f: parsenoop },
+        0x0262: { n: "BrtCrashRecErr", f: parsenoop },
+        0x0263: { n: "BrtBeginFonts", f: parsenoop },
+        0x0264: { n: "BrtEndFonts", f: parsenoop },
+        0x0265: { n: "BrtBeginBorders", f: parsenoop },
+        0x0266: { n: "BrtEndBorders", f: parsenoop },
+        0x0267: { n: "BrtBeginFmts", f: parsenoop },
+        0x0268: { n: "BrtEndFmts", f: parsenoop },
+        0x0269: { n: "BrtBeginCellXFs", f: parsenoop },
+        0x026A: { n: "BrtEndCellXFs", f: parsenoop },
+        0x026B: { n: "BrtBeginStyles", f: parsenoop },
+        0x026C: { n: "BrtEndStyles", f: parsenoop },
+        0x0271: { n: "BrtBigName", f: parsenoop },
+        0x0272: { n: "BrtBeginCellStyleXFs", f: parsenoop },
+        0x0273: { n: "BrtEndCellStyleXFs", f: parsenoop },
+        0x0274: { n: "BrtBeginComments", f: parsenoop },
+        0x0275: { n: "BrtEndComments", f: parsenoop },
+        0x0276: { n: "BrtBeginCommentAuthors", f: parsenoop },
+        0x0277: { n: "BrtEndCommentAuthors", f: parsenoop },
+        0x0278: { n: "BrtCommentAuthor", f: parse_BrtCommentAuthor },
+        0x0279: { n: "BrtBeginCommentList", f: parsenoop },
+        0x027A: { n: "BrtEndCommentList", f: parsenoop },
+        0x027B: { n: "BrtBeginComment", f: parse_BrtBeginComment },
+        0x027C: { n: "BrtEndComment", f: parsenoop },
+        0x027D: { n: "BrtCommentText", f: parse_BrtCommentText },
+        0x027E: { n: "BrtBeginOleObjects", f: parsenoop },
+        0x027F: { n: "BrtOleObject", f: parsenoop },
+        0x0280: { n: "BrtEndOleObjects", f: parsenoop },
+        0x0281: { n: "BrtBeginSxrules", f: parsenoop },
+        0x0282: { n: "BrtEndSxRules", f: parsenoop },
+        0x0283: { n: "BrtBeginActiveXControls", f: parsenoop },
+        0x0284: { n: "BrtActiveX", f: parsenoop },
+        0x0285: { n: "BrtEndActiveXControls", f: parsenoop },
+        0x0286: { n: "BrtBeginPCDSDTCEMembersSortBy", f: parsenoop },
+        0x0288: { n: "BrtBeginCellIgnoreECs", f: parsenoop },
+        0x0289: { n: "BrtCellIgnoreEC", f: parsenoop },
+        0x028A: { n: "BrtEndCellIgnoreECs", f: parsenoop },
+        0x028B: { n: "BrtCsProp", f: parsenoop },
+        0x028C: { n: "BrtCsPageSetup", f: parsenoop },
+        0x028D: { n: "BrtBeginUserCsViews", f: parsenoop },
+        0x028E: { n: "BrtEndUserCsViews", f: parsenoop },
+        0x028F: { n: "BrtBeginUserCsView", f: parsenoop },
+        0x0290: { n: "BrtEndUserCsView", f: parsenoop },
+        0x0291: { n: "BrtBeginPcdSFCIEntries", f: parsenoop },
+        0x0292: { n: "BrtEndPCDSFCIEntries", f: parsenoop },
+        0x0293: { n: "BrtPCDSFCIEntry", f: parsenoop },
+        0x0294: { n: "BrtBeginListParts", f: parsenoop },
+        0x0295: { n: "BrtListPart", f: parsenoop },
+        0x0296: { n: "BrtEndListParts", f: parsenoop },
+        0x0297: { n: "BrtSheetCalcProp", f: parsenoop },
+        0x0298: { n: "BrtBeginFnGroup", f: parsenoop },
+        0x0299: { n: "BrtFnGroup", f: parsenoop },
+        0x029A: { n: "BrtEndFnGroup", f: parsenoop },
+        0x029B: { n: "BrtSupAddin", f: parsenoop },
+        0x029C: { n: "BrtSXTDMPOrder", f: parsenoop },
+        0x029D: { n: "BrtCsProtection", f: parsenoop },
+        0x029F: { n: "BrtBeginWsSortMap", f: parsenoop },
+        0x02A0: { n: "BrtEndWsSortMap", f: parsenoop },
+        0x02A1: { n: "BrtBeginRRSort", f: parsenoop },
+        0x02A2: { n: "BrtEndRRSort", f: parsenoop },
+        0x02A3: { n: "BrtRRSortItem", f: parsenoop },
+        0x02A4: { n: "BrtFileSharingIso", f: parsenoop },
+        0x02A5: { n: "BrtBookProtectionIso", f: parsenoop },
+        0x02A6: { n: "BrtSheetProtectionIso", f: parsenoop },
+        0x02A7: { n: "BrtCsProtectionIso", f: parsenoop },
+        0x02A8: { n: "BrtRangeProtectionIso", f: parsenoop },
+        0x0400: { n: "BrtRwDescent", f: parsenoop },
+        0x0401: { n: "BrtKnownFonts", f: parsenoop },
+        0x0402: { n: "BrtBeginSXTupleSet", f: parsenoop },
+        0x0403: { n: "BrtEndSXTupleSet", f: parsenoop },
+        0x0404: { n: "BrtBeginSXTupleSetHeader", f: parsenoop },
+        0x0405: { n: "BrtEndSXTupleSetHeader", f: parsenoop },
+        0x0406: { n: "BrtSXTupleSetHeaderItem", f: parsenoop },
+        0x0407: { n: "BrtBeginSXTupleSetData", f: parsenoop },
+        0x0408: { n: "BrtEndSXTupleSetData", f: parsenoop },
+        0x0409: { n: "BrtBeginSXTupleSetRow", f: parsenoop },
+        0x040A: { n: "BrtEndSXTupleSetRow", f: parsenoop },
+        0x040B: { n: "BrtSXTupleSetRowItem", f: parsenoop },
+        0x040C: { n: "BrtNameExt", f: parsenoop },
+        0x040D: { n: "BrtPCDH14", f: parsenoop },
+        0x040E: { n: "BrtBeginPCDCalcMem14", f: parsenoop },
+        0x040F: { n: "BrtEndPCDCalcMem14", f: parsenoop },
+        0x0410: { n: "BrtSXTH14", f: parsenoop },
+        0x0411: { n: "BrtBeginSparklineGroup", f: parsenoop },
+        0x0412: { n: "BrtEndSparklineGroup", f: parsenoop },
+        0x0413: { n: "BrtSparkline", f: parsenoop },
+        0x0414: { n: "BrtSXDI14", f: parsenoop },
+        0x0415: { n: "BrtWsFmtInfoEx14", f: parsenoop },
+        0x0416: { n: "BrtBeginConditionalFormatting14", f: parsenoop },
+        0x0417: { n: "BrtEndConditionalFormatting14", f: parsenoop },
+        0x0418: { n: "BrtBeginCFRule14", f: parsenoop },
+        0x0419: { n: "BrtEndCFRule14", f: parsenoop },
+        0x041A: { n: "BrtCFVO14", f: parsenoop },
+        0x041B: { n: "BrtBeginDatabar14", f: parsenoop },
+        0x041C: { n: "BrtBeginIconSet14", f: parsenoop },
+        0x041D: { n: "BrtDVal14", f: parsenoop },
+        0x041E: { n: "BrtBeginDVals14", f: parsenoop },
+        0x041F: { n: "BrtColor14", f: parsenoop },
+        0x0420: { n: "BrtBeginSparklines", f: parsenoop },
+        0x0421: { n: "BrtEndSparklines", f: parsenoop },
+        0x0422: { n: "BrtBeginSparklineGroups", f: parsenoop },
+        0x0423: { n: "BrtEndSparklineGroups", f: parsenoop },
+        0x0425: { n: "BrtSXVD14", f: parsenoop },
+        0x0426: { n: "BrtBeginSxview14", f: parsenoop },
+        0x0427: { n: "BrtEndSxview14", f: parsenoop },
+        0x042A: { n: "BrtBeginPCD14", f: parsenoop },
+        0x042B: { n: "BrtEndPCD14", f: parsenoop },
+        0x042C: { n: "BrtBeginExtConn14", f: parsenoop },
+        0x042D: { n: "BrtEndExtConn14", f: parsenoop },
+        0x042E: { n: "BrtBeginSlicerCacheIDs", f: parsenoop },
+        0x042F: { n: "BrtEndSlicerCacheIDs", f: parsenoop },
+        0x0430: { n: "BrtBeginSlicerCacheID", f: parsenoop },
+        0x0431: { n: "BrtEndSlicerCacheID", f: parsenoop },
+        0x0433: { n: "BrtBeginSlicerCache", f: parsenoop },
+        0x0434: { n: "BrtEndSlicerCache", f: parsenoop },
+        0x0435: { n: "BrtBeginSlicerCacheDef", f: parsenoop },
+        0x0436: { n: "BrtEndSlicerCacheDef", f: parsenoop },
+        0x0437: { n: "BrtBeginSlicersEx", f: parsenoop },
+        0x0438: { n: "BrtEndSlicersEx", f: parsenoop },
+        0x0439: { n: "BrtBeginSlicerEx", f: parsenoop },
+        0x043A: { n: "BrtEndSlicerEx", f: parsenoop },
+        0x043B: { n: "BrtBeginSlicer", f: parsenoop },
+        0x043C: { n: "BrtEndSlicer", f: parsenoop },
+        0x043D: { n: "BrtSlicerCachePivotTables", f: parsenoop },
+        0x043E: { n: "BrtBeginSlicerCacheOlapImpl", f: parsenoop },
+        0x043F: { n: "BrtEndSlicerCacheOlapImpl", f: parsenoop },
+        0x0440: { n: "BrtBeginSlicerCacheLevelsData", f: parsenoop },
+        0x0441: { n: "BrtEndSlicerCacheLevelsData", f: parsenoop },
+        0x0442: { n: "BrtBeginSlicerCacheLevelData", f: parsenoop },
+        0x0443: { n: "BrtEndSlicerCacheLevelData", f: parsenoop },
+        0x0444: { n: "BrtBeginSlicerCacheSiRanges", f: parsenoop },
+        0x0445: { n: "BrtEndSlicerCacheSiRanges", f: parsenoop },
+        0x0446: { n: "BrtBeginSlicerCacheSiRange", f: parsenoop },
+        0x0447: { n: "BrtEndSlicerCacheSiRange", f: parsenoop },
+        0x0448: { n: "BrtSlicerCacheOlapItem", f: parsenoop },
+        0x0449: { n: "BrtBeginSlicerCacheSelections", f: parsenoop },
+        0x044A: { n: "BrtSlicerCacheSelection", f: parsenoop },
+        0x044B: { n: "BrtEndSlicerCacheSelections", f: parsenoop },
+        0x044C: { n: "BrtBeginSlicerCacheNative", f: parsenoop },
+        0x044D: { n: "BrtEndSlicerCacheNative", f: parsenoop },
+        0x044E: { n: "BrtSlicerCacheNativeItem", f: parsenoop },
+        0x044F: { n: "BrtRangeProtection14", f: parsenoop },
+        0x0450: { n: "BrtRangeProtectionIso14", f: parsenoop },
+        0x0451: { n: "BrtCellIgnoreEC14", f: parsenoop },
+        0x0457: { n: "BrtList14", f: parsenoop },
+        0x0458: { n: "BrtCFIcon", f: parsenoop },
+        0x0459: { n: "BrtBeginSlicerCachesPivotCacheIDs", f: parsenoop },
+        0x045A: { n: "BrtEndSlicerCachesPivotCacheIDs", f: parsenoop },
+        0x045B: { n: "BrtBeginSlicers", f: parsenoop },
+        0x045C: { n: "BrtEndSlicers", f: parsenoop },
+        0x045D: { n: "BrtWbProp14", f: parsenoop },
+        0x045E: { n: "BrtBeginSXEdit", f: parsenoop },
+        0x045F: { n: "BrtEndSXEdit", f: parsenoop },
+        0x0460: { n: "BrtBeginSXEdits", f: parsenoop },
+        0x0461: { n: "BrtEndSXEdits", f: parsenoop },
+        0x0462: { n: "BrtBeginSXChange", f: parsenoop },
+        0x0463: { n: "BrtEndSXChange", f: parsenoop },
+        0x0464: { n: "BrtBeginSXChanges", f: parsenoop },
+        0x0465: { n: "BrtEndSXChanges", f: parsenoop },
+        0x0466: { n: "BrtSXTupleItems", f: parsenoop },
+        0x0468: { n: "BrtBeginSlicerStyle", f: parsenoop },
+        0x0469: { n: "BrtEndSlicerStyle", f: parsenoop },
+        0x046A: { n: "BrtSlicerStyleElement", f: parsenoop },
+        0x046B: { n: "BrtBeginStyleSheetExt14", f: parsenoop },
+        0x046C: { n: "BrtEndStyleSheetExt14", f: parsenoop },
+        0x046D: { n: "BrtBeginSlicerCachesPivotCacheID", f: parsenoop },
+        0x046E: { n: "BrtEndSlicerCachesPivotCacheID", f: parsenoop },
+        0x046F: { n: "BrtBeginConditionalFormattings", f: parsenoop },
+        0x0470: { n: "BrtEndConditionalFormattings", f: parsenoop },
+        0x0471: { n: "BrtBeginPCDCalcMemExt", f: parsenoop },
+        0x0472: { n: "BrtEndPCDCalcMemExt", f: parsenoop },
+        0x0473: { n: "BrtBeginPCDCalcMemsExt", f: parsenoop },
+        0x0474: { n: "BrtEndPCDCalcMemsExt", f: parsenoop },
+        0x0475: { n: "BrtPCDField14", f: parsenoop },
+        0x0476: { n: "BrtBeginSlicerStyles", f: parsenoop },
+        0x0477: { n: "BrtEndSlicerStyles", f: parsenoop },
+        0x0478: { n: "BrtBeginSlicerStyleElements", f: parsenoop },
+        0x0479: { n: "BrtEndSlicerStyleElements", f: parsenoop },
+        0x047A: { n: "BrtCFRuleExt", f: parsenoop },
+        0x047B: { n: "BrtBeginSXCondFmt14", f: parsenoop },
+        0x047C: { n: "BrtEndSXCondFmt14", f: parsenoop },
+        0x047D: { n: "BrtBeginSXCondFmts14", f: parsenoop },
+        0x047E: { n: "BrtEndSXCondFmts14", f: parsenoop },
+        0x0480: { n: "BrtBeginSortCond14", f: parsenoop },
+        0x0481: { n: "BrtEndSortCond14", f: parsenoop },
+        0x0482: { n: "BrtEndDVals14", f: parsenoop },
+        0x0483: { n: "BrtEndIconSet14", f: parsenoop },
+        0x0484: { n: "BrtEndDatabar14", f: parsenoop },
+        0x0485: { n: "BrtBeginColorScale14", f: parsenoop },
+        0x0486: { n: "BrtEndColorScale14", f: parsenoop },
+        0x0487: { n: "BrtBeginSxrules14", f: parsenoop },
+        0x0488: { n: "BrtEndSxrules14", f: parsenoop },
+        0x0489: { n: "BrtBeginPRule14", f: parsenoop },
+        0x048A: { n: "BrtEndPRule14", f: parsenoop },
+        0x048B: { n: "BrtBeginPRFilters14", f: parsenoop },
+        0x048C: { n: "BrtEndPRFilters14", f: parsenoop },
+        0x048D: { n: "BrtBeginPRFilter14", f: parsenoop },
+        0x048E: { n: "BrtEndPRFilter14", f: parsenoop },
+        0x048F: { n: "BrtBeginPRFItem14", f: parsenoop },
+        0x0490: { n: "BrtEndPRFItem14", f: parsenoop },
+        0x0491: { n: "BrtBeginCellIgnoreECs14", f: parsenoop },
+        0x0492: { n: "BrtEndCellIgnoreECs14", f: parsenoop },
+        0x0493: { n: "BrtDxf14", f: parsenoop },
+        0x0494: { n: "BrtBeginDxF14s", f: parsenoop },
+        0x0495: { n: "BrtEndDxf14s", f: parsenoop },
+        0x0499: { n: "BrtFilter14", f: parsenoop },
+        0x049A: { n: "BrtBeginCustomFilters14", f: parsenoop },
+        0x049C: { n: "BrtCustomFilter14", f: parsenoop },
+        0x049D: { n: "BrtIconFilter14", f: parsenoop },
+        0x049E: { n: "BrtPivotCacheConnectionName", f: parsenoop },
+        0x0800: { n: "BrtBeginDecoupledPivotCacheIDs", f: parsenoop },
+        0x0801: { n: "BrtEndDecoupledPivotCacheIDs", f: parsenoop },
+        0x0802: { n: "BrtDecoupledPivotCacheID", f: parsenoop },
+        0x0803: { n: "BrtBeginPivotTableRefs", f: parsenoop },
+        0x0804: { n: "BrtEndPivotTableRefs", f: parsenoop },
+        0x0805: { n: "BrtPivotTableRef", f: parsenoop },
+        0x0806: { n: "BrtSlicerCacheBookPivotTables", f: parsenoop },
+        0x0807: { n: "BrtBeginSxvcells", f: parsenoop },
+        0x0808: { n: "BrtEndSxvcells", f: parsenoop },
+        0x0809: { n: "BrtBeginSxRow", f: parsenoop },
+        0x080A: { n: "BrtEndSxRow", f: parsenoop },
+        0x080C: { n: "BrtPcdCalcMem15", f: parsenoop },
+        0x0813: { n: "BrtQsi15", f: parsenoop },
+        0x0814: { n: "BrtBeginWebExtensions", f: parsenoop },
+        0x0815: { n: "BrtEndWebExtensions", f: parsenoop },
+        0x0816: { n: "BrtWebExtension", f: parsenoop },
+        0x0817: { n: "BrtAbsPath15", f: parsenoop },
+        0x0818: { n: "BrtBeginPivotTableUISettings", f: parsenoop },
+        0x0819: { n: "BrtEndPivotTableUISettings", f: parsenoop },
+        0x081B: { n: "BrtTableSlicerCacheIDs", f: parsenoop },
+        0x081C: { n: "BrtTableSlicerCacheID", f: parsenoop },
+        0x081D: { n: "BrtBeginTableSlicerCache", f: parsenoop },
+        0x081E: { n: "BrtEndTableSlicerCache", f: parsenoop },
+        0x081F: { n: "BrtSxFilter15", f: parsenoop },
+        0x0820: { n: "BrtBeginTimelineCachePivotCacheIDs", f: parsenoop },
+        0x0821: { n: "BrtEndTimelineCachePivotCacheIDs", f: parsenoop },
+        0x0822: { n: "BrtTimelineCachePivotCacheID", f: parsenoop },
+        0x0823: { n: "BrtBeginTimelineCacheIDs", f: parsenoop },
+        0x0824: { n: "BrtEndTimelineCacheIDs", f: parsenoop },
+        0x0825: { n: "BrtBeginTimelineCacheID", f: parsenoop },
+        0x0826: { n: "BrtEndTimelineCacheID", f: parsenoop },
+        0x0827: { n: "BrtBeginTimelinesEx", f: parsenoop },
+        0x0828: { n: "BrtEndTimelinesEx", f: parsenoop },
+        0x0829: { n: "BrtBeginTimelineEx", f: parsenoop },
+        0x082A: { n: "BrtEndTimelineEx", f: parsenoop },
+        0x082B: { n: "BrtWorkBookPr15", f: parsenoop },
+        0x082C: { n: "BrtPCDH15", f: parsenoop },
+        0x082D: { n: "BrtBeginTimelineStyle", f: parsenoop },
+        0x082E: { n: "BrtEndTimelineStyle", f: parsenoop },
+        0x082F: { n: "BrtTimelineStyleElement", f: parsenoop },
+        0x0830: { n: "BrtBeginTimelineStylesheetExt15", f: parsenoop },
+        0x0831: { n: "BrtEndTimelineStylesheetExt15", f: parsenoop },
+        0x0832: { n: "BrtBeginTimelineStyles", f: parsenoop },
+        0x0833: { n: "BrtEndTimelineStyles", f: parsenoop },
+        0x0834: { n: "BrtBeginTimelineStyleElements", f: parsenoop },
+        0x0835: { n: "BrtEndTimelineStyleElements", f: parsenoop },
+        0x0836: { n: "BrtDxf15", f: parsenoop },
+        0x0837: { n: "BrtBeginDxfs15", f: parsenoop },
+        0x0838: { n: "brtEndDxfs15", f: parsenoop },
+        0x0839: { n: "BrtSlicerCacheHideItemsWithNoData", f: parsenoop },
+        0x083A: { n: "BrtBeginItemUniqueNames", f: parsenoop },
+        0x083B: { n: "BrtEndItemUniqueNames", f: parsenoop },
+        0x083C: { n: "BrtItemUniqueName", f: parsenoop },
+        0x083D: { n: "BrtBeginExtConn15", f: parsenoop },
+        0x083E: { n: "BrtEndExtConn15", f: parsenoop },
+        0x083F: { n: "BrtBeginOledbPr15", f: parsenoop },
+        0x0840: { n: "BrtEndOledbPr15", f: parsenoop },
+        0x0841: { n: "BrtBeginDataFeedPr15", f: parsenoop },
+        0x0842: { n: "BrtEndDataFeedPr15", f: parsenoop },
+        0x0843: { n: "BrtTextPr15", f: parsenoop },
+        0x0844: { n: "BrtRangePr15", f: parsenoop },
+        0x0845: { n: "BrtDbCommand15", f: parsenoop },
+        0x0846: { n: "BrtBeginDbTables15", f: parsenoop },
+        0x0847: { n: "BrtEndDbTables15", f: parsenoop },
+        0x0848: { n: "BrtDbTable15", f: parsenoop },
+        0x0849: { n: "BrtBeginDataModel", f: parsenoop },
+        0x084A: { n: "BrtEndDataModel", f: parsenoop },
+        0x084B: { n: "BrtBeginModelTables", f: parsenoop },
+        0x084C: { n: "BrtEndModelTables", f: parsenoop },
+        0x084D: { n: "BrtModelTable", f: parsenoop },
+        0x084E: { n: "BrtBeginModelRelationships", f: parsenoop },
+        0x084F: { n: "BrtEndModelRelationships", f: parsenoop },
+        0x0850: { n: "BrtModelRelationship", f: parsenoop },
+        0x0851: { n: "BrtBeginECTxtWiz15", f: parsenoop },
+        0x0852: { n: "BrtEndECTxtWiz15", f: parsenoop },
+        0x0853: { n: "BrtBeginECTWFldInfoLst15", f: parsenoop },
+        0x0854: { n: "BrtEndECTWFldInfoLst15", f: parsenoop },
+        0x0855: { n: "BrtBeginECTWFldInfo15", f: parsenoop },
+        0x0856: { n: "BrtFieldListActiveItem", f: parsenoop },
+        0x0857: { n: "BrtPivotCacheIdVersion", f: parsenoop },
+        0x0858: { n: "BrtSXDI15", f: parsenoop },
+        0xFFFF: { n: "", f: parsenoop }
     };
 
     var evert_RE = evert_key(XLSBRecordEnum, 'n');
 
     /* [MS-XLS] 2.3 Record Enumeration */
     var XLSRecordEnum = {
-        0x0003: {n: "BIFF2NUM", f: parse_BIFF2NUM},
-        0x0004: {n: "BIFF2STR", f: parse_BIFF2STR},
-        0x0006: {n: "Formula", f: parse_Formula},
-        0x0009: {n: 'BOF', f: parse_BOF},
-        0x000a: {n: 'EOF', f: parse_EOF},
-        0x000c: {n: "CalcCount", f: parse_CalcCount},
-        0x000d: {n: "CalcMode", f: parse_CalcMode},
-        0x000e: {n: "CalcPrecision", f: parse_CalcPrecision},
-        0x000f: {n: "CalcRefMode", f: parse_CalcRefMode},
-        0x0010: {n: "CalcDelta", f: parse_CalcDelta},
-        0x0011: {n: "CalcIter", f: parse_CalcIter},
-        0x0012: {n: "Protect", f: parse_Protect},
-        0x0013: {n: "Password", f: parse_Password},
-        0x0014: {n: "Header", f: parse_Header},
-        0x0015: {n: "Footer", f: parse_Footer},
-        0x0017: {n: "ExternSheet", f: parse_ExternSheet},
-        0x0018: {n: "Lbl", f: parse_Lbl},
-        0x0019: {n: "WinProtect", f: parse_WinProtect},
-        0x001a: {n: "VerticalPageBreaks", f: parse_VerticalPageBreaks},
-        0x001b: {n: "HorizontalPageBreaks", f: parse_HorizontalPageBreaks},
-        0x001c: {n: "Note", f: parse_Note},
-        0x001d: {n: "Selection", f: parse_Selection},
-        0x0022: {n: "Date1904", f: parse_Date1904},
-        0x0023: {n: "ExternName", f: parse_ExternName},
-        0x0026: {n: "LeftMargin", f: parse_LeftMargin},
-        0x0027: {n: "RightMargin", f: parse_RightMargin},
-        0x0028: {n: "TopMargin", f: parse_TopMargin},
-        0x0029: {n: "BottomMargin", f: parse_BottomMargin},
-        0x002a: {n: "PrintRowCol", f: parse_PrintRowCol},
-        0x002b: {n: "PrintGrid", f: parse_PrintGrid},
-        0x002f: {n: "FilePass", f: parse_FilePass},
-        0x0031: {n: "Font", f: parse_Font},
-        0x0033: {n: "PrintSize", f: parse_PrintSize},
-        0x003c: {n: "Continue", f: parse_Continue},
-        0x003d: {n: "Window1", f: parse_Window1},
-        0x0040: {n: "Backup", f: parse_Backup},
-        0x0041: {n: "Pane", f: parse_Pane},
-        0x0042: {n: 'CodePage', f: parse_CodePage},
-        0x004d: {n: "Pls", f: parse_Pls},
-        0x0050: {n: "DCon", f: parse_DCon},
-        0x0051: {n: "DConRef", f: parse_DConRef},
-        0x0052: {n: "DConName", f: parse_DConName},
-        0x0055: {n: "DefColWidth", f: parse_DefColWidth},
-        0x0059: {n: "XCT", f: parse_XCT},
-        0x005a: {n: "CRN", f: parse_CRN},
-        0x005b: {n: "FileSharing", f: parse_FileSharing},
-        0x005c: {n: 'WriteAccess', f: parse_WriteAccess},
-        0x005d: {n: "Obj", f: parse_Obj},
-        0x005e: {n: "Uncalced", f: parse_Uncalced},
-        0x005f: {n: "CalcSaveRecalc", f: parse_CalcSaveRecalc},
-        0x0060: {n: "Template", f: parse_Template},
-        0x0061: {n: "Intl", f: parse_Intl},
-        0x0063: {n: "ObjProtect", f: parse_ObjProtect},
-        0x007d: {n: "ColInfo", f: parse_ColInfo},
-        0x0080: {n: "Guts", f: parse_Guts},
-        0x0081: {n: "WsBool", f: parse_WsBool},
-        0x0082: {n: "GridSet", f: parse_GridSet},
-        0x0083: {n: "HCenter", f: parse_HCenter},
-        0x0084: {n: "VCenter", f: parse_VCenter},
-        0x0085: {n: 'BoundSheet8', f: parse_BoundSheet8},
-        0x0086: {n: "WriteProtect", f: parse_WriteProtect},
-        0x008c: {n: "Country", f: parse_Country},
-        0x008d: {n: "HideObj", f: parse_HideObj},
-        0x0090: {n: "Sort", f: parse_Sort},
-        0x0092: {n: "Palette", f: parse_Palette},
-        0x0097: {n: "Sync", f: parse_Sync},
-        0x0098: {n: "LPr", f: parse_LPr},
-        0x0099: {n: "DxGCol", f: parse_DxGCol},
-        0x009a: {n: "FnGroupName", f: parse_FnGroupName},
-        0x009b: {n: "FilterMode", f: parse_FilterMode},
-        0x009c: {n: "BuiltInFnGroupCount", f: parse_BuiltInFnGroupCount},
-        0x009d: {n: "AutoFilterInfo", f: parse_AutoFilterInfo},
-        0x009e: {n: "AutoFilter", f: parse_AutoFilter},
-        0x00a0: {n: "Scl", f: parse_Scl},
-        0x00a1: {n: "Setup", f: parse_Setup},
-        0x00ae: {n: "ScenMan", f: parse_ScenMan},
-        0x00af: {n: "SCENARIO", f: parse_SCENARIO},
-        0x00b0: {n: "SxView", f: parse_SxView},
-        0x00b1: {n: "Sxvd", f: parse_Sxvd},
-        0x00b2: {n: "SXVI", f: parse_SXVI},
-        0x00b4: {n: "SxIvd", f: parse_SxIvd},
-        0x00b5: {n: "SXLI", f: parse_SXLI},
-        0x00b6: {n: "SXPI", f: parse_SXPI},
-        0x00b8: {n: "DocRoute", f: parse_DocRoute},
-        0x00b9: {n: "RecipName", f: parse_RecipName},
-        0x00bd: {n: "MulRk", f: parse_MulRk},
-        0x00be: {n: "MulBlank", f: parse_MulBlank},
-        0x00c1: {n: 'Mms', f: parse_Mms},
-        0x00c5: {n: "SXDI", f: parse_SXDI},
-        0x00c6: {n: "SXDB", f: parse_SXDB},
-        0x00c7: {n: "SXFDB", f: parse_SXFDB},
-        0x00c8: {n: "SXDBB", f: parse_SXDBB},
-        0x00c9: {n: "SXNum", f: parse_SXNum},
-        0x00ca: {n: "SxBool", f: parse_SxBool},
-        0x00cb: {n: "SxErr", f: parse_SxErr},
-        0x00cc: {n: "SXInt", f: parse_SXInt},
-        0x00cd: {n: "SXString", f: parse_SXString},
-        0x00ce: {n: "SXDtr", f: parse_SXDtr},
-        0x00cf: {n: "SxNil", f: parse_SxNil},
-        0x00d0: {n: "SXTbl", f: parse_SXTbl},
-        0x00d1: {n: "SXTBRGIITM", f: parse_SXTBRGIITM},
-        0x00d2: {n: "SxTbpg", f: parse_SxTbpg},
-        0x00d3: {n: "ObProj", f: parse_ObProj},
-        0x00d5: {n: "SXStreamID", f: parse_SXStreamID},
-        0x00d7: {n: "DBCell", f: parse_DBCell},
-        0x00d8: {n: "SXRng", f: parse_SXRng},
-        0x00d9: {n: "SxIsxoper", f: parse_SxIsxoper},
-        0x00da: {n: "BookBool", f: parse_BookBool},
-        0x00dc: {n: "DbOrParamQry", f: parse_DbOrParamQry},
-        0x00dd: {n: "ScenarioProtect", f: parse_ScenarioProtect},
-        0x00de: {n: "OleObjectSize", f: parse_OleObjectSize},
-        0x00e0: {n: "XF", f: parse_XF},
-        0x00e1: {n: 'InterfaceHdr', f: parse_InterfaceHdr},
-        0x00e2: {n: 'InterfaceEnd', f: parse_InterfaceEnd},
-        0x00e3: {n: "SXVS", f: parse_SXVS},
-        0x00e5: {n: "MergeCells", f: parse_MergeCells},
-        0x00e9: {n: "BkHim", f: parse_BkHim},
-        0x00eb: {n: "MsoDrawingGroup", f: parse_MsoDrawingGroup},
-        0x00ec: {n: "MsoDrawing", f: parse_MsoDrawing},
-        0x00ed: {n: "MsoDrawingSelection", f: parse_MsoDrawingSelection},
-        0x00ef: {n: "PhoneticInfo", f: parse_PhoneticInfo},
-        0x00f0: {n: "SxRule", f: parse_SxRule},
-        0x00f1: {n: "SXEx", f: parse_SXEx},
-        0x00f2: {n: "SxFilt", f: parse_SxFilt},
-        0x00f4: {n: "SxDXF", f: parse_SxDXF},
-        0x00f5: {n: "SxItm", f: parse_SxItm},
-        0x00f6: {n: "SxName", f: parse_SxName},
-        0x00f7: {n: "SxSelect", f: parse_SxSelect},
-        0x00f8: {n: "SXPair", f: parse_SXPair},
-        0x00f9: {n: "SxFmla", f: parse_SxFmla},
-        0x00fb: {n: "SxFormat", f: parse_SxFormat},
-        0x00fc: {n: "SST", f: parse_SST},
-        0x00fd: {n: "LabelSst", f: parse_LabelSst},
-        0x00ff: {n: "ExtSST", f: parse_ExtSST},
-        0x0100: {n: "SXVDEx", f: parse_SXVDEx},
-        0x0103: {n: "SXFormula", f: parse_SXFormula},
-        0x0122: {n: "SXDBEx", f: parse_SXDBEx},
-        0x0137: {n: "RRDInsDel", f: parse_RRDInsDel},
-        0x0138: {n: "RRDHead", f: parse_RRDHead},
-        0x013b: {n: "RRDChgCell", f: parse_RRDChgCell},
-        0x013d: {n: "RRTabId", f: parse_RRTabId},
-        0x013e: {n: "RRDRenSheet", f: parse_RRDRenSheet},
-        0x013f: {n: "RRSort", f: parse_RRSort},
-        0x0140: {n: "RRDMove", f: parse_RRDMove},
-        0x014a: {n: "RRFormat", f: parse_RRFormat},
-        0x014b: {n: "RRAutoFmt", f: parse_RRAutoFmt},
-        0x014d: {n: "RRInsertSh", f: parse_RRInsertSh},
-        0x014e: {n: "RRDMoveBegin", f: parse_RRDMoveBegin},
-        0x014f: {n: "RRDMoveEnd", f: parse_RRDMoveEnd},
-        0x0150: {n: "RRDInsDelBegin", f: parse_RRDInsDelBegin},
-        0x0151: {n: "RRDInsDelEnd", f: parse_RRDInsDelEnd},
-        0x0152: {n: "RRDConflict", f: parse_RRDConflict},
-        0x0153: {n: "RRDDefName", f: parse_RRDDefName},
-        0x0154: {n: "RRDRstEtxp", f: parse_RRDRstEtxp},
-        0x015f: {n: "LRng", f: parse_LRng},
-        0x0160: {n: "UsesELFs", f: parse_UsesELFs},
-        0x0161: {n: "DSF", f: parse_DSF},
-        0x0191: {n: "CUsr", f: parse_CUsr},
-        0x0192: {n: "CbUsr", f: parse_CbUsr},
-        0x0193: {n: "UsrInfo", f: parse_UsrInfo},
-        0x0194: {n: "UsrExcl", f: parse_UsrExcl},
-        0x0195: {n: "FileLock", f: parse_FileLock},
-        0x0196: {n: "RRDInfo", f: parse_RRDInfo},
-        0x0197: {n: "BCUsrs", f: parse_BCUsrs},
-        0x0198: {n: "UsrChk", f: parse_UsrChk},
-        0x01a9: {n: "UserBView", f: parse_UserBView},
-        0x01aa: {n: "UserSViewBegin", f: parse_UserSViewBegin},
-        0x01ab: {n: "UserSViewEnd", f: parse_UserSViewEnd},
-        0x01ac: {n: "RRDUserView", f: parse_RRDUserView},
-        0x01ad: {n: "Qsi", f: parse_Qsi},
-        0x01ae: {n: "SupBook", f: parse_SupBook},
-        0x01af: {n: "Prot4Rev", f: parse_Prot4Rev},
-        0x01b0: {n: "CondFmt", f: parse_CondFmt},
-        0x01b1: {n: "CF", f: parse_CF},
-        0x01b2: {n: "DVal", f: parse_DVal},
-        0x01b5: {n: "DConBin", f: parse_DConBin},
-        0x01b6: {n: "TxO", f: parse_TxO},
-        0x01b7: {n: "RefreshAll", f: parse_RefreshAll},
-        0x01b8: {n: "HLink", f: parse_HLink},
-        0x01b9: {n: "Lel", f: parse_Lel},
-        0x01ba: {n: "CodeName", f: parse_XLSCodeName},
-        0x01bb: {n: "SXFDBType", f: parse_SXFDBType},
-        0x01bc: {n: "Prot4RevPass", f: parse_Prot4RevPass},
-        0x01bd: {n: "ObNoMacros", f: parse_ObNoMacros},
-        0x01be: {n: "Dv", f: parse_Dv},
-        0x01c0: {n: "Excel9File", f: parse_Excel9File},
-        0x01c1: {n: "RecalcId", f: parse_RecalcId, r: 2},
-        0x01c2: {n: "EntExU2", f: parse_EntExU2},
-        0x0200: {n: "Dimensions", f: parse_Dimensions},
-        0x0201: {n: "Blank", f: parse_Blank},
-        0x0203: {n: "Number", f: parse_Number},
-        0x0204: {n: "Label", f: parse_Label},
-        0x0205: {n: "BoolErr", f: parse_BoolErr},
-        0x0206: {n: "Formula", f: parse_Formula},
-        0x0207: {n: "String", f: parse_String},
-        0x0208: {n: 'Row', f: parse_Row},
-        0x020b: {n: "Index", f: parse_Index},
-        0x0221: {n: "Array", f: parse_Array},
-        0x0225: {n: "DefaultRowHeight", f: parse_DefaultRowHeight},
-        0x0236: {n: "Table", f: parse_Table},
-        0x023e: {n: "Window2", f: parse_Window2},
-        0x027e: {n: "RK", f: parse_RK},
-        0x0293: {n: "Style", f: parse_Style},
-        0x0406: {n: "Formula", f: parse_Formula},
-        0x0418: {n: "BigName", f: parse_BigName},
-        0x041e: {n: "Format", f: parse_Format},
-        0x043c: {n: "ContinueBigName", f: parse_ContinueBigName},
-        0x04bc: {n: "ShrFmla", f: parse_ShrFmla},
-        0x0800: {n: "HLinkTooltip", f: parse_HLinkTooltip},
-        0x0801: {n: "WebPub", f: parse_WebPub},
-        0x0802: {n: "QsiSXTag", f: parse_QsiSXTag},
-        0x0803: {n: "DBQueryExt", f: parse_DBQueryExt},
-        0x0804: {n: "ExtString", f: parse_ExtString},
-        0x0805: {n: "TxtQry", f: parse_TxtQry},
-        0x0806: {n: "Qsir", f: parse_Qsir},
-        0x0807: {n: "Qsif", f: parse_Qsif},
-        0x0808: {n: "RRDTQSIF", f: parse_RRDTQSIF},
-        0x0809: {n: 'BOF', f: parse_BOF},
-        0x080a: {n: "OleDbConn", f: parse_OleDbConn},
-        0x080b: {n: "WOpt", f: parse_WOpt},
-        0x080c: {n: "SXViewEx", f: parse_SXViewEx},
-        0x080d: {n: "SXTH", f: parse_SXTH},
-        0x080e: {n: "SXPIEx", f: parse_SXPIEx},
-        0x080f: {n: "SXVDTEx", f: parse_SXVDTEx},
-        0x0810: {n: "SXViewEx9", f: parse_SXViewEx9},
-        0x0812: {n: "ContinueFrt", f: parse_ContinueFrt},
-        0x0813: {n: "RealTimeData", f: parse_RealTimeData},
-        0x0850: {n: "ChartFrtInfo", f: parse_ChartFrtInfo},
-        0x0851: {n: "FrtWrapper", f: parse_FrtWrapper},
-        0x0852: {n: "StartBlock", f: parse_StartBlock},
-        0x0853: {n: "EndBlock", f: parse_EndBlock},
-        0x0854: {n: "StartObject", f: parse_StartObject},
-        0x0855: {n: "EndObject", f: parse_EndObject},
-        0x0856: {n: "CatLab", f: parse_CatLab},
-        0x0857: {n: "YMult", f: parse_YMult},
-        0x0858: {n: "SXViewLink", f: parse_SXViewLink},
-        0x0859: {n: "PivotChartBits", f: parse_PivotChartBits},
-        0x085a: {n: "FrtFontList", f: parse_FrtFontList},
-        0x0862: {n: "SheetExt", f: parse_SheetExt},
-        0x0863: {n: "BookExt", f: parse_BookExt, r: 12},
-        0x0864: {n: "SXAddl", f: parse_SXAddl},
-        0x0865: {n: "CrErr", f: parse_CrErr},
-        0x0866: {n: "HFPicture", f: parse_HFPicture},
-        0x0867: {n: 'FeatHdr', f: parse_FeatHdr},
-        0x0868: {n: "Feat", f: parse_Feat},
-        0x086a: {n: "DataLabExt", f: parse_DataLabExt},
-        0x086b: {n: "DataLabExtContents", f: parse_DataLabExtContents},
-        0x086c: {n: "CellWatch", f: parse_CellWatch},
-        0x0871: {n: "FeatHdr11", f: parse_FeatHdr11},
-        0x0872: {n: "Feature11", f: parse_Feature11},
-        0x0874: {n: "DropDownObjIds", f: parse_DropDownObjIds},
-        0x0875: {n: "ContinueFrt11", f: parse_ContinueFrt11},
-        0x0876: {n: "DConn", f: parse_DConn},
-        0x0877: {n: "List12", f: parse_List12},
-        0x0878: {n: "Feature12", f: parse_Feature12},
-        0x0879: {n: "CondFmt12", f: parse_CondFmt12},
-        0x087a: {n: "CF12", f: parse_CF12},
-        0x087b: {n: "CFEx", f: parse_CFEx},
-        0x087c: {n: "XFCRC", f: parse_XFCRC, r: 12},
-        0x087d: {n: "XFExt", f: parse_XFExt, r: 12},
-        0x087e: {n: "AutoFilter12", f: parse_AutoFilter12},
-        0x087f: {n: "ContinueFrt12", f: parse_ContinueFrt12},
-        0x0884: {n: "MDTInfo", f: parse_MDTInfo},
-        0x0885: {n: "MDXStr", f: parse_MDXStr},
-        0x0886: {n: "MDXTuple", f: parse_MDXTuple},
-        0x0887: {n: "MDXSet", f: parse_MDXSet},
-        0x0888: {n: "MDXProp", f: parse_MDXProp},
-        0x0889: {n: "MDXKPI", f: parse_MDXKPI},
-        0x088a: {n: "MDB", f: parse_MDB},
-        0x088b: {n: "PLV", f: parse_PLV},
-        0x088c: {n: "Compat12", f: parse_Compat12, r: 12},
-        0x088d: {n: "DXF", f: parse_DXF},
-        0x088e: {n: "TableStyles", f: parse_TableStyles, r: 12},
-        0x088f: {n: "TableStyle", f: parse_TableStyle},
-        0x0890: {n: "TableStyleElement", f: parse_TableStyleElement},
-        0x0892: {n: "StyleExt", f: parse_StyleExt},
-        0x0893: {n: "NamePublish", f: parse_NamePublish},
-        0x0894: {n: "NameCmt", f: parse_NameCmt, r: 12},
-        0x0895: {n: "SortData", f: parse_SortData},
-        0x0896: {n: "Theme", f: parse_Theme, r: 12},
-        0x0897: {n: "GUIDTypeLib", f: parse_GUIDTypeLib},
-        0x0898: {n: "FnGrp12", f: parse_FnGrp12},
-        0x0899: {n: "NameFnGrp12", f: parse_NameFnGrp12},
-        0x089a: {n: "MTRSettings", f: parse_MTRSettings, r: 12},
-        0x089b: {n: "CompressPictures", f: parse_CompressPictures},
-        0x089c: {n: "HeaderFooter", f: parse_HeaderFooter},
-        0x089d: {n: "CrtLayout12", f: parse_CrtLayout12},
-        0x089e: {n: "CrtMlFrt", f: parse_CrtMlFrt},
-        0x089f: {n: "CrtMlFrtContinue", f: parse_CrtMlFrtContinue},
-        0x08a3: {n: "ForceFullCalculation", f: parse_ForceFullCalculation},
-        0x08a4: {n: "ShapePropsStream", f: parse_ShapePropsStream},
-        0x08a5: {n: "TextPropsStream", f: parse_TextPropsStream},
-        0x08a6: {n: "RichTextStream", f: parse_RichTextStream},
-        0x08a7: {n: "CrtLayout12A", f: parse_CrtLayout12A},
-        0x1001: {n: "Units", f: parse_Units},
-        0x1002: {n: "Chart", f: parse_Chart},
-        0x1003: {n: "Series", f: parse_Series},
-        0x1006: {n: "DataFormat", f: parse_DataFormat},
-        0x1007: {n: "LineFormat", f: parse_LineFormat},
-        0x1009: {n: "MarkerFormat", f: parse_MarkerFormat},
-        0x100a: {n: "AreaFormat", f: parse_AreaFormat},
-        0x100b: {n: "PieFormat", f: parse_PieFormat},
-        0x100c: {n: "AttachedLabel", f: parse_AttachedLabel},
-        0x100d: {n: "SeriesText", f: parse_SeriesText},
-        0x1014: {n: "ChartFormat", f: parse_ChartFormat},
-        0x1015: {n: "Legend", f: parse_Legend},
-        0x1016: {n: "SeriesList", f: parse_SeriesList},
-        0x1017: {n: "Bar", f: parse_Bar},
-        0x1018: {n: "Line", f: parse_Line},
-        0x1019: {n: "Pie", f: parse_Pie},
-        0x101a: {n: "Area", f: parse_Area},
-        0x101b: {n: "Scatter", f: parse_Scatter},
-        0x101c: {n: "CrtLine", f: parse_CrtLine},
-        0x101d: {n: "Axis", f: parse_Axis},
-        0x101e: {n: "Tick", f: parse_Tick},
-        0x101f: {n: "ValueRange", f: parse_ValueRange},
-        0x1020: {n: "CatSerRange", f: parse_CatSerRange},
-        0x1021: {n: "AxisLine", f: parse_AxisLine},
-        0x1022: {n: "CrtLink", f: parse_CrtLink},
-        0x1024: {n: "DefaultText", f: parse_DefaultText},
-        0x1025: {n: "Text", f: parse_Text},
-        0x1026: {n: "FontX", f: parse_FontX},
-        0x1027: {n: "ObjectLink", f: parse_ObjectLink},
-        0x1032: {n: "Frame", f: parse_Frame},
-        0x1033: {n: "Begin", f: parse_Begin},
-        0x1034: {n: "End", f: parse_End},
-        0x1035: {n: "PlotArea", f: parse_PlotArea},
-        0x103a: {n: "Chart3d", f: parse_Chart3d},
-        0x103c: {n: "PicF", f: parse_PicF},
-        0x103d: {n: "DropBar", f: parse_DropBar},
-        0x103e: {n: "Radar", f: parse_Radar},
-        0x103f: {n: "Surf", f: parse_Surf},
-        0x1040: {n: "RadarArea", f: parse_RadarArea},
-        0x1041: {n: "AxisParent", f: parse_AxisParent},
-        0x1043: {n: "LegendException", f: parse_LegendException},
-        0x1044: {n: "ShtProps", f: parse_ShtProps},
-        0x1045: {n: "SerToCrt", f: parse_SerToCrt},
-        0x1046: {n: "AxesUsed", f: parse_AxesUsed},
-        0x1048: {n: "SBaseRef", f: parse_SBaseRef},
-        0x104a: {n: "SerParent", f: parse_SerParent},
-        0x104b: {n: "SerAuxTrend", f: parse_SerAuxTrend},
-        0x104e: {n: "IFmtRecord", f: parse_IFmtRecord},
-        0x104f: {n: "Pos", f: parse_Pos},
-        0x1050: {n: "AlRuns", f: parse_AlRuns},
-        0x1051: {n: "BRAI", f: parse_BRAI},
-        0x105b: {n: "SerAuxErrBar", f: parse_SerAuxErrBar},
-        0x105c: {n: "ClrtClient", f: parse_ClrtClient},
-        0x105d: {n: "SerFmt", f: parse_SerFmt},
-        0x105f: {n: "Chart3DBarShape", f: parse_Chart3DBarShape},
-        0x1060: {n: "Fbi", f: parse_Fbi},
-        0x1061: {n: "BopPop", f: parse_BopPop},
-        0x1062: {n: "AxcExt", f: parse_AxcExt},
-        0x1063: {n: "Dat", f: parse_Dat},
-        0x1064: {n: "PlotGrowth", f: parse_PlotGrowth},
-        0x1065: {n: "SIIndex", f: parse_SIIndex},
-        0x1066: {n: "GelFrame", f: parse_GelFrame},
-        0x1067: {n: "BopPopCustom", f: parse_BopPopCustom},
-        0x1068: {n: "Fbi2", f: parse_Fbi2},
+        0x0003: { n: "BIFF2NUM", f: parse_BIFF2NUM },
+        0x0004: { n: "BIFF2STR", f: parse_BIFF2STR },
+        0x0006: { n: "Formula", f: parse_Formula },
+        0x0009: { n: 'BOF', f: parse_BOF },
+        0x000a: { n: 'EOF', f: parse_EOF },
+        0x000c: { n: "CalcCount", f: parse_CalcCount },
+        0x000d: { n: "CalcMode", f: parse_CalcMode },
+        0x000e: { n: "CalcPrecision", f: parse_CalcPrecision },
+        0x000f: { n: "CalcRefMode", f: parse_CalcRefMode },
+        0x0010: { n: "CalcDelta", f: parse_CalcDelta },
+        0x0011: { n: "CalcIter", f: parse_CalcIter },
+        0x0012: { n: "Protect", f: parse_Protect },
+        0x0013: { n: "Password", f: parse_Password },
+        0x0014: { n: "Header", f: parse_Header },
+        0x0015: { n: "Footer", f: parse_Footer },
+        0x0017: { n: "ExternSheet", f: parse_ExternSheet },
+        0x0018: { n: "Lbl", f: parse_Lbl },
+        0x0019: { n: "WinProtect", f: parse_WinProtect },
+        0x001a: { n: "VerticalPageBreaks", f: parse_VerticalPageBreaks },
+        0x001b: { n: "HorizontalPageBreaks", f: parse_HorizontalPageBreaks },
+        0x001c: { n: "Note", f: parse_Note },
+        0x001d: { n: "Selection", f: parse_Selection },
+        0x0022: { n: "Date1904", f: parse_Date1904 },
+        0x0023: { n: "ExternName", f: parse_ExternName },
+        0x0026: { n: "LeftMargin", f: parse_LeftMargin },
+        0x0027: { n: "RightMargin", f: parse_RightMargin },
+        0x0028: { n: "TopMargin", f: parse_TopMargin },
+        0x0029: { n: "BottomMargin", f: parse_BottomMargin },
+        0x002a: { n: "PrintRowCol", f: parse_PrintRowCol },
+        0x002b: { n: "PrintGrid", f: parse_PrintGrid },
+        0x002f: { n: "FilePass", f: parse_FilePass },
+        0x0031: { n: "Font", f: parse_Font },
+        0x0033: { n: "PrintSize", f: parse_PrintSize },
+        0x003c: { n: "Continue", f: parse_Continue },
+        0x003d: { n: "Window1", f: parse_Window1 },
+        0x0040: { n: "Backup", f: parse_Backup },
+        0x0041: { n: "Pane", f: parse_Pane },
+        0x0042: { n: 'CodePage', f: parse_CodePage },
+        0x004d: { n: "Pls", f: parse_Pls },
+        0x0050: { n: "DCon", f: parse_DCon },
+        0x0051: { n: "DConRef", f: parse_DConRef },
+        0x0052: { n: "DConName", f: parse_DConName },
+        0x0055: { n: "DefColWidth", f: parse_DefColWidth },
+        0x0059: { n: "XCT", f: parse_XCT },
+        0x005a: { n: "CRN", f: parse_CRN },
+        0x005b: { n: "FileSharing", f: parse_FileSharing },
+        0x005c: { n: 'WriteAccess', f: parse_WriteAccess },
+        0x005d: { n: "Obj", f: parse_Obj },
+        0x005e: { n: "Uncalced", f: parse_Uncalced },
+        0x005f: { n: "CalcSaveRecalc", f: parse_CalcSaveRecalc },
+        0x0060: { n: "Template", f: parse_Template },
+        0x0061: { n: "Intl", f: parse_Intl },
+        0x0063: { n: "ObjProtect", f: parse_ObjProtect },
+        0x007d: { n: "ColInfo", f: parse_ColInfo },
+        0x0080: { n: "Guts", f: parse_Guts },
+        0x0081: { n: "WsBool", f: parse_WsBool },
+        0x0082: { n: "GridSet", f: parse_GridSet },
+        0x0083: { n: "HCenter", f: parse_HCenter },
+        0x0084: { n: "VCenter", f: parse_VCenter },
+        0x0085: { n: 'BoundSheet8', f: parse_BoundSheet8 },
+        0x0086: { n: "WriteProtect", f: parse_WriteProtect },
+        0x008c: { n: "Country", f: parse_Country },
+        0x008d: { n: "HideObj", f: parse_HideObj },
+        0x0090: { n: "Sort", f: parse_Sort },
+        0x0092: { n: "Palette", f: parse_Palette },
+        0x0097: { n: "Sync", f: parse_Sync },
+        0x0098: { n: "LPr", f: parse_LPr },
+        0x0099: { n: "DxGCol", f: parse_DxGCol },
+        0x009a: { n: "FnGroupName", f: parse_FnGroupName },
+        0x009b: { n: "FilterMode", f: parse_FilterMode },
+        0x009c: { n: "BuiltInFnGroupCount", f: parse_BuiltInFnGroupCount },
+        0x009d: { n: "AutoFilterInfo", f: parse_AutoFilterInfo },
+        0x009e: { n: "AutoFilter", f: parse_AutoFilter },
+        0x00a0: { n: "Scl", f: parse_Scl },
+        0x00a1: { n: "Setup", f: parse_Setup },
+        0x00ae: { n: "ScenMan", f: parse_ScenMan },
+        0x00af: { n: "SCENARIO", f: parse_SCENARIO },
+        0x00b0: { n: "SxView", f: parse_SxView },
+        0x00b1: { n: "Sxvd", f: parse_Sxvd },
+        0x00b2: { n: "SXVI", f: parse_SXVI },
+        0x00b4: { n: "SxIvd", f: parse_SxIvd },
+        0x00b5: { n: "SXLI", f: parse_SXLI },
+        0x00b6: { n: "SXPI", f: parse_SXPI },
+        0x00b8: { n: "DocRoute", f: parse_DocRoute },
+        0x00b9: { n: "RecipName", f: parse_RecipName },
+        0x00bd: { n: "MulRk", f: parse_MulRk },
+        0x00be: { n: "MulBlank", f: parse_MulBlank },
+        0x00c1: { n: 'Mms', f: parse_Mms },
+        0x00c5: { n: "SXDI", f: parse_SXDI },
+        0x00c6: { n: "SXDB", f: parse_SXDB },
+        0x00c7: { n: "SXFDB", f: parse_SXFDB },
+        0x00c8: { n: "SXDBB", f: parse_SXDBB },
+        0x00c9: { n: "SXNum", f: parse_SXNum },
+        0x00ca: { n: "SxBool", f: parse_SxBool },
+        0x00cb: { n: "SxErr", f: parse_SxErr },
+        0x00cc: { n: "SXInt", f: parse_SXInt },
+        0x00cd: { n: "SXString", f: parse_SXString },
+        0x00ce: { n: "SXDtr", f: parse_SXDtr },
+        0x00cf: { n: "SxNil", f: parse_SxNil },
+        0x00d0: { n: "SXTbl", f: parse_SXTbl },
+        0x00d1: { n: "SXTBRGIITM", f: parse_SXTBRGIITM },
+        0x00d2: { n: "SxTbpg", f: parse_SxTbpg },
+        0x00d3: { n: "ObProj", f: parse_ObProj },
+        0x00d5: { n: "SXStreamID", f: parse_SXStreamID },
+        0x00d7: { n: "DBCell", f: parse_DBCell },
+        0x00d8: { n: "SXRng", f: parse_SXRng },
+        0x00d9: { n: "SxIsxoper", f: parse_SxIsxoper },
+        0x00da: { n: "BookBool", f: parse_BookBool },
+        0x00dc: { n: "DbOrParamQry", f: parse_DbOrParamQry },
+        0x00dd: { n: "ScenarioProtect", f: parse_ScenarioProtect },
+        0x00de: { n: "OleObjectSize", f: parse_OleObjectSize },
+        0x00e0: { n: "XF", f: parse_XF },
+        0x00e1: { n: 'InterfaceHdr', f: parse_InterfaceHdr },
+        0x00e2: { n: 'InterfaceEnd', f: parse_InterfaceEnd },
+        0x00e3: { n: "SXVS", f: parse_SXVS },
+        0x00e5: { n: "MergeCells", f: parse_MergeCells },
+        0x00e9: { n: "BkHim", f: parse_BkHim },
+        0x00eb: { n: "MsoDrawingGroup", f: parse_MsoDrawingGroup },
+        0x00ec: { n: "MsoDrawing", f: parse_MsoDrawing },
+        0x00ed: { n: "MsoDrawingSelection", f: parse_MsoDrawingSelection },
+        0x00ef: { n: "PhoneticInfo", f: parse_PhoneticInfo },
+        0x00f0: { n: "SxRule", f: parse_SxRule },
+        0x00f1: { n: "SXEx", f: parse_SXEx },
+        0x00f2: { n: "SxFilt", f: parse_SxFilt },
+        0x00f4: { n: "SxDXF", f: parse_SxDXF },
+        0x00f5: { n: "SxItm", f: parse_SxItm },
+        0x00f6: { n: "SxName", f: parse_SxName },
+        0x00f7: { n: "SxSelect", f: parse_SxSelect },
+        0x00f8: { n: "SXPair", f: parse_SXPair },
+        0x00f9: { n: "SxFmla", f: parse_SxFmla },
+        0x00fb: { n: "SxFormat", f: parse_SxFormat },
+        0x00fc: { n: "SST", f: parse_SST },
+        0x00fd: { n: "LabelSst", f: parse_LabelSst },
+        0x00ff: { n: "ExtSST", f: parse_ExtSST },
+        0x0100: { n: "SXVDEx", f: parse_SXVDEx },
+        0x0103: { n: "SXFormula", f: parse_SXFormula },
+        0x0122: { n: "SXDBEx", f: parse_SXDBEx },
+        0x0137: { n: "RRDInsDel", f: parse_RRDInsDel },
+        0x0138: { n: "RRDHead", f: parse_RRDHead },
+        0x013b: { n: "RRDChgCell", f: parse_RRDChgCell },
+        0x013d: { n: "RRTabId", f: parse_RRTabId },
+        0x013e: { n: "RRDRenSheet", f: parse_RRDRenSheet },
+        0x013f: { n: "RRSort", f: parse_RRSort },
+        0x0140: { n: "RRDMove", f: parse_RRDMove },
+        0x014a: { n: "RRFormat", f: parse_RRFormat },
+        0x014b: { n: "RRAutoFmt", f: parse_RRAutoFmt },
+        0x014d: { n: "RRInsertSh", f: parse_RRInsertSh },
+        0x014e: { n: "RRDMoveBegin", f: parse_RRDMoveBegin },
+        0x014f: { n: "RRDMoveEnd", f: parse_RRDMoveEnd },
+        0x0150: { n: "RRDInsDelBegin", f: parse_RRDInsDelBegin },
+        0x0151: { n: "RRDInsDelEnd", f: parse_RRDInsDelEnd },
+        0x0152: { n: "RRDConflict", f: parse_RRDConflict },
+        0x0153: { n: "RRDDefName", f: parse_RRDDefName },
+        0x0154: { n: "RRDRstEtxp", f: parse_RRDRstEtxp },
+        0x015f: { n: "LRng", f: parse_LRng },
+        0x0160: { n: "UsesELFs", f: parse_UsesELFs },
+        0x0161: { n: "DSF", f: parse_DSF },
+        0x0191: { n: "CUsr", f: parse_CUsr },
+        0x0192: { n: "CbUsr", f: parse_CbUsr },
+        0x0193: { n: "UsrInfo", f: parse_UsrInfo },
+        0x0194: { n: "UsrExcl", f: parse_UsrExcl },
+        0x0195: { n: "FileLock", f: parse_FileLock },
+        0x0196: { n: "RRDInfo", f: parse_RRDInfo },
+        0x0197: { n: "BCUsrs", f: parse_BCUsrs },
+        0x0198: { n: "UsrChk", f: parse_UsrChk },
+        0x01a9: { n: "UserBView", f: parse_UserBView },
+        0x01aa: { n: "UserSViewBegin", f: parse_UserSViewBegin },
+        0x01ab: { n: "UserSViewEnd", f: parse_UserSViewEnd },
+        0x01ac: { n: "RRDUserView", f: parse_RRDUserView },
+        0x01ad: { n: "Qsi", f: parse_Qsi },
+        0x01ae: { n: "SupBook", f: parse_SupBook },
+        0x01af: { n: "Prot4Rev", f: parse_Prot4Rev },
+        0x01b0: { n: "CondFmt", f: parse_CondFmt },
+        0x01b1: { n: "CF", f: parse_CF },
+        0x01b2: { n: "DVal", f: parse_DVal },
+        0x01b5: { n: "DConBin", f: parse_DConBin },
+        0x01b6: { n: "TxO", f: parse_TxO },
+        0x01b7: { n: "RefreshAll", f: parse_RefreshAll },
+        0x01b8: { n: "HLink", f: parse_HLink },
+        0x01b9: { n: "Lel", f: parse_Lel },
+        0x01ba: { n: "CodeName", f: parse_XLSCodeName },
+        0x01bb: { n: "SXFDBType", f: parse_SXFDBType },
+        0x01bc: { n: "Prot4RevPass", f: parse_Prot4RevPass },
+        0x01bd: { n: "ObNoMacros", f: parse_ObNoMacros },
+        0x01be: { n: "Dv", f: parse_Dv },
+        0x01c0: { n: "Excel9File", f: parse_Excel9File },
+        0x01c1: { n: "RecalcId", f: parse_RecalcId, r: 2 },
+        0x01c2: { n: "EntExU2", f: parse_EntExU2 },
+        0x0200: { n: "Dimensions", f: parse_Dimensions },
+        0x0201: { n: "Blank", f: parse_Blank },
+        0x0203: { n: "Number", f: parse_Number },
+        0x0204: { n: "Label", f: parse_Label },
+        0x0205: { n: "BoolErr", f: parse_BoolErr },
+        0x0206: { n: "Formula", f: parse_Formula },
+        0x0207: { n: "String", f: parse_String },
+        0x0208: { n: 'Row', f: parse_Row },
+        0x020b: { n: "Index", f: parse_Index },
+        0x0221: { n: "Array", f: parse_Array },
+        0x0225: { n: "DefaultRowHeight", f: parse_DefaultRowHeight },
+        0x0236: { n: "Table", f: parse_Table },
+        0x023e: { n: "Window2", f: parse_Window2 },
+        0x027e: { n: "RK", f: parse_RK },
+        0x0293: { n: "Style", f: parse_Style },
+        0x0406: { n: "Formula", f: parse_Formula },
+        0x0418: { n: "BigName", f: parse_BigName },
+        0x041e: { n: "Format", f: parse_Format },
+        0x043c: { n: "ContinueBigName", f: parse_ContinueBigName },
+        0x04bc: { n: "ShrFmla", f: parse_ShrFmla },
+        0x0800: { n: "HLinkTooltip", f: parse_HLinkTooltip },
+        0x0801: { n: "WebPub", f: parse_WebPub },
+        0x0802: { n: "QsiSXTag", f: parse_QsiSXTag },
+        0x0803: { n: "DBQueryExt", f: parse_DBQueryExt },
+        0x0804: { n: "ExtString", f: parse_ExtString },
+        0x0805: { n: "TxtQry", f: parse_TxtQry },
+        0x0806: { n: "Qsir", f: parse_Qsir },
+        0x0807: { n: "Qsif", f: parse_Qsif },
+        0x0808: { n: "RRDTQSIF", f: parse_RRDTQSIF },
+        0x0809: { n: 'BOF', f: parse_BOF },
+        0x080a: { n: "OleDbConn", f: parse_OleDbConn },
+        0x080b: { n: "WOpt", f: parse_WOpt },
+        0x080c: { n: "SXViewEx", f: parse_SXViewEx },
+        0x080d: { n: "SXTH", f: parse_SXTH },
+        0x080e: { n: "SXPIEx", f: parse_SXPIEx },
+        0x080f: { n: "SXVDTEx", f: parse_SXVDTEx },
+        0x0810: { n: "SXViewEx9", f: parse_SXViewEx9 },
+        0x0812: { n: "ContinueFrt", f: parse_ContinueFrt },
+        0x0813: { n: "RealTimeData", f: parse_RealTimeData },
+        0x0850: { n: "ChartFrtInfo", f: parse_ChartFrtInfo },
+        0x0851: { n: "FrtWrapper", f: parse_FrtWrapper },
+        0x0852: { n: "StartBlock", f: parse_StartBlock },
+        0x0853: { n: "EndBlock", f: parse_EndBlock },
+        0x0854: { n: "StartObject", f: parse_StartObject },
+        0x0855: { n: "EndObject", f: parse_EndObject },
+        0x0856: { n: "CatLab", f: parse_CatLab },
+        0x0857: { n: "YMult", f: parse_YMult },
+        0x0858: { n: "SXViewLink", f: parse_SXViewLink },
+        0x0859: { n: "PivotChartBits", f: parse_PivotChartBits },
+        0x085a: { n: "FrtFontList", f: parse_FrtFontList },
+        0x0862: { n: "SheetExt", f: parse_SheetExt },
+        0x0863: { n: "BookExt", f: parse_BookExt, r: 12 },
+        0x0864: { n: "SXAddl", f: parse_SXAddl },
+        0x0865: { n: "CrErr", f: parse_CrErr },
+        0x0866: { n: "HFPicture", f: parse_HFPicture },
+        0x0867: { n: 'FeatHdr', f: parse_FeatHdr },
+        0x0868: { n: "Feat", f: parse_Feat },
+        0x086a: { n: "DataLabExt", f: parse_DataLabExt },
+        0x086b: { n: "DataLabExtContents", f: parse_DataLabExtContents },
+        0x086c: { n: "CellWatch", f: parse_CellWatch },
+        0x0871: { n: "FeatHdr11", f: parse_FeatHdr11 },
+        0x0872: { n: "Feature11", f: parse_Feature11 },
+        0x0874: { n: "DropDownObjIds", f: parse_DropDownObjIds },
+        0x0875: { n: "ContinueFrt11", f: parse_ContinueFrt11 },
+        0x0876: { n: "DConn", f: parse_DConn },
+        0x0877: { n: "List12", f: parse_List12 },
+        0x0878: { n: "Feature12", f: parse_Feature12 },
+        0x0879: { n: "CondFmt12", f: parse_CondFmt12 },
+        0x087a: { n: "CF12", f: parse_CF12 },
+        0x087b: { n: "CFEx", f: parse_CFEx },
+        0x087c: { n: "XFCRC", f: parse_XFCRC, r: 12 },
+        0x087d: { n: "XFExt", f: parse_XFExt, r: 12 },
+        0x087e: { n: "AutoFilter12", f: parse_AutoFilter12 },
+        0x087f: { n: "ContinueFrt12", f: parse_ContinueFrt12 },
+        0x0884: { n: "MDTInfo", f: parse_MDTInfo },
+        0x0885: { n: "MDXStr", f: parse_MDXStr },
+        0x0886: { n: "MDXTuple", f: parse_MDXTuple },
+        0x0887: { n: "MDXSet", f: parse_MDXSet },
+        0x0888: { n: "MDXProp", f: parse_MDXProp },
+        0x0889: { n: "MDXKPI", f: parse_MDXKPI },
+        0x088a: { n: "MDB", f: parse_MDB },
+        0x088b: { n: "PLV", f: parse_PLV },
+        0x088c: { n: "Compat12", f: parse_Compat12, r: 12 },
+        0x088d: { n: "DXF", f: parse_DXF },
+        0x088e: { n: "TableStyles", f: parse_TableStyles, r: 12 },
+        0x088f: { n: "TableStyle", f: parse_TableStyle },
+        0x0890: { n: "TableStyleElement", f: parse_TableStyleElement },
+        0x0892: { n: "StyleExt", f: parse_StyleExt },
+        0x0893: { n: "NamePublish", f: parse_NamePublish },
+        0x0894: { n: "NameCmt", f: parse_NameCmt, r: 12 },
+        0x0895: { n: "SortData", f: parse_SortData },
+        0x0896: { n: "Theme", f: parse_Theme, r: 12 },
+        0x0897: { n: "GUIDTypeLib", f: parse_GUIDTypeLib },
+        0x0898: { n: "FnGrp12", f: parse_FnGrp12 },
+        0x0899: { n: "NameFnGrp12", f: parse_NameFnGrp12 },
+        0x089a: { n: "MTRSettings", f: parse_MTRSettings, r: 12 },
+        0x089b: { n: "CompressPictures", f: parse_CompressPictures },
+        0x089c: { n: "HeaderFooter", f: parse_HeaderFooter },
+        0x089d: { n: "CrtLayout12", f: parse_CrtLayout12 },
+        0x089e: { n: "CrtMlFrt", f: parse_CrtMlFrt },
+        0x089f: { n: "CrtMlFrtContinue", f: parse_CrtMlFrtContinue },
+        0x08a3: { n: "ForceFullCalculation", f: parse_ForceFullCalculation },
+        0x08a4: { n: "ShapePropsStream", f: parse_ShapePropsStream },
+        0x08a5: { n: "TextPropsStream", f: parse_TextPropsStream },
+        0x08a6: { n: "RichTextStream", f: parse_RichTextStream },
+        0x08a7: { n: "CrtLayout12A", f: parse_CrtLayout12A },
+        0x1001: { n: "Units", f: parse_Units },
+        0x1002: { n: "Chart", f: parse_Chart },
+        0x1003: { n: "Series", f: parse_Series },
+        0x1006: { n: "DataFormat", f: parse_DataFormat },
+        0x1007: { n: "LineFormat", f: parse_LineFormat },
+        0x1009: { n: "MarkerFormat", f: parse_MarkerFormat },
+        0x100a: { n: "AreaFormat", f: parse_AreaFormat },
+        0x100b: { n: "PieFormat", f: parse_PieFormat },
+        0x100c: { n: "AttachedLabel", f: parse_AttachedLabel },
+        0x100d: { n: "SeriesText", f: parse_SeriesText },
+        0x1014: { n: "ChartFormat", f: parse_ChartFormat },
+        0x1015: { n: "Legend", f: parse_Legend },
+        0x1016: { n: "SeriesList", f: parse_SeriesList },
+        0x1017: { n: "Bar", f: parse_Bar },
+        0x1018: { n: "Line", f: parse_Line },
+        0x1019: { n: "Pie", f: parse_Pie },
+        0x101a: { n: "Area", f: parse_Area },
+        0x101b: { n: "Scatter", f: parse_Scatter },
+        0x101c: { n: "CrtLine", f: parse_CrtLine },
+        0x101d: { n: "Axis", f: parse_Axis },
+        0x101e: { n: "Tick", f: parse_Tick },
+        0x101f: { n: "ValueRange", f: parse_ValueRange },
+        0x1020: { n: "CatSerRange", f: parse_CatSerRange },
+        0x1021: { n: "AxisLine", f: parse_AxisLine },
+        0x1022: { n: "CrtLink", f: parse_CrtLink },
+        0x1024: { n: "DefaultText", f: parse_DefaultText },
+        0x1025: { n: "Text", f: parse_Text },
+        0x1026: { n: "FontX", f: parse_FontX },
+        0x1027: { n: "ObjectLink", f: parse_ObjectLink },
+        0x1032: { n: "Frame", f: parse_Frame },
+        0x1033: { n: "Begin", f: parse_Begin },
+        0x1034: { n: "End", f: parse_End },
+        0x1035: { n: "PlotArea", f: parse_PlotArea },
+        0x103a: { n: "Chart3d", f: parse_Chart3d },
+        0x103c: { n: "PicF", f: parse_PicF },
+        0x103d: { n: "DropBar", f: parse_DropBar },
+        0x103e: { n: "Radar", f: parse_Radar },
+        0x103f: { n: "Surf", f: parse_Surf },
+        0x1040: { n: "RadarArea", f: parse_RadarArea },
+        0x1041: { n: "AxisParent", f: parse_AxisParent },
+        0x1043: { n: "LegendException", f: parse_LegendException },
+        0x1044: { n: "ShtProps", f: parse_ShtProps },
+        0x1045: { n: "SerToCrt", f: parse_SerToCrt },
+        0x1046: { n: "AxesUsed", f: parse_AxesUsed },
+        0x1048: { n: "SBaseRef", f: parse_SBaseRef },
+        0x104a: { n: "SerParent", f: parse_SerParent },
+        0x104b: { n: "SerAuxTrend", f: parse_SerAuxTrend },
+        0x104e: { n: "IFmtRecord", f: parse_IFmtRecord },
+        0x104f: { n: "Pos", f: parse_Pos },
+        0x1050: { n: "AlRuns", f: parse_AlRuns },
+        0x1051: { n: "BRAI", f: parse_BRAI },
+        0x105b: { n: "SerAuxErrBar", f: parse_SerAuxErrBar },
+        0x105c: { n: "ClrtClient", f: parse_ClrtClient },
+        0x105d: { n: "SerFmt", f: parse_SerFmt },
+        0x105f: { n: "Chart3DBarShape", f: parse_Chart3DBarShape },
+        0x1060: { n: "Fbi", f: parse_Fbi },
+        0x1061: { n: "BopPop", f: parse_BopPop },
+        0x1062: { n: "AxcExt", f: parse_AxcExt },
+        0x1063: { n: "Dat", f: parse_Dat },
+        0x1064: { n: "PlotGrowth", f: parse_PlotGrowth },
+        0x1065: { n: "SIIndex", f: parse_SIIndex },
+        0x1066: { n: "GelFrame", f: parse_GelFrame },
+        0x1067: { n: "BopPopCustom", f: parse_BopPopCustom },
+        0x1068: { n: "Fbi2", f: parse_Fbi2 },
 
         /* These are specified in an older version of the spec */
-        0x0000: {n: "Dimensions", f: parse_Dimensions},
-        0x0002: {n: "BIFF2INT", f: parse_BIFF2INT},
-        0x0005: {n: "BoolErr", f: parse_BoolErr},
-        0x0007: {n: "String", f: parse_BIFF2STRING},
-        0x0008: {n: "BIFF2ROW", f: parsenoop},
-        0x000b: {n: "Index", f: parse_Index},
-        0x0016: {n: "ExternCount", f: parsenoop},
-        0x001e: {n: "BIFF2FORMAT", f: parse_BIFF2Format},
-        0x001f: {n: "BIFF2FMTCNT", f: parsenoop}, /* 16-bit cnt of BIFF2FORMAT records */
-        0x0020: {n: "BIFF2COLINFO", f: parsenoop},
-        0x0021: {n: "Array", f: parse_Array},
-        0x0025: {n: "DefaultRowHeight", f: parse_DefaultRowHeight},
-        0x0032: {n: "BIFF2FONTXTRA", f: parse_BIFF2FONTXTRA},
-        0x003e: {n: "BIFF2WINDOW2", f: parsenoop},
-        0x0045: {n: "BIFF2FONTCLR", f: parsenoop},
-        0x0056: {n: "BIFF4FMTCNT", f: parsenoop}, /* 16-bit cnt, similar to BIFF2 */
-        0x007e: {n: "RK", f: parsenoop}, /* Not necessarily same as 0x027e */
-        0x007f: {n: "ImData", f: parse_ImData},
-        0x0087: {n: "Addin", f: parsenoop},
-        0x0088: {n: "Edg", f: parsenoop},
-        0x0089: {n: "Pub", f: parsenoop},
-        0x0091: {n: "Sub", f: parsenoop},
-        0x0094: {n: "LHRecord", f: parsenoop},
-        0x0095: {n: "LHNGraph", f: parsenoop},
-        0x0096: {n: "Sound", f: parsenoop},
-        0x00a9: {n: "CoordList", f: parsenoop},
-        0x00ab: {n: "GCW", f: parsenoop},
-        0x00bc: {n: "ShrFmla", f: parsenoop}, /* Not necessarily same as 0x04bc */
-        0x00c2: {n: "AddMenu", f: parsenoop},
-        0x00c3: {n: "DelMenu", f: parsenoop},
-        0x00d6: {n: "RString", f: parse_RString},
-        0x00df: {n: "UDDesc", f: parsenoop},
-        0x00ea: {n: "TabIdConf", f: parsenoop},
-        0x0162: {n: "XL5Modify", f: parsenoop},
-        0x01a5: {n: "FileSharing2", f: parsenoop},
-        0x0209: {n: 'BOF', f: parse_BOF},
-        0x0218: {n: "Lbl", f: parse_Lbl},
-        0x0223: {n: "ExternName", f: parse_ExternName},
-        0x0231: {n: "Font", f: parsenoop},
-        0x0409: {n: 'BOF', f: parse_BOF},
-        0x086d: {n: "FeatInfo", f: parsenoop},
-        0x0873: {n: "FeatInfo11", f: parsenoop},
-        0x0881: {n: "SXAddl12", f: parsenoop},
-        0x08c0: {n: "AutoWebPub", f: parsenoop},
-        0x08c1: {n: "ListObj", f: parsenoop},
-        0x08c2: {n: "ListField", f: parsenoop},
-        0x08c3: {n: "ListDV", f: parsenoop},
-        0x08c4: {n: "ListCondFmt", f: parsenoop},
-        0x08c5: {n: "ListCF", f: parsenoop},
-        0x08c6: {n: "FMQry", f: parsenoop},
-        0x08c7: {n: "FMSQry", f: parsenoop},
-        0x08c8: {n: "PLV", f: parsenoop},
-        0x08c9: {n: "LnExt", f: parsenoop},
-        0x08ca: {n: "MkrExt", f: parsenoop},
-        0x08cb: {n: "CrtCoopt", f: parsenoop},
+        0x0000: { n: "Dimensions", f: parse_Dimensions },
+        0x0002: { n: "BIFF2INT", f: parse_BIFF2INT },
+        0x0005: { n: "BoolErr", f: parse_BoolErr },
+        0x0007: { n: "String", f: parse_BIFF2STRING },
+        0x0008: { n: "BIFF2ROW", f: parsenoop },
+        0x000b: { n: "Index", f: parse_Index },
+        0x0016: { n: "ExternCount", f: parsenoop },
+        0x001e: { n: "BIFF2FORMAT", f: parse_BIFF2Format },
+        0x001f: { n: "BIFF2FMTCNT", f: parsenoop }, /* 16-bit cnt of BIFF2FORMAT records */
+        0x0020: { n: "BIFF2COLINFO", f: parsenoop },
+        0x0021: { n: "Array", f: parse_Array },
+        0x0025: { n: "DefaultRowHeight", f: parse_DefaultRowHeight },
+        0x0032: { n: "BIFF2FONTXTRA", f: parse_BIFF2FONTXTRA },
+        0x003e: { n: "BIFF2WINDOW2", f: parsenoop },
+        0x0045: { n: "BIFF2FONTCLR", f: parsenoop },
+        0x0056: { n: "BIFF4FMTCNT", f: parsenoop }, /* 16-bit cnt, similar to BIFF2 */
+        0x007e: { n: "RK", f: parsenoop }, /* Not necessarily same as 0x027e */
+        0x007f: { n: "ImData", f: parse_ImData },
+        0x0087: { n: "Addin", f: parsenoop },
+        0x0088: { n: "Edg", f: parsenoop },
+        0x0089: { n: "Pub", f: parsenoop },
+        0x0091: { n: "Sub", f: parsenoop },
+        0x0094: { n: "LHRecord", f: parsenoop },
+        0x0095: { n: "LHNGraph", f: parsenoop },
+        0x0096: { n: "Sound", f: parsenoop },
+        0x00a9: { n: "CoordList", f: parsenoop },
+        0x00ab: { n: "GCW", f: parsenoop },
+        0x00bc: { n: "ShrFmla", f: parsenoop }, /* Not necessarily same as 0x04bc */
+        0x00c2: { n: "AddMenu", f: parsenoop },
+        0x00c3: { n: "DelMenu", f: parsenoop },
+        0x00d6: { n: "RString", f: parse_RString },
+        0x00df: { n: "UDDesc", f: parsenoop },
+        0x00ea: { n: "TabIdConf", f: parsenoop },
+        0x0162: { n: "XL5Modify", f: parsenoop },
+        0x01a5: { n: "FileSharing2", f: parsenoop },
+        0x0209: { n: 'BOF', f: parse_BOF },
+        0x0218: { n: "Lbl", f: parse_Lbl },
+        0x0223: { n: "ExternName", f: parse_ExternName },
+        0x0231: { n: "Font", f: parsenoop },
+        0x0409: { n: 'BOF', f: parse_BOF },
+        0x086d: { n: "FeatInfo", f: parsenoop },
+        0x0873: { n: "FeatInfo11", f: parsenoop },
+        0x0881: { n: "SXAddl12", f: parsenoop },
+        0x08c0: { n: "AutoWebPub", f: parsenoop },
+        0x08c1: { n: "ListObj", f: parsenoop },
+        0x08c2: { n: "ListField", f: parsenoop },
+        0x08c3: { n: "ListDV", f: parsenoop },
+        0x08c4: { n: "ListCondFmt", f: parsenoop },
+        0x08c5: { n: "ListCF", f: parsenoop },
+        0x08c6: { n: "FMQry", f: parsenoop },
+        0x08c7: { n: "FMSQry", f: parsenoop },
+        0x08c8: { n: "PLV", f: parsenoop },
+        0x08c9: { n: "LnExt", f: parsenoop },
+        0x08ca: { n: "MkrExt", f: parsenoop },
+        0x08cb: { n: "CrtCoopt", f: parsenoop },
 
-        0x0043: {n: "BIFF2XF", f: parsenoop},
-        0x0243: {n: "BIFF3XF", f: parsenoop},
-        0x0443: {n: "BIFF4XF", f: parsenoop},
+        0x0043: { n: "BIFF2XF", f: parsenoop },
+        0x0243: { n: "BIFF3XF", f: parsenoop },
+        0x0443: { n: "BIFF4XF", f: parsenoop },
 
         0x7262: {}
     };
@@ -19524,7 +19529,7 @@ var XLSX = {};
             if (i == -1 || j == -1) throw new Error("Invalid HTML: missing <table> / </table> pair");
             var rows = str.slice(i, j).split(/(:?<tr[^>]*>)/);
             var R = -1, C = 0, RS = 0, CS = 0;
-            var range = {s: {r: 10000000, c: 10000000}, e: {r: 0, c: 0}};
+            var range = { s: { r: 10000000, c: 10000000 }, e: { r: 0, c: 0 } };
             var merges = [], midx = 0;
             for (i = 0; i < rows.length; ++i) {
                 var row = rows[i].trim();
@@ -19545,8 +19550,8 @@ var XLSX = {};
                     var tag = parsexmltag(cell.slice(0, cell.indexOf(">")));
                     CS = tag.colspan ? +tag.colspan : 1;
                     if ((RS = +tag.rowspan) > 0 || CS > 1) merges.push({
-                        s: {r: R, c: C},
-                        e: {r: R + (RS || 1) - 1, c: C + CS - 1}
+                        s: { r: R, c: C },
+                        e: { r: R + (RS || 1) - 1, c: C + CS - 1 }
                     });
                     /* TODO: generate stub cells */
                     if (!m.length) {
@@ -19560,13 +19565,13 @@ var XLSX = {};
                     if (range.e.c < C) range.e.c = C;
                     if (opts.dense) {
                         if (!ws[R]) ws[R] = [];
-                        if (Number(m) == Number(m)) ws[R][C] = {t: 'n', v: +m};
-                        else ws[R][C] = {t: 's', v: m};
+                        if (Number(m) == Number(m)) ws[R][C] = { t: 'n', v: +m };
+                        else ws[R][C] = { t: 's', v: m };
                     } else {
-                        var coord = encode_cell({r: R, c: C});
+                        var coord = encode_cell({ r: R, c: C });
                         /* TODO: value parsing */
-                        if (Number(m) == Number(m)) ws[coord] = {t: 'n', v: +m};
-                        else ws[coord] = {t: 's', v: m};
+                        if (Number(m) == Number(m)) ws[coord] = { t: 'n', v: +m };
+                        else ws[coord] = { t: 's', v: m };
                     }
                     C += CS;
                 }
@@ -19582,7 +19587,7 @@ var XLSX = {};
         function make_html_row(ws, r, R, o) {
             var M = (ws['!merges'] || []);
             var oo = [];
-            var nullcell = "<td" + (o.editable ? ' contenteditable="true"' : "" ) + "></td>";
+            var nullcell = "<td" + (o.editable ? ' contenteditable="true"' : "") + "></td>";
             for (var C = r.s.c; C <= r.e.c; ++C) {
                 var RS = 0, CS = 0;
                 for (var j = 0; j < M.length; ++j) {
@@ -19597,7 +19602,7 @@ var XLSX = {};
                     break;
                 }
                 if (RS < 0) continue;
-                var coord = encode_cell({r: R, c: C});
+                var coord = encode_cell({ r: R, c: C });
                 var cell = o.dense ? (ws[R] || [])[C] : ws[coord];
                 if (!cell || cell.v == null) {
                     oo.push(nullcell);
@@ -19643,7 +19648,7 @@ var XLSX = {};
         if (DENSE != null) opts.dense = DENSE;
         var ws = opts.dense ? ([]) : ({});
         var rows = table.getElementsByTagName('tr');
-        var range = {s: {r: 0, c: 0}, e: {r: rows.length - 1, c: 0}};
+        var range = { s: { r: 0, c: 0 }, e: { r: rows.length - 1, c: 0 } };
         var merges = [], midx = 0;
         var R = 0, _C = 0, C = 0, RS = 0, CS = 0;
         for (; R < rows.length; ++R) {
@@ -19661,15 +19666,15 @@ var XLSX = {};
                 /* TODO: figure out how to extract nonstandard mso- style */
                 CS = +elt.getAttribute("colspan") || 1;
                 if ((RS = +elt.getAttribute("rowspan")) > 0 || CS > 1) merges.push({
-                    s: {r: R, c: C},
-                    e: {r: R + (RS || 1) - 1, c: C + CS - 1}
+                    s: { r: R, c: C },
+                    e: { r: R + (RS || 1) - 1, c: C + CS - 1 }
                 });
-                var o = {t: 's', v: v};
+                var o = { t: 's', v: v };
                 if (v != null && v.length) {
-                    if (!isNaN(Number(v))) o = {t: 'n', v: Number(v)};
+                    if (!isNaN(Number(v))) o = { t: 'n', v: Number(v) };
                     else if (!isNaN(fuzzydate(v).getDate())) {
-                        o = ({t: 'd', v: parseDate(v)});
-                        if (!opts.cellDates) o = ({t: 'n', v: datenum(o.v)});
+                        o = ({ t: 'd', v: parseDate(v) });
+                        if (!opts.cellDates) o = ({ t: 'n', v: datenum(o.v) });
                         o.z = opts.dateNF || SSF._table[14];
                     }
                 }
@@ -19677,7 +19682,7 @@ var XLSX = {};
                     if (!ws[R]) ws[R] = [];
                     ws[R][C] = o;
                 }
-                else ws[encode_cell({c: C, r: R})] = o;
+                else ws[encode_cell({ c: C, r: R })] = o;
                 if (range.e.c < C) range.e.c = C;
                 C += CS;
             }
@@ -19716,15 +19721,15 @@ var XLSX = {};
             var str = xlml_normalize(d);
             var state = [], tmp;
             var tag;
-            var NFtag = {name: ""}, NF = "", pidx = 0;
+            var NFtag = { name: "" }, NF = "", pidx = 0;
             var sheetag;
             var rowtag;
             var Sheets = {}, SheetNames = [];
             var ws = opts.dense ? ([]) : ({});
             var Rn, q;
-            var ctag = {value: ""};
+            var ctag = { value: "" };
             var textp = "", textpidx = 0, textptag;
-            var R = -1, C = -1, range = {s: {r: 1000000, c: 10000000}, e: {r: 0, c: 0}};
+            var R = -1, C = -1, range = { s: { r: 1000000, c: 10000000 }, e: { r: 0, c: 0 } };
             var number_format_map = {};
             var merges = [], mrange = {}, mR = 0, mC = 0;
             var arrayf = [];
@@ -19767,9 +19772,9 @@ var XLSX = {};
                     if (opts.sheetStubs) {
                         if (opts.dense) {
                             if (!ws[R]) ws[R] = [];
-                            ws[R][C] = {t: 'z'};
+                            ws[R][C] = { t: 'z' };
                         }
-                        else ws[encode_cell({r: R, c: C})] = {t: 'z'};
+                        else ws[encode_cell({ r: R, c: C })] = { t: 'z' };
                     }
                     break; /* stub */
                 case 'table-cell':
@@ -19789,13 +19794,13 @@ var XLSX = {};
                         ctag = parsexmltag(Rn[0], false);
                         comments = [];
                         comment = {};
-                        q = ({t: ctag['????'] || ctag['value-type'], v: null});
+                        q = ({ t: ctag['????'] || ctag['value-type'], v: null });
                         if (opts.cellFormula) {
                             if (ctag.formula) ctag.formula = unescapexml(ctag.formula);
                             if (ctag['number-matrix-columns-spanned'] && ctag['number-matrix-rows-spanned']) {
                                 mR = parseInt(ctag['number-matrix-rows-spanned'], 10) || 0;
                                 mC = parseInt(ctag['number-matrix-columns-spanned'], 10) || 0;
-                                mrange = {s: {r: R, c: C}, e: {r: R + mR - 1, c: C + mC - 1}};
+                                mrange = { s: { r: R, c: C }, e: { r: R + mR - 1, c: C + mC - 1 } };
                                 q.F = encode_range(mrange);
                                 arrayf.push([mrange, q.F]);
                             }
@@ -19808,7 +19813,7 @@ var XLSX = {};
                         if (ctag['number-columns-spanned'] || ctag['number-rows-spanned']) {
                             mR = parseInt(ctag['number-rows-spanned'], 10) || 0;
                             mC = parseInt(ctag['number-columns-spanned'], 10) || 0;
-                            mrange = {s: {r: R, c: C}, e: {r: R + mR - 1, c: C + mC - 1}};
+                            mrange = { s: { r: R, c: C }, e: { r: R + mR - 1, c: C + mC - 1 } };
                             merges.push(mrange);
                         }
 
@@ -19874,8 +19879,8 @@ var XLSX = {};
                                     ws[R][C] = q;
                                     while (--rept > 0) ws[R][++C] = dup(q);
                                 } else {
-                                    ws[encode_cell({r: R, c: C})] = q;
-                                    while (--rept > 0) ws[encode_cell({r: R, c: ++C})] = dup(q);
+                                    ws[encode_cell({ r: R, c: C })] = q;
+                                    while (--rept > 0) ws[encode_cell({ r: R, c: ++C })] = dup(q);
                                 }
                                 if (range.e.c <= C) range.e.c = C;
                             }
@@ -20102,7 +20107,7 @@ var XLSX = {};
                     if (Rn[1] === '/') break;
                     try {
                         var AutoFilter = ods_to_csf_range_3D(parsexmltag(Rn[0])['target-range-address']);
-                        Sheets[AutoFilter[0]]['!autofilter'] = {ref: AutoFilter[1]};
+                        Sheets[AutoFilter[0]]['!autofilter'] = { ref: AutoFilter[1] };
                     } catch (e) {/* empty */
                     }
                     break;
@@ -20307,7 +20312,7 @@ var XLSX = {};
                         o.push(covered_cell_xml);
                         continue;
                     }
-                    var ref = encode_cell({r: R, c: C}), cell = dense ? (ws[R] || [])[C] : ws[ref];
+                    var ref = encode_cell({ r: R, c: C }), cell = dense ? (ws[R] || [])[C] : ws[ref];
                     if (cell && cell.f) {
                         ct['table:formula'] = escapexml(csf_to_ods_formula(cell.f));
                         if (cell.F) {
@@ -20486,11 +20491,11 @@ var XLSX = {};
     }
 
     var write_htm_str = write_obj_str(HTML_);
-    var write_csv_str = write_obj_str({from_sheet: sheet_to_csv});
+    var write_csv_str = write_obj_str({ from_sheet: sheet_to_csv });
     var write_slk_str = write_obj_str(SYLK);
     var write_dif_str = write_obj_str(DIF);
     var write_prn_str = write_obj_str(PRN);
-    var write_txt_str = write_obj_str({from_sheet: sheet_to_txt});
+    var write_txt_str = write_obj_str({ from_sheet: sheet_to_txt });
 
     function fix_opts_func(defaults) {
         return function fix_opts(opts) {
@@ -20802,7 +20807,7 @@ var XLSX = {};
         var f = "", rId = 0;
 
         opts.cellXfs = [];
-        get_cell_style(opts.cellXfs, {}, {revssf: {"General": 0}});
+        get_cell_style(opts.cellXfs, {}, { revssf: { "General": 0 } });
 
         if (!wb.Props) wb.Props = {};
 
@@ -20817,12 +20822,12 @@ var XLSX = {};
         else if (!wb.Workbook || !wb.Workbook.Sheets) wb.Props.SheetNames = wb.SheetNames;
         // $FlowIgnore
         else wb.Props.SheetNames = wb.SheetNames.map(function (x, i) {
-                return [(wb.Workbook.Sheets[i] || {}).Hidden != 2, x];
-            }).filter(function (x) {
-                return x[0];
-            }).map(function (x) {
-                return x[1];
-            });
+            return [(wb.Workbook.Sheets[i] || {}).Hidden != 2, x];
+        }).filter(function (x) {
+            return x[0];
+        }).map(function (x) {
+            return x[1];
+        });
         wb.Props.Worksheets = wb.Props.SheetNames.length;
         zip.file(f, write_ext_props(wb.Props, opts));
         ct.extprops.push(f);
@@ -20841,7 +20846,7 @@ var XLSX = {};
         add_rels(opts.rels, 1, f, RELS.WB);
 
         for (rId = 1; rId <= wb.SheetNames.length; ++rId) {
-            var wsrels = {'!id': {}};
+            var wsrels = { '!id': {} };
             var ws = wb.Sheets[wb.SheetNames[rId - 1]];
 
 
@@ -20963,11 +20968,11 @@ var XLSX = {};
         if (!o.type) o.type = (has_buf && Buffer.isBuffer(data)) ? "buffer" : "base64";
         switch (o.type) {
             case "base64":
-                zip = new jszip(d, {base64: true});
+                zip = new jszip(d, { base64: true });
                 break;
             case "binary":
             case "array":
-                zip = new jszip(d, {base64: false});
+                zip = new jszip(d, { base64: false });
                 break;
             case "buffer":
                 zip = new jszip(d);
@@ -21246,8 +21251,8 @@ var XLSX = {};
 
     function sheet_to_json(sheet, opts) {
         if (sheet == null || sheet["!ref"] == null) return [];
-        var val = {t: 'n', v: 0}, header = 0, offset = 1, hdr = [], isempty = true, v = 0, vv = "";
-        var r = {s: {r: 0, c: 0}, e: {r: 0, c: 0}};
+        var val = { t: 'n', v: 0 }, header = 0, offset = 1, hdr = [], isempty = true, v = 0, vv = "";
+        var r = { s: { r: 0, c: 0 }, e: { r: 0, c: 0 } };
         var o = opts != null ? opts : {};
         var raw = o.raw;
         var defval = o.defval;
@@ -21303,7 +21308,7 @@ var XLSX = {};
             else {
                 row = {};
                 if (Object.defineProperty) try {
-                    Object.defineProperty(row, '__rowNum__', {value: R, enumerable: false});
+                    Object.defineProperty(row, '__rowNum__', { value: R, enumerable: false });
                 } catch (e) {
                     row.__rowNum__ = R;
                 }
@@ -21452,7 +21457,7 @@ var XLSX = {};
         var o = opts || {};
         var ws = ({});
         var cell;
-        var range = ({s: {c: 0, r: 0}, e: {c: 0, r: js.length}});
+        var range = ({ s: { c: 0, r: 0 }, e: { c: 0, r: js.length } });
         var hdr = o.header || [], C = 0;
 
         for (var R = 0; R != js.length; ++R) {
@@ -21474,12 +21479,12 @@ var XLSX = {};
                     }
                     z = o.dateNF || SSF._table[14];
                 }
-                ws[encode_cell({c: C, r: R + 1})] = cell = ({t: t, v: v});
+                ws[encode_cell({ c: C, r: R + 1 })] = cell = ({ t: t, v: v });
                 if (z) cell.z = z;
             });
         }
         range.e.c = hdr.length - 1;
-        for (C = 0; C < hdr.length; ++C) ws[encode_col(C) + "1"] = {t: 's', v: hdr[C]};
+        for (C = 0; C < hdr.length; ++C) ws[encode_col(C) + "1"] = { t: 's', v: hdr[C] };
         ws['!ref'] = encode_range(range);
         return ws;
     }
@@ -21525,11 +21530,11 @@ var XLSX = {};
         /* get cell, creating a stub if necessary */
         function ws_get_cell_stub(ws, R, C) {
             /* A1 cell address */
-            if (typeof R == "string") return ws[R] || (ws[R] = {t: 'z'});
+            if (typeof R == "string") return ws[R] || (ws[R] = { t: 'z' });
             /* cell address object */
             if (typeof R != "number") return ws_get_cell_stub(ws, encode_cell(R));
             /* R and C are 0-based indices */
-            return ws_get_cell_stub(ws, encode_cell({r: R, c: C || 0}));
+            return ws_get_cell_stub(ws, encode_cell({ r: R, c: C || 0 }));
         }
 
         /* find sheet index for given name / validate index */
@@ -21546,7 +21551,7 @@ var XLSX = {};
 
         /* simple blank workbook object */
         utils.book_new = function () {
-            return {SheetNames: [], Sheets: {}};
+            return { SheetNames: [], Sheets: {} };
         };
 
         /* add a worksheet to the end of a given workbook */
@@ -21597,7 +21602,7 @@ var XLSX = {};
             if (!target) {
                 delete cell.l;
             } else {
-                cell.l = ({Target: target});
+                cell.l = ({ Target: target });
                 if (tooltip) cell.l.Tooltip = tooltip;
             }
             return cell;
@@ -21606,7 +21611,7 @@ var XLSX = {};
         /* add to cell comments */
         utils.cell_add_comment = function (cell, text, author) {
             if (!cell.c) cell.c = [];
-            cell.c.push({t: text, a: author || "SheetJS"});
+            cell.c.push({ t: text, a: author || "SheetJS" });
         };
 
         /* set array formula and flush related cells */
@@ -21784,7 +21789,7 @@ var XLSX = {};
         }
         return XmlNode;
     })();
-/////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     var StyleBuilder = function (options) {
 
@@ -21883,17 +21888,17 @@ var XLSX = {};
                 // the second style MUST be gray125 for some reason
 
                 var defaultStyle = options.defaultCellStyle || {};
-                if (!defaultStyle.font) defaultStyle.font = {name: 'Calibri', sz: '12'};
+                if (!defaultStyle.font) defaultStyle.font = { name: 'Calibri', sz: '12' };
                 if (!defaultStyle.font.name) defaultStyle.font.name = 'Calibri';
                 if (!defaultStyle.font.sz) defaultStyle.font.sz = 11;
-                if (!defaultStyle.fill) defaultStyle.fill = {patternType: "none", fgColor: {}};
+                if (!defaultStyle.fill) defaultStyle.fill = { patternType: "none", fgColor: {} };
                 if (!defaultStyle.border) defaultStyle.border = {};
                 if (!defaultStyle.numFmt) defaultStyle.numFmt = 0;
 
                 this.defaultStyle = defaultStyle;
 
                 var gray125Style = JSON.parse(JSON.stringify(defaultStyle));
-                gray125Style.fill = {patternType: "gray125", fgColor: {}}
+                gray125Style.fill = { patternType: "gray125", fgColor: {} }
 
                 this.addStyles([defaultStyle, gray125Style]);
                 return this;
@@ -21927,7 +21932,7 @@ var XLSX = {};
             _duckTypeStyle: function (attributes) {
 
                 if (typeof attributes == 'object' && (attributes.patternFill || attributes.fgColor)) {
-                    return {fill: attributes}; // this must be read via XLSX.parseFile(...)
+                    return { fill: attributes }; // this must be read via XLSX.parseFile(...)
                 }
                 else if (attributes.font || attributes.numFmt || attributes.border || attributes.fill) {
                     return attributes;
@@ -22110,7 +22115,7 @@ var XLSX = {};
                     }
 
                     if (!attributes.bgColor) {
-                        attributes.bgColor = {"indexed": "64"}
+                        attributes.bgColor = { "indexed": "64" }
                     }
                 }
 
